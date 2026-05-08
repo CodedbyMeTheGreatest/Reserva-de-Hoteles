@@ -4,6 +4,9 @@ import cl.duoc.dsy1103.empleados.model.Empleado;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.swing.text.html.Option;
+import java.util.Optional;
+
 @Repository
 public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
 
@@ -12,7 +15,7 @@ public interface EmpleadoRepository extends JpaRepository<Empleado, Long> {
      * @param run
      * @return : Empleado -> encontró | null -> no encontró
      */
-    public Empleado findByRun(String run);
+    public Optional<Empleado> findByRun(String run);
 
     /**
      * Existe un empleado con el run entregado.

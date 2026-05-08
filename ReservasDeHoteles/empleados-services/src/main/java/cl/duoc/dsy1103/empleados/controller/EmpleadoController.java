@@ -1,6 +1,8 @@
 package cl.duoc.dsy1103.empleados.controller;
 
-import cl.duoc.dsy1103.empleados.Service.EmpleadoService;
+import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
+import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
+import cl.duoc.dsy1103.empleados.service.EmpleadoService;
 import cl.duoc.dsy1103.empleados.model.Empleado;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -19,37 +21,44 @@ public class EmpleadoController {
 
 
     @GetMapping
-    public List<Empleado> findAllEmployee(){
+    public List<EmpleadoResponse> findAllEmployee(){
         log.info("GET /api/empleados");
         return empleadoService.findAll();
     }
 
     @GetMapping("id/{id}")
-    public ResponseEntity<Empleado> findEmployeeById(@PathVariable Long id){
+    public ResponseEntity<EmpleadoResponse> findEmployeeById(@PathVariable Long id){
         log.info("GET /api/empleados/id/{}", id);
-        Empleado encontrado = empleadoService.findById(id);
+        EmpleadoResponse encontrado = empleadoService.findById(id);
         return ResponseEntity.ok(encontrado);
     }
 
     @GetMapping("run/{run}")
-    public ResponseEntity<Empleado> findEmployeeByRun(@PathVariable String run){
+    public ResponseEntity<EmpleadoResponse> findEmployeeByRun(@PathVariable String run){
         log.info("GET /api/empleados/run/{}", run);
-        Empleado encontrado = empleadoService.findByRun(run);
+        EmpleadoResponse encontrado = empleadoService.findByRun(run);
         return ResponseEntity.ok(encontrado);
     }
 
     @PostMapping
-    public ResponseEntity<Empleado> addEmployee(@Valid @RequestBody Empleado empleado){
-        log.info("POST /api/empleados -> run: {}", empleado.getRun());
-        Empleado agregado = empleadoService.addEmployee(empleado);
+    public ResponseEntity<EmpleadoResponse> addEmployee(@Valid @RequestBody EmpleadoRequest request){
+        log.info("POST /api/empleados -> run: {}", request.getRun());
+        EmpleadoResponse agregado = empleadoService.addEmployee(request);
         return ResponseEntity.ok(agregado);
     }
 
+    @PutMapping
+    public ResponseEntity<EmpleadoResponse> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmpleadoRequest request){
+        log.info("Put /api/empleados -> id: {} run: {}", id,request.getRun());
+        EmpleadoResponse actualizado = empleadoService.updateEmployee(id, request);
+        return ResponseEntity.ok(actualizado);
+    }
+
     @DeleteMapping
-    public String deleteEmployee(@PathVariable Long id){
+    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
         log.info("DELETE /api/empleado -> id: {}", id);
         empleadoService.deleteEmployee(id);
-        return "Empleado eliminado correctamente";
+        return ResponseEntity.noContent().build();
     }
 
 }
