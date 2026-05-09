@@ -14,8 +14,8 @@ public class HabitacionMapper {
                 .numero(request.getNumero())
                 .descripcion(request.getDescripcion())
                 .precioPorNoche(request.getPrecioPorNoche())
-                .id_hotel(request.getId_hotel())
-                .id_disponibilidad(request.getId_disponibilidad())
+                .idHotel(request.getIdHotel())
+                .idDisponibilidad(request.getIdDisponibilidad())
                 .build();
     }
 
@@ -25,8 +25,8 @@ public class HabitacionMapper {
                 .numero(habitacion.getNumero())
                 .descripcion(habitacion.getDescripcion())
                 .precioPorNoche(habitacion.getPrecioPorNoche())
-                .id_hotel(habitacion.getId_hotel())
-                .id_disponibilidad(habitacion.getId_disponibilidad())
+                .idHotel(habitacion.getIdHotel())
+                .idDisponibilidad(habitacion.getIdDisponibilidad())
                 .build();
     }
 }
