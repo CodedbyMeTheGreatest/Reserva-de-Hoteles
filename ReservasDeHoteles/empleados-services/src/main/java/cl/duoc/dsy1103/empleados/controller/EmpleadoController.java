@@ -3,7 +3,6 @@ package cl.duoc.dsy1103.empleados.controller;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
 import cl.duoc.dsy1103.empleados.service.EmpleadoService;
-import cl.duoc.dsy1103.empleados.model.Empleado;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
