@@ -1,7 +1,9 @@
 package cl.duoc.dsy1103.empleados.service;
 
+import cl.duoc.dsy1103.empleados.client.ReservaClient;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
+import cl.duoc.dsy1103.empleados.dto.ReservaResponse;
 import cl.duoc.dsy1103.empleados.mapper.EmpleadoMapper;
 import cl.duoc.dsy1103.empleados.model.Empleado;
 import cl.duoc.dsy1103.empleados.repository.EmpleadoRepository;
@@ -20,6 +22,9 @@ public class EmpleadoService {
 
     @Autowired
     private EmpleadoMapper empleadoMapper;
+
+    @Autowired
+    private ReservaClient reservaClient;
 
     /**
      * Busca todos los empleados
@@ -90,6 +95,14 @@ public class EmpleadoService {
             throw new EntityNotFoundException("No se encontró ningún empleado con la ID "+id);
         }
         empleadoRepository.deleteById(id);
+    }
+
+    public List<ReservaResponse> findReservaByEmployeeRun(String run){
+        log.info("Obteniendo reservas por el empleado con RUN -> {}", run);
+        if(!empleadoRepository.existsByRun(run)){
+            throw new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run);
+        }
+        return reservaClient.findReservaByEmployeeRun(run);
     }
 
 }

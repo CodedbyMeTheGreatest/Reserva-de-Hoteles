@@ -2,6 +2,7 @@ package cl.duoc.dsy1103.empleados.controller;
 
 import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
+import cl.duoc.dsy1103.empleados.dto.ReservaResponse;
 import cl.duoc.dsy1103.empleados.service.EmpleadoService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +59,12 @@ public class EmpleadoController {
         log.info("DELETE /api/empleado -> id: {}", id);
         empleadoService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("{run}/reservas")
+    public ResponseEntity<List<ReservaResponse>> findReservaByEmployeeRun(@PathVariable String run){
+        log.info("Get /api/empleados/run/{}/reservas ", run);
+        return ResponseEntity.ok(empleadoService.findReservaByEmployeeRun(run));
     }
 
 }
