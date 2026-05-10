@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class Empleado {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(length = 12, unique = true, nullable = false)
@@ -24,7 +24,7 @@ public class Empleado {
     @Column(name = "nombre_completo", length = 100, nullable = false)
     private String nombreCompleto;
 
-    @Column(length = 50, nullable = true)
+    @Column(length = 50)
     private String cargo;
 
     @Column(name = "id_hotel", nullable = false)

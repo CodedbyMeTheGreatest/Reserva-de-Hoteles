@@ -16,28 +16,31 @@ import java.time.LocalDateTime;
 @Builder
 public class Factura {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 30, unique = true)
     private String folio;
+
+    @Column(nullable = false, name = "id_reserva")
+    private Long idReserva;
+
+    @Column(nullable = false, length = 12, name = "run_huesped")
+    private String runHuesped;
 
     @Column(nullable = false)
     private LocalDateTime fecha;
 
-    @Column(nullable = false)
-    private int nroHabitacion;
+    @Column(nullable = false, unique = true, name = "id_pago")
+    private Long idPago;
 
-    @Column(nullable = false)
-    private String runHuesped;
-
-    @Column(nullable = false)
-    private Long idHotel;
-
-    @Column(nullable = false)
-    private int duracionNoches;
-
-    @Column(nullable = false)
+    @Column(nullable = false, length = 250, name = "descripcion_habitacion")
     private String descripcionHabitacion;
 
-    @Column(nullable = false)
-    private Long idPago;
+    @Column(nullable = false, length = 50)
+    private String estado;
+
+
+
 
 }
