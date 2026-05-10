@@ -16,13 +16,12 @@ public class Empleado {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id_emp")
-    private Long idEmpleado;
+    private Long id;
 
     @Column(length = 12, unique = true, nullable = false)
     private String run;
 
-    @Column(name = "nom_completo_emp", length = 100, nullable = false)
+    @Column(name = "nombre_completo", length = 100, nullable = false)
     private String nombreCompleto;
 
     @Column(length = 50, nullable = true)
