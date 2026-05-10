@@ -56,6 +56,7 @@ public class GlobalHandlerException {
                 .error(HttpStatus.BAD_REQUEST.name())
                 .message("Invalid Request")
                 .path(request.getRequestURI())
+                .errors(errors)
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
@@ -67,7 +68,7 @@ public class GlobalHandlerException {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                .message("Unexpected error")
+                .message(ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

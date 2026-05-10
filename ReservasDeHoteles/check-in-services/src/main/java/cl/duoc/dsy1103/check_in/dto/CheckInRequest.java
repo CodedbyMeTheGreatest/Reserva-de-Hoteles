@@ -22,7 +22,7 @@ public class CheckInRequest {
     @NotNull(message = "La ID del empleado es obligatoria")
     private Long idEmpleado;
 
-    @Size(max = 250, message = "Las observaciones deben tener maximo 250 caracteres")
+    @Size(max = 250, message = "Las observaciones deben tener máximo 250 caracteres")
     private String observaciones;
 
 
