@@ -32,15 +32,15 @@ public class HabitacionService {
         return habitacionRepository.findAll();
     }
 
-    public HabitacionResponse buscarHabitacionPorId(Long id){
-        log.info("Buscando habitacion por ID: {}",id);
-        Habitacion habitacion = habitacionRepository.findById(id)
+    public HabitacionResponse buscarHabitacionPorId(Long idHabitacion){
+        log.info("Buscando habitacion por ID: {}",idHabitacion);
+        Habitacion habitacion = habitacionRepository.findById(idHabitacion)
             .orElseThrow(() -> new NoSuchElementException("Habitacion no encontrada."));
         return habitacionMapper.toResponse(habitacion);
     }
 
     public HabitacionResponse buscarHabitacionPorNumero(String numero){
-        log.info("Buscando habitacion por ID: {}",numero);
+        log.info("Buscando habitacion por numero: {}",numero);
         Habitacion habitacion = habitacionRepository.findByNumero(numero)
             .orElseThrow(() -> new NoSuchElementException("Habitacion no encontrada."));
         return habitacionMapper.toResponse(habitacion);
@@ -55,9 +55,9 @@ public class HabitacionService {
         return habitacionMapper.toResponse(habitacion);
     }
 
-    public HabitacionResponse actualizarHabitacion (Long id, HabitacionUpdateRequest request){
-        log.info("Actualizando habitacion con ID: {}",id);
-        Habitacion habitacion = habitacionRepository.findById(id)
+    public HabitacionResponse actualizarHabitacion (Long idHabitacion, HabitacionUpdateRequest request){
+        log.info("Actualizando habitacion con ID: {}",idHabitacion);
+        Habitacion habitacion = habitacionRepository.findById(idHabitacion)
             .orElseThrow(() -> new NoSuchElementException("Habitacion no encontrada."));
         
         if(request.getNumero()!=null){
@@ -83,12 +83,12 @@ public class HabitacionService {
         return habitacionMapper.toResponse(habitacion);
     }
 
-    public void eliminarHabitacion (Long id){
-        log.info("Eliminando habitacion con ID: {}",id);
-        if(!habitacionRepository.existsById(id)){
+    public void eliminarHabitacion (Long idHabitacion){
+        log.info("Eliminando habitacion con ID: {}",idHabitacion);
+        if(!habitacionRepository.existsById(idHabitacion)){
             throw new NoSuchElementException("Habitacion no encontrada.");
         }
-        habitacionRepository.deleteById(id);
+        habitacionRepository.deleteById(idHabitacion);
     }
 
 }

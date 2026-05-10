@@ -37,9 +37,9 @@ public class HabitacionController {
     }
 
     @GetMapping("/{id}")
-    public HabitacionResponse buscarHabitacionPorId(@PathVariable Long id){
-        log.info("GET /api/habitaciones/{id}",id);
-        return habitacionService.buscarHabitacionPorId(id);
+    public HabitacionResponse buscarHabitacionPorId(@PathVariable Long idHabitacion){
+        log.info("GET /api/habitaciones/{id}", idHabitacion);
+        return habitacionService.buscarHabitacionPorId(idHabitacion);
     }
 
     @PostMapping
@@ -49,15 +49,15 @@ public class HabitacionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable Long id, @Valid @RequestBody HabitacionUpdateRequest request){
-        log.info("PUT /api/habitaciones/actualizarHabitacion/{id}",id);
-        return ResponseEntity.ok().body(habitacionService.actualizarHabitacion(id, request));
+    public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable Long idHabitacion, @Valid @RequestBody HabitacionUpdateRequest request){
+        log.info("PUT /api/habitaciones/actualizarHabitacion/{}", idHabitacion);
+        return ResponseEntity.ok().body(habitacionService.actualizarHabitacion(idHabitacion, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarHabitacion (@PathVariable Long id){
-        log.info("DELETE /api/habitaciones/eliminarHabitacion/{id}",id);
-        habitacionService.eliminarHabitacion(id);
+    public ResponseEntity<Void> eliminarHabitacion (@PathVariable Long idHabitacion){
+        log.info("DELETE /api/habitaciones/eliminarHabitacion/{id}",idHabitacion);
+        habitacionService.eliminarHabitacion(idHabitacion);
         return ResponseEntity.noContent().build();
     }
     

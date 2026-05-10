@@ -21,7 +21,7 @@ public class Habitacion {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idHabitacion;
 
     @Column(nullable = false, unique = true, length = 10)
     private String numero;

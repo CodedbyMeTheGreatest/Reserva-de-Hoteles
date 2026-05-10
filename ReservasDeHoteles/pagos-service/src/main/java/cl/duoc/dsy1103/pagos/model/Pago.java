@@ -1,0 +1,65 @@
+package cl.duoc.dsy1103.pagos.model;
+
+import java.time.LocalDateTime;
+
+import cl.duoc.dsy1103.pagos.enums.EstadoPago;
+import cl.duoc.dsy1103.pagos.enums.MetodoPago;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Table(name = "pagos")
+@Builder
+public class Pago {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idPago;
+
+    @Column(nullable = false)
+    private Long idHabitacion;
+
+    @Column(nullable = false)
+    private Long idHuesped;
+
+    @Column(nullable = false, length = 15)
+    private Integer precioPorNoche;
+
+    @Column(nullable = false, length = 15)
+    private Integer cantDias;
+
+    @Column(nullable = false, length = 15)
+    private Integer subtotal;
+
+    @Column(nullable = false, length = 15)
+    private Integer impuestos;
+
+    @Column(nullable = false, length = 20)
+    private Integer total;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MetodoPago metodoPago;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoPago estadoPago;
+
+    private LocalDateTime fechaPago;
+
+
+
+}

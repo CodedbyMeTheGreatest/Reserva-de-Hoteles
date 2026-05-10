@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class HabitacionResponse {
-    private Long id;
+    private Long idHabitacion;
     private String numero;
     private String descripcion;
     private Integer precioPorNoche;

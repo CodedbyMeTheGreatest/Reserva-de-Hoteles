@@ -21,7 +21,7 @@ public class HabitacionMapper {
 
     public HabitacionResponse toResponse (Habitacion habitacion) {
         return HabitacionResponse.builder()
-                .id(habitacion.getId())
+                .idHabitacion(habitacion.getIdHabitacion())
                 .numero(habitacion.getNumero())
                 .descripcion(habitacion.getDescripcion())
                 .precioPorNoche(habitacion.getPrecioPorNoche())
