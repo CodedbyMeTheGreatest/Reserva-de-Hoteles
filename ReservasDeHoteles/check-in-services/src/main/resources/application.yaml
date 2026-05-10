@@ -2,7 +2,7 @@ spring:
   application:
     name: check-in-services
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_checkins
+    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_check_ins
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
@@ -21,5 +21,5 @@ server:
   port: 8080
 
 services:
-  checkins:
+  check_ins:
     url: http://localhost:8080

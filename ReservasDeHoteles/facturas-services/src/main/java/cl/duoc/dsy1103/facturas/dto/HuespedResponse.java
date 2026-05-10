@@ -1,0 +1,13 @@
+package cl.duoc.dsy1103.facturas.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class HuespedResponse {
+}
