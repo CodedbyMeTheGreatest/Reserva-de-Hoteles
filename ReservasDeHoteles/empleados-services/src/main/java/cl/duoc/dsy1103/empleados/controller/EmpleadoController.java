@@ -2,6 +2,7 @@ package cl.duoc.dsy1103.empleados.controller;
 
 import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
+import cl.duoc.dsy1103.empleados.dto.EmpleadoUpdateRequest;
 import cl.duoc.dsy1103.empleados.dto.ReservaResponse;
 import cl.duoc.dsy1103.empleados.service.EmpleadoService;
 import jakarta.validation.Valid;
@@ -26,14 +27,14 @@ public class EmpleadoController {
         return empleadoService.findAll();
     }
 
-    @GetMapping("id/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<EmpleadoResponse> findEmployeeById(@PathVariable Long id){
         log.info("GET /api/empleados/id/{}", id);
         EmpleadoResponse encontrado = empleadoService.findById(id);
         return ResponseEntity.ok(encontrado);
     }
 
-    @GetMapping("run/{run}")
+    @GetMapping("/run/{run}")
     public ResponseEntity<EmpleadoResponse> findEmployeeByRun(@PathVariable String run){
         log.info("GET /api/empleados/run/{}", run);
         EmpleadoResponse encontrado = empleadoService.findByRun(run);
@@ -47,23 +48,23 @@ public class EmpleadoController {
         return ResponseEntity.ok(agregado);
     }
 
-    @PutMapping
-    public ResponseEntity<EmpleadoResponse> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmpleadoRequest request){
-        log.info("Put /api/empleados -> id: {} run: {}", id,request.getRun());
-        EmpleadoResponse actualizado = empleadoService.updateEmployee(id, request);
+    @PutMapping("/{id}")
+    public ResponseEntity<EmpleadoResponse> updateEmployee(@PathVariable Long id, @Valid @RequestBody EmpleadoUpdateRequest updateRequest){
+        log.info("Put /api/empleados -> id: {} run: {}", id,updateRequest.getRun());
+        EmpleadoResponse actualizado = empleadoService.updateEmployee(id, updateRequest);
         return ResponseEntity.ok(actualizado);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteEmployee(@PathVariable Long id){
         log.info("DELETE /api/empleado -> id: {}", id);
         empleadoService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("{run}/reservas")
+    @GetMapping("/reservas{run}")
     public ResponseEntity<List<ReservaResponse>> findReservaByEmployeeRun(@PathVariable String run){
-        log.info("Get /api/empleados/run/{}/reservas ", run);
+        log.info("Get /api/empleados/run/reservas/{} ", run);
         return ResponseEntity.ok(empleadoService.findReservaByEmployeeRun(run));
     }
 

@@ -2,6 +2,7 @@ package cl.duoc.dsy1103.check_in.controller;
 
 import cl.duoc.dsy1103.check_in.dto.CheckInRequest;
 import cl.duoc.dsy1103.check_in.dto.CheckInResponse;
+import cl.duoc.dsy1103.check_in.dto.CheckInUpdateRequest;
 import cl.duoc.dsy1103.check_in.service.CheckInService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -55,8 +56,9 @@ public class CheckInController {
 
     //update
     @PutMapping("{id}")
-    public ResponseEntity<CheckInResponse> update(@PathVariable Long id, @Valid @RequestBody CheckInRequest request){
-        return ResponseEntity.ok(checkInService.updateCheckIn(id, request));
+    public ResponseEntity<CheckInResponse> update(@PathVariable Long id, @Valid @RequestBody CheckInUpdateRequest updateRequest){
+        log.info("PUT /api/check-ins/{}", id);
+        return ResponseEntity.ok(checkInService.updateCheckIn(id, updateRequest));
     }
 
     //delete

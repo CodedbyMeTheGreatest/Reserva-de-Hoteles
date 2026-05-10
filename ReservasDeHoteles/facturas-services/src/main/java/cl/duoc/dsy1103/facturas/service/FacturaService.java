@@ -66,25 +66,30 @@ public class FacturaService {
         if(updateRequest.getFolio() != null){
             factura.setFolio(updateRequest.getFolio());
         }
+
+        ReservaResponse existeReserva = reservaClient.findReservaById(updateRequest.getIdReserva());
         if (updateRequest.getIdReserva() != null){
             factura.setIdReserva(updateRequest.getIdReserva());
         }
-         if (updateRequest.getRunHuesped() != null){
+
+        HuespedResponse existeHuesped = huespedClient.findHuespedByRun(updateRequest.getRunHuesped());
+        if (updateRequest.getRunHuesped() != null){
              factura.setRunHuesped(updateRequest.getRunHuesped());
-         }
-         if (updateRequest.getFecha() != null){
+        }
+        if (updateRequest.getFecha() != null){
              factura.setFecha(updateRequest.getFecha());
-         }
-         if (updateRequest.getIdPago() != null){
+        }
+        PagoResponse existePago = pagoClient.findPagoById(updateRequest.getIdPago());
+        if (updateRequest.getIdPago() != null){
              factura.setIdPago(updateRequest.getIdPago());
-         }
-         if (updateRequest.getDescripcionHabitacion() != null){
+        }
+        if (updateRequest.getDescripcionHabitacion() != null){
              factura.setDescripcionHabitacion(updateRequest.getDescripcionHabitacion());
-         }
-         if (updateRequest.getEstado() != null){
+        }
+        if (updateRequest.getEstado() != null){
              factura.setEstado(updateRequest.getEstado());
-         }
-         return facturaMapper.toResponse(factura);
+        }
+        return facturaMapper.toResponse(factura);
      }
 
      public void deleteFactura(Long id){

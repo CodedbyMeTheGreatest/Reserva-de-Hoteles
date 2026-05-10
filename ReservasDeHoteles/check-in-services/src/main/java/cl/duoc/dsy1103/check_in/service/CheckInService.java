@@ -2,10 +2,7 @@ package cl.duoc.dsy1103.check_in.service;
 
 import cl.duoc.dsy1103.check_in.client.EmpleadoClient;
 import cl.duoc.dsy1103.check_in.client.ReservaClient;
-import cl.duoc.dsy1103.check_in.dto.CheckInRequest;
-import cl.duoc.dsy1103.check_in.dto.CheckInResponse;
-import cl.duoc.dsy1103.check_in.dto.EmpleadoResponse;
-import cl.duoc.dsy1103.check_in.dto.ReservaResponse;
+import cl.duoc.dsy1103.check_in.dto.*;
 import cl.duoc.dsy1103.check_in.mapper.CheckInMapper;
 import cl.duoc.dsy1103.check_in.model.CheckIn;
 import cl.duoc.dsy1103.check_in.repository.CheckInRepository;
@@ -64,19 +61,25 @@ public class CheckInService {
         return checkInMapper.toResponse(checkInRepository.save(checkInMapper.fromRequest(request)));
     }
 
-    public CheckInResponse updateCheckIn(Long id, CheckInRequest request){
+    public CheckInResponse updateCheckIn(Long id, CheckInUpdateRequest updateRequest){
         log.info("Actualizando check-in con ID -> {}", id);
-
         CheckIn checkIn = checkInRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID "+ id));
-        checkIn.setId(id);
-        checkIn.setFechaIngreso(request.getFechaIngreso());
+        if(updateRequest.getFechaIngreso() != null) {
+            checkIn.setFechaIngreso(updateRequest.getFechaIngreso());
+        }
 
-        ReservaResponse existeReserva = reservaClient.findReservaById(request.getIdReserva());
-        checkIn.setIdReserva(request.getIdReserva());
+        ReservaResponse existeReserva = reservaClient.findReservaById(updateRequest.getIdReserva());
+        if (updateRequest.getIdReserva() != null) {
+            checkIn.setIdReserva(updateRequest.getIdReserva());
+        }
 
-        EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(request.getIdEmpleado());
-        checkIn.setIdEmpleado(request.getIdEmpleado());
-        checkIn.setObservaciones(request.getObservaciones());
+        EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(updateRequest.getIdEmpleado());
+        if(updateRequest.getIdEmpleado() != null) {
+            checkIn.setIdEmpleado(updateRequest.getIdEmpleado());
+        }
+        if(updateRequest.getObservaciones() != null){
+            checkIn.setObservaciones(updateRequest.getObservaciones());
+        }
         return checkInMapper.toResponse(checkIn);
     }
 
