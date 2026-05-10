@@ -1,8 +1,10 @@
 package cl.duoc.dsy1103.empleados.service;
 
+import cl.duoc.dsy1103.empleados.client.HotelClient;
 import cl.duoc.dsy1103.empleados.client.ReservaClient;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoRequest;
 import cl.duoc.dsy1103.empleados.dto.EmpleadoResponse;
+import cl.duoc.dsy1103.empleados.dto.HotelResponse;
 import cl.duoc.dsy1103.empleados.dto.ReservaResponse;
 import cl.duoc.dsy1103.empleados.mapper.EmpleadoMapper;
 import cl.duoc.dsy1103.empleados.model.Empleado;
@@ -25,6 +27,9 @@ public class EmpleadoService {
 
     @Autowired
     private ReservaClient reservaClient;
+
+    @Autowired
+    private HotelClient hotelClient;
 
     /**
      * Busca todos los empleados
@@ -62,6 +67,7 @@ public class EmpleadoService {
      */
     public EmpleadoResponse addEmployee(EmpleadoRequest request){
         log.info("Añadiendo empleado con RUN: {}", request.getRun());
+        HotelResponse hotel = hotelClient.findHotelById(request.getIdHotel());
         Empleado empleado = empleadoRepository.save(empleadoMapper.fromRequest(request));
         return empleadoMapper.toResponse(empleado);
     }
@@ -79,6 +85,7 @@ public class EmpleadoService {
         existente.setRun(request.getRun());
         existente.setNombreCompleto(request.getNombreCompleto());
         existente.setCargo(request.getCargo());
+        hotelClient.findHotelById(id);
         existente.setIdHotel(request.getIdHotel());
 
         Empleado actualizado = empleadoRepository.save(existente);
