@@ -5,7 +5,7 @@
 *.ipr
 
 ### VS Code ###
-.vscode/
+#.vscode/
 
 # Maven
 target/
