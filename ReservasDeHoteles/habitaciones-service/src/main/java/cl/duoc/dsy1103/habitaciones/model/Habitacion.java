@@ -26,16 +26,16 @@ public class Habitacion {
     @Column(nullable = false, unique = true, length = 10)
     private String numero;
 
-    @Column(nullable = false, length = 50)
+    @Column(nullable = false, name = "descripcion", length = 50)
     private String descripcion;
 
     @Column(nullable = false)
     private Integer precioPorNoche;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_hotel")
     private Long idHotel;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_disponibilidad")
     private Long idDisponibilidad;
 
 

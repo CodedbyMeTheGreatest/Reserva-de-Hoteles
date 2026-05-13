@@ -24,22 +24,22 @@ public class Reserva {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idReserva;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_habitacion")
     private Long idHabitacion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_huesped")
     private Long idHuesped;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_empleado")
     private Long idEmpleado;
 
     @Column(nullable = false, length = 15)
     private String cantDias;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_check_in")
     private Long idCheckIn;
 
-    @Column(nullable = true)
+    @Column(nullable = true, name = "id_check_out")
     private Long idCheckOut;
 
 }

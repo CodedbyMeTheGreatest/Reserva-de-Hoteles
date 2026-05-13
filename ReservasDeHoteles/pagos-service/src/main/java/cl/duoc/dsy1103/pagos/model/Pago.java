@@ -29,10 +29,10 @@ public class Pago {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idPago;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_habitacion")
     private Long idHabitacion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "id_huesped")
     private Long idHuesped;
 
     @Column(nullable = false, length = 15)
@@ -51,11 +51,11 @@ public class Pago {
     private Integer total;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "metodo_pago")
     private MetodoPago metodoPago;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "estado_pago")
     private EstadoPago estadoPago;
 
     private LocalDateTime fechaPago;
