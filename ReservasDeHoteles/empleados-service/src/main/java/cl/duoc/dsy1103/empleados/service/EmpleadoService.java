@@ -53,8 +53,8 @@ public class EmpleadoService {
         log.info("Añadiendo empleado con RUN -> {}", request.getRun());
         //HotelResponse existehotel = hotelClient.findHotelById(request.getIdHotel());
         //empleadoResponse.setNombreHotel(existehotel.getNombre());
-        Empleado empleado = empleadoRepository.save(empleadoMapper.fromRequest(request));
-        return empleadoMapper.toResponse(empleado);
+        Empleado agregado = empleadoRepository.save(empleadoMapper.fromRequest(request));
+        return empleadoMapper.toResponse(agregado);
     }
 
     public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoUpdateRequest updateRequest){
@@ -75,8 +75,8 @@ public class EmpleadoService {
             empleado.setIdHotel(updateRequest.getIdHotel());
             //empleado.setNombreHotel(existeHotel.getNombre());
         }
-        Empleado guardado = empleadoRepository.save(empleado);
-        return empleadoMapper.toResponse(guardado);
+        Empleado actualizado = empleadoRepository.save(empleado);
+        return empleadoMapper.toResponse(actualizado);
     }
 
     public void eliminarEmpleado(Long id){

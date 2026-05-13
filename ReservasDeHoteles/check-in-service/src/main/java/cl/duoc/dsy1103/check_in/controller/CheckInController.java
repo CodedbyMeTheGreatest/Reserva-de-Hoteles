@@ -19,53 +19,46 @@ public class CheckInController {
     @Autowired
     private CheckInService checkInService;
 
-    //find all
     @GetMapping
-    public ResponseEntity<List<CheckInResponse>> findAll(){
+    public ResponseEntity<List<CheckInResponse>> finobtenerCheckInsdAll(){
         log.info("GET /api/check-ins");
-        return ResponseEntity.ok(checkInService.findAll());
+        return ResponseEntity.ok(checkInService.obtenerCheckIns());
     }
 
-    //find by id employee
     @GetMapping("/empleado/{id}")
-    public ResponseEntity<List<CheckInResponse>> findAllByEmployeeId(@PathVariable Long id){
+    public ResponseEntity<List<CheckInResponse>> obtenerCheckInsPorIdEmpleado(@PathVariable Long id){
         log.info("GET /api/check-ins/empleado/{}", id);
-        return ResponseEntity.ok(checkInService.findAllByIdEmpleado(id));
+        return ResponseEntity.ok(checkInService.obtenerCheckInsPorIdEmpleado(id));
     }
 
-    //find by id
     @GetMapping("{id}")
-    public ResponseEntity<CheckInResponse> findById(@PathVariable Long id){
+    public ResponseEntity<CheckInResponse> buscarCheckInPorId(@PathVariable Long id){
         log.info("GET /api/check-ins/{}", id);
-        return ResponseEntity.ok(checkInService.findById(id));
+        return ResponseEntity.ok(checkInService.buscarCheckInPorId(id));
     }
 
-    //find by id reserva
     @GetMapping("/id-reserva/{id}")
-    public ResponseEntity<CheckInResponse> findByIdReserva(@PathVariable Long id){
+    public ResponseEntity<CheckInResponse> buscarCheckInPorIdReserva(@PathVariable Long id){
         log.info("GET /api/check-ins/id-reserva/{}", id);
-        return ResponseEntity.ok(checkInService.findByIdReserva(id));
+        return ResponseEntity.ok(checkInService.buscarCheckInPorIdReserva(id));
     }
 
-    //add
     @PostMapping
-    public ResponseEntity<CheckInResponse> add(@Valid @RequestBody CheckInRequest request){
+    public ResponseEntity<CheckInResponse> agregarCheckIn(@Valid @RequestBody CheckInRequest request){
         log.info("GET /api/check-ins -> {}", request.getIdReserva());
-        return ResponseEntity.ok(checkInService.addCheckIn(request));
+        return ResponseEntity.ok(checkInService.agregarCheckIn(request));
     }
 
-    //update
     @PutMapping("{id}")
-    public ResponseEntity<CheckInResponse> update(@PathVariable Long id, @Valid @RequestBody CheckInUpdateRequest updateRequest){
+    public ResponseEntity<CheckInResponse> actualizarCheckIn(@PathVariable Long id, @Valid @RequestBody CheckInUpdateRequest updateRequest){
         log.info("PUT /api/check-ins/{}", id);
-        return ResponseEntity.ok(checkInService.updateCheckIn(id, updateRequest));
+        return ResponseEntity.ok(checkInService.actualizarCheckIn(id, updateRequest));
     }
 
-    //delete
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> delete(Long id){
+    public ResponseEntity<Void> eliminarCheckIn(Long id){
         log.info("DELETE /api/check-ins/{}", id);
-        checkInService.deleteCheckIn(id);
+        checkInService.eliminarCheckIn(id);
         return ResponseEntity.noContent().build();
     }
 }

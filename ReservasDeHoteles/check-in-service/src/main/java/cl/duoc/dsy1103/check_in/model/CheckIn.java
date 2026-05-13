@@ -30,6 +30,4 @@ public class CheckIn {
 
     @Column(length = 250)
     private String observaciones;
-
-
 }

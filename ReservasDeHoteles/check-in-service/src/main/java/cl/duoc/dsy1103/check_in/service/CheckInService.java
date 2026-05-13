@@ -27,7 +27,7 @@ public class CheckInService {
     @Autowired
     private EmpleadoClient empleadoClient;
 
-    public List<CheckInResponse> findAll(){
+    public List<CheckInResponse> obtenerCheckIns(){
         log.info("Obteniendo check-ins ...");
         return checkInRepository.findAll()
                 .stream()
@@ -35,7 +35,59 @@ public class CheckInService {
                 .toList();
     }
 
-    public List<CheckInResponse> findAllByIdEmpleado(Long id){
+    
+    public CheckInResponse buscarCheckInPorId(Long id){
+        log.info("Obteniendo check-in con ID -> {}", id);
+        return checkInMapper.toResponse(checkInRepository.findById(id)
+        .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID "+ id)));
+    }
+    
+    public CheckInResponse buscarCheckInPorIdReserva(Long id){
+        log.info("Obteniendo check-in de reserva con ID -> {}", id);
+        return checkInMapper.toResponse(checkInRepository.findByIdReserva(id)
+        .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado el check-in de la reserva con ID "+ id)));
+    }
+    
+    public CheckInResponse agregarCheckIn(CheckInRequest request){
+        log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
+        //ReservaResponse existeReserva = reservaClient.findReservaById(request.getIdReserva());
+        //EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(request.getIdEmpleado());
+        CheckIn agregado = checkInRepository.save(checkInMapper.fromRequest(request));
+        return checkInMapper.toResponse(agregado);
+    }
+    
+    public CheckInResponse actualizarCheckIn(Long id, CheckInUpdateRequest updateRequest){
+        log.info("Actualizando check-in con ID -> {}", id);
+        CheckIn checkIn = checkInRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID "+ id));
+        if(updateRequest.getFechaIngreso() != null) {
+            checkIn.setFechaIngreso(updateRequest.getFechaIngreso());
+        }
+        
+        if (updateRequest.getIdReserva() != null) {
+            //ReservaResponse existeReserva = reservaClient.findReservaById(updateRequest.getIdReserva());
+            checkIn.setIdReserva(updateRequest.getIdReserva());
+        }
+        
+        if(updateRequest.getIdEmpleado() != null) {
+            //EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(updateRequest.getIdEmpleado());
+            checkIn.setIdEmpleado(updateRequest.getIdEmpleado());
+        }
+        if(updateRequest.getObservaciones() != null){
+            checkIn.setObservaciones(updateRequest.getObservaciones());
+        }
+        CheckIn actualizado = checkInRepository.save(checkIn);
+        return checkInMapper.toResponse(actualizado);
+    }
+    
+    public void eliminarCheckIn(Long id){
+        log.info("Eliminando check-in con ID -> {}", id);
+        if (!checkInRepository.existsById(id)){
+            throw new EntityNotFoundException("No se ha encontrado check-in con ID " + id);
+        }
+        checkInRepository.deleteById(id);
+    }
+    
+    public List<CheckInResponse> obtenerCheckInsPorIdEmpleado(Long id){
         log.info("Obteniendo check-ins supervisados por empleado con ID -> {}", id);
         EmpleadoResponse existe = empleadoClient.findEmployeeById(id);
         return checkInRepository.findAllByIdEmpleado(id)
@@ -43,53 +95,4 @@ public class CheckInService {
                 .map(checkInMapper::toResponse)
                 .toList();
     }
-
-    public CheckInResponse findById(Long id){
-        log.info("Obteniendo check-in con ID -> {}", id);
-        return checkInMapper.toResponse(checkInRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID "+ id)));
-    }
-
-    public CheckInResponse findByIdReserva(Long id){
-        log.info("Obteniendo check-in de reserva con ID -> {}", id);
-        return checkInMapper.toResponse(checkInRepository.findByIdReserva(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in de reserva con ID "+ id)));
-    }
-
-    public CheckInResponse addCheckIn(CheckInRequest request){
-        log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
-        ReservaResponse existeReserva = reservaClient.findReservaById(request.getIdReserva());
-        EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(request.getIdEmpleado());
-        return checkInMapper.toResponse(checkInRepository.save(checkInMapper.fromRequest(request)));
-    }
-
-    public CheckInResponse updateCheckIn(Long id, CheckInUpdateRequest updateRequest){
-        log.info("Actualizando check-in con ID -> {}", id);
-        CheckIn checkIn = checkInRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID "+ id));
-        if(updateRequest.getFechaIngreso() != null) {
-            checkIn.setFechaIngreso(updateRequest.getFechaIngreso());
-        }
-
-        ReservaResponse existeReserva = reservaClient.findReservaById(updateRequest.getIdReserva());
-        if (updateRequest.getIdReserva() != null) {
-            checkIn.setIdReserva(updateRequest.getIdReserva());
-        }
-
-        EmpleadoResponse existeEmpleado = empleadoClient.findEmployeeById(updateRequest.getIdEmpleado());
-        if(updateRequest.getIdEmpleado() != null) {
-            checkIn.setIdEmpleado(updateRequest.getIdEmpleado());
-        }
-        if(updateRequest.getObservaciones() != null){
-            checkIn.setObservaciones(updateRequest.getObservaciones());
-        }
-
-        return checkInMapper.toResponse(checkInRepository.save(checkIn));
-    }
-
-    public void deleteCheckIn(Long id){
-        log.info("Eliminando check-in con ID -> {}", id);
-        if (!checkInRepository.existsById(id)){
-            throw new EntityNotFoundException("No se ha encontrado check-in con ID " + id);
-        }
-        checkInRepository.deleteById(id);
-    }
-
 }
