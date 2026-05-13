@@ -2,7 +2,7 @@ spring:
   application:
     name: reservas-service
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_check_ins
+    url: jdbc:mysql://localhost:3306/db_hoteleria_reservas
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver

@@ -33,13 +33,13 @@ public class Reserva {
     @Column(nullable = false, name = "id_empleado")
     private Long idEmpleado;
 
-    @Column(nullable = false, length = 15)
+    @Column(nullable = false, length = 15, name = "cant_dias")
     private String cantDias;
 
-    @Column(nullable = false, name = "id_check_in")
+    @Column(nullable = false, name = "id_checkin")
     private Long idCheckIn;
 
-    @Column(nullable = true, name = "id_check_out")
+    @Column(nullable = true, name = "id_checkout")
     private Long idCheckOut;
 
 }

@@ -2,7 +2,7 @@ spring:
   application:
     name: pagos-service
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_check_ins
+    url: jdbc:mysql://localhost:3306/db_hoteleria_pagos
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver

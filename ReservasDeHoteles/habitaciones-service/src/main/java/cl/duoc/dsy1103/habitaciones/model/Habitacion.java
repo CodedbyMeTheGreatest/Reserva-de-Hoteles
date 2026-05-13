@@ -26,7 +26,7 @@ public class Habitacion {
     @Column(nullable = false, unique = true, length = 10)
     private String numero;
 
-    @Column(nullable = false, name = "descripcion", length = 50)
+    @Column(nullable = false, name = "descripcion", length = 200)
     private String descripcion;
 
     @Column(nullable = false)
