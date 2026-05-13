@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionRequest;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionResponse;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionUpdateRequest;
-import cl.duoc.dsy1103.habitaciones.model.Habitacion;
 import cl.duoc.dsy1103.habitaciones.service.HabitacionService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +30,7 @@ public class HabitacionController {
     private HabitacionService habitacionService;
 
     @GetMapping
-    public List<Habitacion> buscarHabitaciones(){
+    public List<HabitacionResponse> buscarHabitaciones(){
         log.info("GET /api/habitaciones/buscarHabitaciones");
         return habitacionService.buscarHabitaciones();
     }

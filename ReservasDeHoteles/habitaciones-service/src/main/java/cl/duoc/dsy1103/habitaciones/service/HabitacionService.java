@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import cl.duoc.dsy1103.habitaciones.client.DisponibilidadClient;
+import cl.duoc.dsy1103.habitaciones.client.HotelClient;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionRequest;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionResponse;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionUpdateRequest;
@@ -26,10 +28,16 @@ public class HabitacionService {
 
     @Autowired
     private HabitacionMapper habitacionMapper;
+
+    @Autowired
+    private HotelClient hotelClient;
+
+    @Autowired
+    private DisponibilidadClient disponibilidadClient;
     
-    public List<Habitacion> buscarHabitaciones(){
+    public List<HabitacionResponse> buscarHabitaciones(){
         log.info("Buscando habitaciones...");
-        return habitacionRepository.findAll();
+        return habitacionRepository.findAll().stream().map(habitacionMapper::toResponse).collect(java.util.stream.Collectors.toList());
     }
 
     public HabitacionResponse buscarHabitacionPorId(Long idHabitacion){
@@ -51,6 +59,9 @@ public class HabitacionService {
         if(habitacionRepository.existsByNumero(request.getNumero())){
             throw new ConflictException("Esa habitacion ya existe.");
         }
+        hotelClient.findHotelById(request.getIdHotel());
+        disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
+
         Habitacion habitacion = habitacionRepository.save(habitacionMapper.fromRequest(request));
         return habitacionMapper.toResponse(habitacion);
     }
@@ -72,10 +83,13 @@ public class HabitacionService {
         }
 
         if(request.getIdHotel()!=null){
+            hotelClient.findHotelById(request.getIdHotel());
             habitacion.setIdHotel(request.getIdHotel());
         }
+        
 
         if(request.getIdDisponibilidad()!=null){
+            disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
             habitacion.setIdDisponibilidad(request.getIdDisponibilidad());
         }
         
