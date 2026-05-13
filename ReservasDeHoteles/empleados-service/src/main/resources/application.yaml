@@ -3,7 +3,7 @@ spring:
     name: empleados-services
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_empleados
+    url: jdbc:mysql://localhost:3306/db_hoteleria_empleados
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
@@ -20,9 +20,9 @@ spring:
     open-in-view: false
 
 server:
-  port: 8080
+  port: 8084
 
 services:
   empleados:
-    url: http://localhost:8080
+    url: http://localhost:8084
 

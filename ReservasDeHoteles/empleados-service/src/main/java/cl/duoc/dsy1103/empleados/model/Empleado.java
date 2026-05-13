@@ -30,4 +30,7 @@ public class Empleado {
     @Column(name = "id_hotel", nullable = false)
     private Long idHotel;
 
+    @Column(name = "nombre_hotel")
+    private String nombreHotel;
+
 }

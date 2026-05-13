@@ -50,22 +50,22 @@ public class EmpleadoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> actualizarEmpleado(@PathVariable Long id, @Valid @RequestBody EmpleadoUpdateRequest updateRequest){
-        log.info("Put /api/empleados -> id: {} run: {}", id,updateRequest.getRun());
+        log.info("PUT /api/empleados/{} -> run: {}", id,updateRequest.getRun());
         EmpleadoResponse actualizado = empleadoService.actualizarEmpleado(id, updateRequest);
         return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarEmpleado(@PathVariable Long id){
-        log.info("DELETE /api/empleado -> id: {}", id);
+        log.info("DELETE /api/empleado/{}", id);
         empleadoService.eliminarEmpleado(id);
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/reservas{run}")
+    @GetMapping("/reservas/{run}")
     public ResponseEntity<List<ReservaResponse>> obtenerEmpleadosPorIdReserva(@PathVariable String run){
-        log.info("Get /api/empleados/run/reservas/{} ", run);
-        return ResponseEntity.ok(empleadoService.obtenerEmpleadosPorIdReserva(run));
+        log.info("GET /api/empleados/run/reservas/{} ", run);
+        return ResponseEntity.ok(empleadoService.obtenerReservasPorRunEmpleado(run));
     }
 
 }

@@ -3,5 +3,6 @@ CREATE TABLE empleados(
     run             VARCHAR(12)     NOT NULL UNIQUE,
     nombre_completo VARCHAR(100)    NOT NULL,
     cargo           VARCHAR(50)     NULL,
-    id_hotel        BIGINT          NOT NULL
+    id_hotel        BIGINT          NOT NULL,
+    nombre_hotel    VARCHAR(150)    NULL
 )

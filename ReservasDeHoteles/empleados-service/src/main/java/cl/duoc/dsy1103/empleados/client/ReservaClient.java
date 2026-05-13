@@ -17,7 +17,7 @@ public class ReservaClient {
     @Autowired
     private WebClient webClient;
 
-    public List<ReservaResponse> findReservaByEmployeeRun(String run){
+    public List<ReservaResponse> obtenerReservasPorRunEmpleado(String run){
         log.info("Obteniendo reservas para el empleado con RUN -> {}", run);
         try {
             return webClient.get()

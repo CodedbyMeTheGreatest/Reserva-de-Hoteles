@@ -80,7 +80,8 @@ public class CheckInService {
         if(updateRequest.getObservaciones() != null){
             checkIn.setObservaciones(updateRequest.getObservaciones());
         }
-        return checkInMapper.toResponse(checkIn);
+
+        return checkInMapper.toResponse(checkInRepository.save(checkIn));
     }
 
     public void deleteCheckIn(Long id){

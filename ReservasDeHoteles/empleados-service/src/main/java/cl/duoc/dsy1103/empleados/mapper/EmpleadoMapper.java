@@ -7,11 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class EmpleadoMapper {
-    /**
-     * Transformacion de Clase EmpleadoRequest a Clase Empleado
-     * @param request
-     * @return
-     */
+
     public Empleado fromRequest(EmpleadoRequest request){
         return Empleado.builder()
                 .run(request.getRun())
@@ -21,11 +17,6 @@ public class EmpleadoMapper {
                 .build();
     }
 
-    /**
-     * Transformacion de Clase Empleado a Clase EmpleadoResponse
-     * @param empleado
-     * @return
-     */
     public EmpleadoResponse toResponse(Empleado empleado){
         return EmpleadoResponse.builder()
                 .idEmpleado(empleado.getId())
