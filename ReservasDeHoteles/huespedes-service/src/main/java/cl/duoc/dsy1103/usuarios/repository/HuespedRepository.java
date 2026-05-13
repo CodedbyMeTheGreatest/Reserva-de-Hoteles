@@ -2,7 +2,9 @@ package cl.duoc.dsy1103.usuarios.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.swing.text.html.Option;
+import cl.duoc.dsy1103.usuarios.model.Huesped;
+
+import java.util.Optional;
 
 public interface HuespedRepository extends JpaRepository<Huesped, Long> {
 
