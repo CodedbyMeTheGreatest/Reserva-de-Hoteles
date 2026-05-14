@@ -23,6 +23,7 @@ server:
   port: 8084
 
 services:
-  empleados:
-    url: http://localhost:8084
-
+  hoteles:
+    url: http://localhost:8080
+  reservas:
+    url: http://localhost:8085

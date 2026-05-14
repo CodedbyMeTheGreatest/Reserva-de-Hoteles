@@ -7,14 +7,23 @@ import org.springframework.web.reactive.function.client.WebClient;
 
 @Configuration
 public class WebClientConfig {
-    @Value("${services.checkins.url}")
-    private String baseUrl;
+    @Value("${services.empleados.url}")
+    private String empleadosBaseUrl;
+
+    @Value("${services.reservas.url}")
+    private String reservasBaseUrl;
 
     @Bean
-    public WebClient webClient(){
+    public WebClient empleadosWebClient(){
         return WebClient.builder()
-                .baseUrl(baseUrl)
+                .baseUrl(empleadosBaseUrl)
                 .build();
     }
 
+    @Bean
+    public WebClient reservasWebClient(){
+        return WebClient.builder()
+                .baseUrl(reservasBaseUrl)
+                .build();
+    }
 }

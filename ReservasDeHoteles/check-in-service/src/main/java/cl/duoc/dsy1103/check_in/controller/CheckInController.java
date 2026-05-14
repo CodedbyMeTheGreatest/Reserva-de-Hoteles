@@ -13,51 +13,51 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/check-ins")
+@RequestMapping("/api/check_ins")
 @Slf4j
 public class CheckInController {
     @Autowired
     private CheckInService checkInService;
 
     @GetMapping
-    public ResponseEntity<List<CheckInResponse>> finobtenerCheckInsdAll(){
-        log.info("GET /api/check-ins");
+    public ResponseEntity<List<CheckInResponse>> obtenerCheckIns(){
+        log.info("GET /api/check_ins");
         return ResponseEntity.ok(checkInService.obtenerCheckIns());
     }
 
     @GetMapping("/empleado/{id}")
     public ResponseEntity<List<CheckInResponse>> obtenerCheckInsPorIdEmpleado(@PathVariable Long id){
-        log.info("GET /api/check-ins/empleado/{}", id);
+        log.info("GET /api/check_ins/empleado/{}", id);
         return ResponseEntity.ok(checkInService.obtenerCheckInsPorIdEmpleado(id));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CheckInResponse> buscarCheckInPorId(@PathVariable Long id){
-        log.info("GET /api/check-ins/{}", id);
+        log.info("GET /api/check_ins/{}", id);
         return ResponseEntity.ok(checkInService.buscarCheckInPorId(id));
     }
 
     @GetMapping("/id-reserva/{id}")
     public ResponseEntity<CheckInResponse> buscarCheckInPorIdReserva(@PathVariable Long id){
-        log.info("GET /api/check-ins/id-reserva/{}", id);
+        log.info("GET /api/check_ins/id-reserva/{}", id);
         return ResponseEntity.ok(checkInService.buscarCheckInPorIdReserva(id));
     }
 
     @PostMapping
     public ResponseEntity<CheckInResponse> agregarCheckIn(@Valid @RequestBody CheckInRequest request){
-        log.info("GET /api/check-ins -> {}", request.getIdReserva());
+        log.info("GET /api/check_ins -> {}", request.getIdReserva());
         return ResponseEntity.ok(checkInService.agregarCheckIn(request));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CheckInResponse> actualizarCheckIn(@PathVariable Long id, @Valid @RequestBody CheckInUpdateRequest updateRequest){
-        log.info("PUT /api/check-ins/{}", id);
+        log.info("PUT /api/check_ins/{}", id);
         return ResponseEntity.ok(checkInService.actualizarCheckIn(id, updateRequest));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCheckIn(Long id){
-        log.info("DELETE /api/check-ins/{}", id);
+        log.info("DELETE /api/check_ins/{}", id);
         checkInService.eliminarCheckIn(id);
         return ResponseEntity.noContent().build();
     }

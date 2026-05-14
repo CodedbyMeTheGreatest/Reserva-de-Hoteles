@@ -12,19 +12,19 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Slf4j
 public class ReservaClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient reservasWebClient;
 
-    public ReservaResponse findReservaById(Long id){
+    public ReservaResponse buscarReservaPorId(Long id){
         try{
-            return webClient.get()
-                    .uri("{id}", id)
+            return reservasWebClient.get()
+                    .uri("api/reservas/{id}", id)
                     .retrieve()
                     .bodyToMono(ReservaResponse.class)
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se ha encontrado reserva con ID " + id);
-                default -> throw new RuntimeException("Error al obtener reserva con ID " + id + ex);
+                case 404 -> throw new EntityNotFoundException("No se ha encontrado reserva con ID ->" + id);
+                default -> throw new RuntimeException("Error al obtener reserva con ID ->" + id + ex);
             }
         }
     }

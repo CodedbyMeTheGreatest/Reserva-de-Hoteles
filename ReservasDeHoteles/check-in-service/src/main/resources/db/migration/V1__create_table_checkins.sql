@@ -1,7 +1,7 @@
 CREATE TABLE check_ins(
-    id              BIGINT  PRIMARY KEY AUTO_INCREMENT,
-    fecha_ingreso   DATETIME    NOT NULL,
-    id_reserva      BIGINT  NOT NULL,
-    id_empleado     BIGINT  NOT NULL,
-    observaciones   VARCHAR(250) NULL
+    id              BIGINT          PRIMARY KEY AUTO_INCREMENT,
+    fecha_ingreso   DATETIME        NOT NULL,
+    id_reserva      BIGINT          NOT NULL UNIQUE,
+    id_empleado     BIGINT          NOT NULL,
+    observaciones   VARCHAR(250)    NULL
 )

@@ -40,7 +40,7 @@ public class GlobalHandlerException {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.CONFLICT.value())
                 .error(HttpStatus.CONFLICT.name())
-                .message("Data Integrity Violation")
+                .message("Data Integrity Violation -> " + ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
@@ -55,7 +55,7 @@ public class GlobalHandlerException {
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.name())
-                .message("Invalid Request")
+                .message("Invalid Request -> " + ex.getMessage())
                 .path(request.getRequestURI())
                 .errors(errors)
                 .build();
@@ -68,7 +68,7 @@ public class GlobalHandlerException {
         ApiErrorResponse errorResponse = ApiErrorResponse.builder().timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                .message(ex.getMessage())
+                .message("Internal Server Error -> " + ex.getMessage())
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);

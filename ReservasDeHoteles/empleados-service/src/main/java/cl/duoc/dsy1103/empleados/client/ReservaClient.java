@@ -15,12 +15,12 @@ import java.util.List;
 public class ReservaClient {
 
     @Autowired
-    private WebClient webClient;
+    private WebClient reservasWebClient;
 
     public List<ReservaResponse> obtenerReservasPorRunEmpleado(String run){
         log.info("Obteniendo reservas para el empleado con RUN -> {}", run);
         try {
-            return webClient.get()
+            return reservasWebClient.get()
                     .uri("empleados/run/{run}", run)
                     .retrieve()
                     .bodyToFlux(ReservaResponse.class)

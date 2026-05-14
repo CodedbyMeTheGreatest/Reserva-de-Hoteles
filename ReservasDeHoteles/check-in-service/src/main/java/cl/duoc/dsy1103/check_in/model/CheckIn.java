@@ -22,7 +22,7 @@ public class CheckIn {
     @Column(name = "fecha_ingreso", nullable = false)
     private Date fechaIngreso;
 
-    @Column(name = "id_reserva", nullable = false)
+    @Column(name = "id_reserva", nullable = false, unique = true)
     private Long idReserva;
 
     @Column(name = "id_empleado", nullable = false)

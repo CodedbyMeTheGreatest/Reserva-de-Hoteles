@@ -10,7 +10,9 @@ import java.util.Optional;
 @Repository
 public interface CheckInRepository extends JpaRepository<CheckIn, Long> {
 
-    Optional<CheckIn> findByIdReserva(Long id);
+    Optional<CheckIn> findByIdReserva(Long idReserva);
+
+    boolean existsByIdReserva(Long idReserva);
 
     List<CheckIn> findAllByIdEmpleado(Long idEmpleado);
 }

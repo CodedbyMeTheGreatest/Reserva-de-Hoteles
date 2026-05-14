@@ -12,13 +12,13 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Slf4j
 public class HotelClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient hotelesWebClient;
 
-    public HotelResponse findHotelById(Long id){
+    public HotelResponse buscarHotelPorId(Long id){
         log.info("Obteniendo hotel con ID -> {}", id);
         try {
-            return webClient.get()
-                    .uri("hoteles/id/{id}", id)
+            return hotelesWebClient.get()
+                    .uri("/{id}", id)
                     .retrieve()
                     .bodyToMono(HotelResponse.class)
                     .block();

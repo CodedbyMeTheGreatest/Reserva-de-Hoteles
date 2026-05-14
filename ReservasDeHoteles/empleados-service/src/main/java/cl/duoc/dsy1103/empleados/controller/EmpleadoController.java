@@ -27,7 +27,7 @@ public class EmpleadoController {
         return empleadoService.obtenerEmpleados();
     }
 
-    @GetMapping("/id/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorId(@PathVariable Long id){
         log.info("GET /api/empleados/id/{}", id);
         EmpleadoResponse encontrado = empleadoService.buscarEmpleadoPorId(id);

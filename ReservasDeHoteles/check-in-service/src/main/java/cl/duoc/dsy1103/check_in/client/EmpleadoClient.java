@@ -12,19 +12,19 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Slf4j
 public class EmpleadoClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient empleadosWebClient;
 
-    public EmpleadoResponse findEmployeeById(Long id){
+    public EmpleadoResponse buscarEmpleadoPorId(Long id){
         try{
-            return webClient.get()
-                    .uri("id/{id}", id)
+            return empleadosWebClient.get()
+                    .uri("api/empleados/{id}", id)
                     .retrieve()
                     .bodyToMono(EmpleadoResponse.class)
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se ha encontrado al empleado con ID " + id);
-                default -> throw new RuntimeException("Error obteniendo empleado con ID " + id, ex);
+                case 404 -> throw new EntityNotFoundException("No se ha encontrado al empleado con ID -> " + id);
+                default -> throw new RuntimeException("Error obteniendo empleado con ID -> " + id, ex);
             }
         }
     }
