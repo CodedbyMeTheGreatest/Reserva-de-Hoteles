@@ -12,11 +12,11 @@ public class FacturaMapper {
         return Factura.builder()
                 .folio(request.getFolio())
                 .idReserva(request.getIdReserva())
-                .runHuesped(request.getRunHuesped())
-                .fecha(request.getFecha())
                 .idPago(request.getIdPago())
+                .runHuesped(request.getRunHuesped())
                 .descripcionHabitacion(request.getDescripcionHabitacion())
                 .estado(request.getEstado())
+                .fechaFactura(request.getFechaFactura())
                 .build();
     }
 
@@ -25,11 +25,18 @@ public class FacturaMapper {
                 .id(factura.getId())
                 .folio(factura.getFolio())
                 .idReserva(factura.getIdReserva())
-                .runHuesped(factura.getRunHuesped())
-                .fecha(factura.getFecha())
                 .idPago(factura.getIdPago())
+                .runHuesped(factura.getRunHuesped())
+                .nombreHuesped(factura.getNombreHuesped())
+                .fechaIngreso(factura.getFechaIngreso())
+                .fechaSalida(factura.getFechaSalida())
                 .descripcionHabitacion(factura.getDescripcionHabitacion())
+                .cantDias(factura.getCantDias())
+                .subtotal(factura.getSubtotal())
+                .impuestos(factura.getImpuestos())
+                .total(factura.getTotal())
                 .estado(factura.getEstado())
+                .fechaFactura(factura.getFechaFactura())
                 .build();
     }
 

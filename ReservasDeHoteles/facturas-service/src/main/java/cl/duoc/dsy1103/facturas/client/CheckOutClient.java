@@ -1,6 +1,6 @@
 package cl.duoc.dsy1103.facturas.client;
 
-import cl.duoc.dsy1103.facturas.dto.ReservaResponse;
+import cl.duoc.dsy1103.facturas.dto.CheckOutResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,23 +10,22 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 @Component
 @Slf4j
-public class ReservaClient {
-
+public class CheckOutClient {
     @Autowired
-    private WebClient reservasWebClient;
+    private WebClient checkOutWebClient;
 
-    public ReservaResponse buscarReservaPorId(Long id){
-        log.info("Obteniendo reservas con ID-> {}", id);
+    public CheckOutResponse obtenerCheckOutPorId (Long id){
+        log.info("Obteniendo check in con ID -> {}", id);
         try {
-            return reservasWebClient.get()
+            return checkOutWebClient.get()
                     .uri("/{id}", id)
                     .retrieve()
-                    .bodyToMono(ReservaResponse.class)
+                    .bodyToMono(CheckOutResponse.class)
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se encontró reserva con ID -> "+ id);
-                default -> throw new RuntimeException("Error buscando reserva con ID -> "+ id, ex);
+                case 404 -> throw new EntityNotFoundException("No se encontró check out con ID -> "+ id);
+                default -> throw new RuntimeException("Error buscando check out con ID -> "+ id, ex);
             }
         }
     }

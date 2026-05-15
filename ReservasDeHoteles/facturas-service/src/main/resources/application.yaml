@@ -20,8 +20,16 @@ spring:
 
 
 server:
-  port: 8080
+  port: 8089
 
 services:
-  facturas:
-    url: http://localhost:8080
+  huespedes:
+    url: http://localhost:8083
+  pagos:
+    url: http://localhost:8088
+  reservas:
+    url: http://localhost:8085
+  check_in:
+    url: http://localhost:8086
+  check_out:
+    url: http://localhost:8087

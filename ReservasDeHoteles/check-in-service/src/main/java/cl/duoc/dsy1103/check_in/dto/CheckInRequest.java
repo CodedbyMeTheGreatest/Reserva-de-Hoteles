@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -14,7 +15,7 @@ import java.util.Date;
 public class CheckInRequest {
 
     @NotNull(message = "La fecha de ingreso es obligatoria")
-    private Date fechaIngreso;
+    private LocalDateTime fechaIngreso;
 
     @NotNull(message = "La ID de la reserva es obligatoria")
     private Long idReserva;

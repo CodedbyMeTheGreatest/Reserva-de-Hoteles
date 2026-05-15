@@ -21,16 +21,12 @@ public class FacturaRequest {
     @NotNull(message = "La id de la reserva es obligatoria")
     private Long idReserva;
 
+    @NotNull(message = "El id de pago es obligatorio")
+    private Long idPago;
+
     @NotBlank(message = "El run del huésped es obligatorio")
     @Size(min = 9, max = 12, message = "El run debe tener entre 9 y 12 caracteres")
     private String runHuesped;
-
-    @NotNull(message = "La fecha de la factura es obligatoria")
-    @PastOrPresent(message = "La fecha no puede ser fututa")
-    private LocalDateTime fecha;
-
-    @NotNull(message = "El id de pago es obligatorio")
-    private Long idPago;
 
     @NotBlank(message = "La descripción de la habitación es obligatoria")
     @Size(max = 250, message = "La descripción debe tener máximo 250 caracteres")
@@ -39,5 +35,9 @@ public class FacturaRequest {
     @NotBlank(message = "El estado es obligatorio")
     @Size(max = 50, message = "El estado debe tener máximo 50 caracteres")
     private String estado;
+
+    @NotNull(message = "La fecha de la factura es obligatoria")
+    @PastOrPresent(message = "La fecha no puede ser fututa")
+    private LocalDateTime fechaFactura;
 
 }

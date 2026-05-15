@@ -25,22 +25,10 @@ public class CheckInController {
         return ResponseEntity.ok(checkInService.obtenerCheckIns());
     }
 
-    @GetMapping("/empleado/{id}")
-    public ResponseEntity<List<CheckInResponse>> obtenerCheckInsPorIdEmpleado(@PathVariable Long id){
-        log.info("GET /api/check_ins/empleado/{}", id);
-        return ResponseEntity.ok(checkInService.obtenerCheckInsPorIdEmpleado(id));
-    }
-
     @GetMapping("/{id}")
     public ResponseEntity<CheckInResponse> buscarCheckInPorId(@PathVariable Long id){
         log.info("GET /api/check_ins/{}", id);
         return ResponseEntity.ok(checkInService.buscarCheckInPorId(id));
-    }
-
-    @GetMapping("/id-reserva/{id}")
-    public ResponseEntity<CheckInResponse> buscarCheckInPorIdReserva(@PathVariable Long id){
-        log.info("GET /api/check_ins/id-reserva/{}", id);
-        return ResponseEntity.ok(checkInService.buscarCheckInPorIdReserva(id));
     }
 
     @PostMapping

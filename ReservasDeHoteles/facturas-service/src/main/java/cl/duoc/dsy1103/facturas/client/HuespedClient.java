@@ -12,20 +12,20 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Slf4j
 public class HuespedClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient huespedesWebClient;
 
-    public HuespedResponse findHuespedByRun(String run){
+    public HuespedResponse buscarHuespedPorRun(String run){
         log.info("Obteniendo huésped con RUN -> {}", run);
         try {
-            return webClient.get()
+            return huespedesWebClient.get()
                     .uri("/run/{run}", run)
                     .retrieve()
                     .bodyToMono(HuespedResponse.class)
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se obtuvó huésped con RUN "+ run);
-                default -> throw new RuntimeException("Error obteniendo huésped con RUN "+ run, ex);
+                case 404 -> throw new EntityNotFoundException("No se encontró huésped con RUN -> "+ run);
+                default -> throw new RuntimeException("Error buscando huésped con RUN -> "+ run, ex);
             }
         }
     }

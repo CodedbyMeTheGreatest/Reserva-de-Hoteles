@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -20,7 +21,7 @@ public class CheckOut {
     private Long id;
 
     @Column(name = "fecha_salida", nullable = false)
-    private Date fechaSalida;
+    private LocalDateTime fechaSalida;
 
     @Column(name = "id_reserva", nullable = false)
     private Long idReserva;

@@ -25,7 +25,7 @@ public class HotelClient {
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
                 case 404 -> throw new EntityNotFoundException("No se encontró hotel con ID "+ id);
-                default -> throw new RuntimeException("Error obteniendo hotel con ID "+ id, ex);
+                default -> throw new RuntimeException("Error buscando hotel con ID "+ id, ex);
             }
         }
     }

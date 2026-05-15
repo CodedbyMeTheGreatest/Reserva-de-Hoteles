@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -13,7 +14,7 @@ import java.util.Date;
 @Builder
 public class CheckOutResponse {
     private Long id;
-    private Date fechaSalida;
+    private LocalDateTime fechaSalida;
     private Long idReserva;
     private Long idEmpleado;
     private String observaciones;

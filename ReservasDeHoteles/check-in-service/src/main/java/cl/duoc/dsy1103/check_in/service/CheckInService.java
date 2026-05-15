@@ -42,13 +42,7 @@ public class CheckInService {
         return checkInMapper.toResponse(checkInRepository.findById(id)
         .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id)));
     }
-    
-    public CheckInResponse buscarCheckInPorIdReserva(Long id){
-        log.info("Obteniendo check-in de reserva con ID -> {}", id);
-        return checkInMapper.toResponse(checkInRepository.findByIdReserva(id)
-        .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado el check-in de la reserva con ID -> "+ id)));
-    }
-    
+
     public CheckInResponse agregarCheckIn(CheckInRequest request){
         log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
         //ReservaResponse existeReserva = reservaClient.buscarReservaPorId(request.getIdReserva());
@@ -89,14 +83,5 @@ public class CheckInService {
             throw new EntityNotFoundException("No se ha encontrado check-in con ID ->" + id);
         }
         checkInRepository.deleteById(id);
-    }
-    
-    public List<CheckInResponse> obtenerCheckInsPorIdEmpleado(Long id){
-        log.info("Obteniendo check-ins supervisados por empleado con ID -> {}", id);
-        EmpleadoResponse existe = empleadoClient.buscarEmpleadoPorId(id);
-        return checkInRepository.findAllByIdEmpleado(id)
-                .stream()
-                .map(checkInMapper::toResponse)
-                .toList();
     }
 }

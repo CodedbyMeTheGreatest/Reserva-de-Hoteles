@@ -29,7 +29,7 @@ public class ReservaClient {
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
                 case 404 -> throw new EntityNotFoundException("No se encontraron reservas para el empleado con RUN "+ run);
-                default -> throw new RuntimeException("Error obteniendo reservas para el empleado con RUN "+ run, ex);
+                default -> throw new RuntimeException("Error buscando reservas para el empleado con RUN "+ run, ex);
             }
         }
     }

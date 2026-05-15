@@ -13,20 +13,20 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 public class PagoClient {
 
     @Autowired
-    private WebClient webClient;
+    private WebClient pagosWebClient;
 
-    public PagoResponse findPagoById(Long id){
+    public PagoResponse buscarPagoPorId(Long id){
         log.info("Obteniendo pago con ID -> {}", id);
         try {
-            return webClient.get()
+            return pagosWebClient.get()
                     .uri("/{id}", id)
                     .retrieve()
                     .bodyToMono(PagoResponse.class)
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se obtuvó pago con ID "+ id);
-                default -> throw new RuntimeException("Error obteniendo pago con ID "+ id, ex);
+                case 404 -> throw new EntityNotFoundException("No se obtuvó pago con ID -> "+ id);
+                default -> throw new RuntimeException("Error buscando pago con ID -> "+ id, ex);
             }
         }
     }

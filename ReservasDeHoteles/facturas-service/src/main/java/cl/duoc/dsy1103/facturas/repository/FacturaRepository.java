@@ -8,4 +8,8 @@ import java.util.Optional;
 public interface FacturaRepository extends JpaRepository<Factura, Long> {
 
     Optional<Factura> findByFolio(String folio);
+
+    boolean existsByIdReserva(Long idReserva);
+
+    boolean existsByIdPago(Long idPago);
 }

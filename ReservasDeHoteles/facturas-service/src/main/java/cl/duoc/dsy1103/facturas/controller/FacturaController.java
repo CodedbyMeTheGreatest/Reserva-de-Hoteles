@@ -20,40 +20,40 @@ public class FacturaController {
     private FacturaService facturaService;
 
     @GetMapping
-    public ResponseEntity<List<FacturaResponse>> findAll(){
+    public ResponseEntity<List<FacturaResponse>> obtenerFacturas(){
         log.info("GET /api/facturas");
-        return ResponseEntity.ok(facturaService.findAll());
+        return ResponseEntity.ok(facturaService.obtenerFacturas());
     }
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<FacturaResponse> findById(@PathVariable Long id){
+    public ResponseEntity<FacturaResponse> buscarFacturaPorId(@PathVariable Long id){
         log.info("GET /api/facturas/{}", id);
-        return ResponseEntity.ok(facturaService.findById(id));
+        return ResponseEntity.ok(facturaService.buscarFacturaPorId(id));
     }
 
     @GetMapping("/folio/{folio}")
-    public ResponseEntity<FacturaResponse> findByFolio(@PathVariable String folio){
+    public ResponseEntity<FacturaResponse> buscarFacturaPorFolio(@PathVariable String folio){
         log.info("GET /api/facturas/folio/{}", folio);
-        return ResponseEntity.ok(facturaService.findByFolio(folio));
+        return ResponseEntity.ok(facturaService.buscarFacturaPorFolio(folio));
     }
 
     @PostMapping
-    public ResponseEntity<FacturaResponse> addFactura(@Valid @RequestBody FacturaRequest request){
+    public ResponseEntity<FacturaResponse> agregarFactura(@Valid @RequestBody FacturaRequest request){
         log.info("POST /api/facturas");
-        return ResponseEntity.ok(facturaService.addFactura(request));
+        return ResponseEntity.ok(facturaService.agregarFactura(request));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<FacturaResponse> updateFactura(@PathVariable Long id, @Valid @RequestBody FacturaUpdateRequest updateRequest){
+    public ResponseEntity<FacturaResponse> actualizarFactura(@PathVariable Long id, @Valid @RequestBody FacturaUpdateRequest updateRequest){
         log.info("PUT /api/facturas/{}", id);
-        return ResponseEntity.ok(facturaService.updateFactura(id, updateRequest));
+        return ResponseEntity.ok(facturaService.actualizarFactura(id, updateRequest));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteFactura(Long id){
+    public ResponseEntity<Void> eliminarFactura(Long id){
         log.info("DELETE /api/facturas/{}", id);
-        facturaService.deleteFactura(id);
+        facturaService.eliminarFactura(id);
         return ResponseEntity.noContent().build();
     }
 }

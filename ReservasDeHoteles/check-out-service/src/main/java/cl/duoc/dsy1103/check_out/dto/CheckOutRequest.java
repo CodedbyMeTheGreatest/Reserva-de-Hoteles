@@ -1,6 +1,7 @@
 package cl.duoc.dsy1103.check_out.dto;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 public class CheckOutRequest {
 
     @NotNull(message = "La fecha de salida es obligatoria")
-    private Date fechaSalida;
+    private LocalDateTime fechaSalida;
 
     @NotNull(message = "La ID de la reserva es obligatoria")
     private Long idReserva;
