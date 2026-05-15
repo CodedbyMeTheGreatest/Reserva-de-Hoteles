@@ -7,4 +7,5 @@ CREATE TABLE habitacion (
     id_disponibilidad BIGINT NOT NULL,
     FOREIGN KEY (id_hotel) REFERENCES hotel(id_hotel),
     FOREIGN KEY (id_disponibilidad) REFERENCES disponibilidad(id_disponibilidad)
+
 );

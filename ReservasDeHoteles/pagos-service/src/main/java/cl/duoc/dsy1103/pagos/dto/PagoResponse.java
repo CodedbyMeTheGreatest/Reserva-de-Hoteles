@@ -1,5 +1,6 @@
 package cl.duoc.dsy1103.pagos.dto;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import cl.duoc.dsy1103.pagos.enums.EstadoPago;
@@ -18,11 +19,11 @@ public class PagoResponse {
     private Long idPago;
     private Long idHabitacion;
     private Long idHuesped;
-    private Integer precioPorNoche;
+    private BigInteger precioPorNoche;
     private Integer cantDias;
-    private Integer subtotal;
-    private Integer impuestos;
-    private Integer total;
+    private BigInteger subtotal;
+    private BigInteger impuestos;
+    private BigInteger total;
     private MetodoPago metodoPago;
     private EstadoPago estadoPago;
     private LocalDateTime fechaPago;

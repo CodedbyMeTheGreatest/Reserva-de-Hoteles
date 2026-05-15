@@ -1,5 +1,6 @@
 package cl.duoc.dsy1103.pagos.model;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 import cl.duoc.dsy1103.pagos.enums.EstadoPago;
@@ -36,19 +37,19 @@ public class Pago {
     private Long idHuesped;
 
     @Column(nullable = false, length = 15)
-    private Integer precioPorNoche;
+    private BigInteger precioPorNoche;
 
     @Column(nullable = false, length = 15)
     private Integer cantDias;
 
     @Column(nullable = false, length = 15)
-    private Integer subtotal;
+    private BigInteger subtotal;
 
     @Column(nullable = false, length = 15)
-    private Integer impuestos;
+    private BigInteger impuestos;
 
     @Column(nullable = false, length = 20)
-    private Integer total;
+    private BigInteger total;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "metodo_pago")

@@ -30,15 +30,15 @@ public class PagoController {
     private PagoService pagoService;
 
     @GetMapping
-    public List<PagoResponse> buscarPagos(){
-        log.info("GET /api/pagos/buscarPagos");
-        return pagoService.buscarPagos();
+    public ResponseEntity<List<PagoResponse>> buscarPagos(){
+        log.info("GET /api/pagos");
+        return ResponseEntity.ok().body(pagoService.buscarPagos());
     }
 
     @GetMapping("/{id}")
-    public PagoResponse buscarPagoPorId(@PathVariable Long id){
+    public ResponseEntity<PagoResponse> buscarPagoPorId(@PathVariable("id") Long id){
         log.info("GET /api/pagos/{}", id);
-        return pagoService.buscarPagoPorId(id);
+        return ResponseEntity.ok().body(pagoService.buscarPagoPorId(id));
     }
 
     @PostMapping
@@ -48,13 +48,13 @@ public class PagoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PagoResponse> actualizarPago (@PathVariable Long idPago, @Valid @RequestBody PagoUpdateRequest request){
+    public ResponseEntity<PagoResponse> actualizarPago (@PathVariable("id") Long idPago, @Valid @RequestBody PagoUpdateRequest request){
         log.info("PUT /api/pagos/actualizarPago/{}", idPago);
         return ResponseEntity.ok().body(pagoService.actualizarPago(idPago, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarPago (@PathVariable Long idPago){
+    public ResponseEntity<Void> eliminarPago (@PathVariable("id") Long idPago){
         log.info("DELETE /api/pagos/eliminarPago/{}", idPago);
         pagoService.eliminarPago(idPago);
         return ResponseEntity.noContent().build();

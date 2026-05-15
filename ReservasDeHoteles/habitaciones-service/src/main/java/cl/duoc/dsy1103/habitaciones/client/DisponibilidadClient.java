@@ -9,7 +9,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 
 import cl.duoc.dsy1103.habitaciones.dto.DisponibilidadResponse;
 import lombok.extern.slf4j.Slf4j;
-
+ 
 @Component
 @Slf4j
 public class DisponibilidadClient {
@@ -21,7 +21,7 @@ public class DisponibilidadClient {
         log.info("Obteniendo disponibilidad con ID -> {}", idDisponibilidad);
         try {
             return webClient.get()
-                    .uri("disponibilidades/id/{idDisponibilidad}" + idDisponibilidad)
+                    .uri("http://localhost:8082/api/disponibilidades/" + idDisponibilidad)
                     .retrieve()
                     .bodyToMono(DisponibilidadResponse.class)
                     .block();

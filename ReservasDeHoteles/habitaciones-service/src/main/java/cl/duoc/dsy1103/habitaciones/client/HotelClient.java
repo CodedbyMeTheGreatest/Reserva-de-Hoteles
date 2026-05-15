@@ -8,7 +8,7 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 import cl.duoc.dsy1103.habitaciones.dto.HotelResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-
+ 
 @Component
 @Slf4j
 public class HotelClient {
@@ -19,7 +19,7 @@ public class HotelClient {
         log.info("Obteniendo hotel con ID -> {}", id);
         try {
             return webClient.get()
-                    .uri("hoteles/id/{id}", id)
+                    .uri("http://localhost:8080/api/hoteles/" + id)
                     .retrieve()
                     .bodyToMono(HotelResponse.class)
                     .block();

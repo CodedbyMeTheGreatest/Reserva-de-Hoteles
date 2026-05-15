@@ -56,11 +56,11 @@ public class HabitacionService {
 
     public HabitacionResponse crearHabitacion (HabitacionRequest request) {
         log.info("Creando habitacion con numero: {}",request.getNumero());
-        if(habitacionRepository.existsByNumero(request.getNumero())){
-            throw new ConflictException("Esa habitacion ya existe.");
-        }
-        hotelClient.findHotelById(request.getIdHotel());
-        disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
+        //if(habitacionRepository.existsByNumero(request.getNumero())){
+        //    throw new ConflictException("Esa habitacion ya existe.");
+        //}
+        //hotelClient.findHotelById(request.getIdHotel());
+        //disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
 
         Habitacion habitacion = habitacionRepository.save(habitacionMapper.fromRequest(request));
         return habitacionMapper.toResponse(habitacion);
@@ -83,13 +83,13 @@ public class HabitacionService {
         }
 
         if(request.getIdHotel()!=null){
-            hotelClient.findHotelById(request.getIdHotel());
+            //hotelClient.findHotelById(request.getIdHotel());
             habitacion.setIdHotel(request.getIdHotel());
         }
         
 
         if(request.getIdDisponibilidad()!=null){
-            disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
+            //disponibilidadClient.findDisponibilidadById(request.getIdDisponibilidad());
             habitacion.setIdDisponibilidad(request.getIdDisponibilidad());
         }
         

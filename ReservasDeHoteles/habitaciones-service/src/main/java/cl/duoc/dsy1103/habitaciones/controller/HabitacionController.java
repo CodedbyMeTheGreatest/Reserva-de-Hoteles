@@ -30,15 +30,15 @@ public class HabitacionController {
     private HabitacionService habitacionService;
 
     @GetMapping
-    public List<HabitacionResponse> buscarHabitaciones(){
-        log.info("GET /api/habitaciones/buscarHabitaciones");
-        return habitacionService.buscarHabitaciones();
+    public ResponseEntity<List<HabitacionResponse>> buscarHabitaciones(){
+        log.info("GET /api/habitaciones");
+        return ResponseEntity.ok().body(habitacionService.buscarHabitaciones());
     }
 
     @GetMapping("/{id}")
-    public HabitacionResponse buscarHabitacionPorId(@PathVariable Long idHabitacion){
-        log.info("GET /api/habitaciones/{id}", idHabitacion);
-        return habitacionService.buscarHabitacionPorId(idHabitacion);
+    public ResponseEntity<HabitacionResponse> buscarHabitacionPorId(@PathVariable("id")Long idHabitacion){
+        log.info("GET /api/habitaciones/{}", idHabitacion);
+        return ResponseEntity.ok().body(habitacionService.buscarHabitacionPorId(idHabitacion));
     }
 
     @PostMapping
@@ -48,13 +48,13 @@ public class HabitacionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable Long idHabitacion, @Valid @RequestBody HabitacionUpdateRequest request){
+    public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable("id") Long idHabitacion, @Valid @RequestBody HabitacionUpdateRequest request){
         log.info("PUT /api/habitaciones/actualizarHabitacion/{}", idHabitacion);
         return ResponseEntity.ok().body(habitacionService.actualizarHabitacion(idHabitacion, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarHabitacion (@PathVariable Long idHabitacion){
+    public ResponseEntity<Void> eliminarHabitacion (@PathVariable("id") Long idHabitacion){
         log.info("DELETE /api/habitaciones/eliminarHabitacion/{id}",idHabitacion);
         habitacionService.eliminarHabitacion(idHabitacion);
         return ResponseEntity.noContent().build();

@@ -11,6 +11,7 @@ public class PagoMapper {
 
     public Pago fromRequest (PagoRequest request) {
         return Pago.builder()
+                .idHabitacion(request.getIdHabitacion())
                 .idHuesped(request.getIdHuesped())
                 .precioPorNoche(request.getPrecioPorNoche())
                 .cantDias(request.getCantDias())

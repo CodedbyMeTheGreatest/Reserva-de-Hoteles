@@ -1,5 +1,6 @@
 package cl.duoc.dsy1103.pagos.service;
 
+import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -45,9 +46,9 @@ public class PagoService {
     public PagoResponse crearPago (PagoRequest request) {
         log.info("Creando pago para la habitacion: {}", request.getIdHabitacion());
 
-        Integer subtotal = request.getPrecioPorNoche() * request.getCantDias();
-        Integer impuestos = (int) (subtotal * 0.19);
-        Integer total = subtotal + impuestos;
+        BigInteger subtotal = request.getPrecioPorNoche().multiply(BigInteger.valueOf(request.getCantDias()));
+        BigInteger impuestos = subtotal.multiply(BigInteger.valueOf(19)).divide(BigInteger.valueOf(100));
+        BigInteger total = subtotal.add(impuestos);
 
         Pago pago = pagoMapper.fromRequest(request);
         pago.setSubtotal(subtotal);

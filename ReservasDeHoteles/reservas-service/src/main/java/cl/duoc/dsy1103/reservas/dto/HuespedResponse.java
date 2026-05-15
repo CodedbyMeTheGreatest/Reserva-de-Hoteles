@@ -1,0 +1,21 @@
+package cl.duoc.dsy1103.reservas.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class HuespedResponse {
+    
+    private Long id;
+    private String run;
+    private String nombreCompleto;
+    private String email;
+    private int telefono;
+    private String nacionalidad;
+
+}
