@@ -18,7 +18,7 @@ public class HotelClient {
         log.info("Obteniendo hotel con ID -> {}", id);
         try {
             return hotelesWebClient.get()
-                    .uri("/{id}", id)
+                    .uri("/api/hoteles/{id}", id)
                     .retrieve()
                     .bodyToMono(HotelResponse.class)
                     .block();

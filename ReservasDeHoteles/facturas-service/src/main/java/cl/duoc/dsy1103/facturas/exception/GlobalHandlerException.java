@@ -1,6 +1,6 @@
-package cl.duoc.dsy1103.empleados.exception;
+package cl.duoc.dsy1103.facturas.exception;
 
-import cl.duoc.dsy1103.empleados.dto.ApiErrorResponse;
+import cl.duoc.dsy1103.facturas.dto.ApiErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -75,5 +75,3 @@ public class GlobalHandlerException {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }
 }
-
-

@@ -1,5 +1,6 @@
 package cl.duoc.dsy1103.check_in.dto;
 
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckInUpdateRequest {
-    private LocalDateTime fechaIngreso;
-
     private Long idReserva;
-
     private Long idEmpleado;
 
-    @Size(max = 250, message = "Las observaciones deben tener máximo 250 caracteres")
+    @PastOrPresent(message = "La fecha de ingreso no debe ser futura")
+    private LocalDateTime fechaIngreso;
+
     private String observaciones;
 }

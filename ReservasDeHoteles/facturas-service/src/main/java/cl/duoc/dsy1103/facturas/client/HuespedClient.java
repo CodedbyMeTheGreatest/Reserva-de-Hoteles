@@ -18,7 +18,7 @@ public class HuespedClient {
         log.info("Obteniendo huésped con RUN -> {}", run);
         try {
             return huespedesWebClient.get()
-                    .uri("/run/{run}", run)
+                    .uri("/api/huespedes/run/{run}", run)
                     .retrieve()
                     .bodyToMono(HuespedResponse.class)
                     .block();

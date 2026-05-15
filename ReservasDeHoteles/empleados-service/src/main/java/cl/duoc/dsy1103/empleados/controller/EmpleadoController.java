@@ -63,7 +63,7 @@ public class EmpleadoController {
     }
 
     @GetMapping("/reservas/{run}")
-    public ResponseEntity<List<ReservaResponse>> obtenerEmpleadosPorIdReserva(@PathVariable String run){
+    public ResponseEntity<List<ReservaResponse>> obtenerReservasPorRunEmpleado(@PathVariable String run){
         log.info("GET /api/empleados/run/reservas/{} ", run);
         return ResponseEntity.ok(empleadoService.obtenerReservasPorRunEmpleado(run));
     }

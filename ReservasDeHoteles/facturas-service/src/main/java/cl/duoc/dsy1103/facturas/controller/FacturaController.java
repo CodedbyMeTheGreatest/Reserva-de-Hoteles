@@ -44,13 +44,13 @@ public class FacturaController {
         return ResponseEntity.ok(facturaService.agregarFactura(request));
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<FacturaResponse> actualizarFactura(@PathVariable Long id, @Valid @RequestBody FacturaUpdateRequest updateRequest){
         log.info("PUT /api/facturas/{}", id);
         return ResponseEntity.ok(facturaService.actualizarFactura(id, updateRequest));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarFactura(Long id){
         log.info("DELETE /api/facturas/{}", id);
         facturaService.eliminarFactura(id);

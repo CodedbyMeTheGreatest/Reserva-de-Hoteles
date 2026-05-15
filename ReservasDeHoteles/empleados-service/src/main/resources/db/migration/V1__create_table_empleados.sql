@@ -1,8 +1,8 @@
 CREATE TABLE empleados(
-    id              BIGINT          PRIMARY KEY AUTO_INCREMENT,
-    run             VARCHAR(12)     NOT NULL UNIQUE,
-    nombre_completo VARCHAR(100)    NOT NULL,
-    cargo           VARCHAR(50)     NULL,
-    id_hotel        BIGINT          NOT NULL,
-    nombre_hotel    VARCHAR(150)    NULL
+    id              BIGINT      PRIMARY KEY AUTO_INCREMENT,
+    run             VARCHAR()   NOT NULL    UNIQUE,
+    nombre_completo VARCHAR()   NOT NULL,
+    cargo           VARCHAR()   NULL,
+    id_hotel        BIGINT      NOT NULL,
+    nombre_hotel    VARCHAR()   NULL
 )

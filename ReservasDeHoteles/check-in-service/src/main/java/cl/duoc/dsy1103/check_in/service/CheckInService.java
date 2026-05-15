@@ -19,6 +19,7 @@ import java.util.List;
 public class CheckInService {
     @Autowired
     private CheckInRepository checkInRepository;
+
     @Autowired
     private CheckInMapper checkInMapper;
 
@@ -45,7 +46,7 @@ public class CheckInService {
 
     public CheckInResponse agregarCheckIn(CheckInRequest request){
         log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
-        //ReservaResponse existeReserva = reservaClient.buscarReservaPorId(request.getIdReserva());
+        ReservaResponse existeReserva = reservaClient.buscarReservaPorId(request.getIdReserva());
         if(checkInRepository.existsByIdReserva(request.getIdReserva())){
             throw new DataIntegrityViolationException("Ya existe un check-in para la reserva con ID -> "+ request.getIdReserva());
         }
@@ -56,16 +57,15 @@ public class CheckInService {
     
     public CheckInResponse actualizarCheckIn(Long id, CheckInUpdateRequest updateRequest){
         log.info("Actualizando check-in con ID -> {}", id);
-        CheckIn checkIn = checkInRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id));
+        CheckIn checkIn = checkInRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id));
         if(updateRequest.getFechaIngreso() != null) {
             checkIn.setFechaIngreso(updateRequest.getFechaIngreso());
         }
-        
         if (updateRequest.getIdReserva() != null) {
-            //ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
+            ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
             checkIn.setIdReserva(updateRequest.getIdReserva());
         }
-        
         if(updateRequest.getIdEmpleado() != null) {
             EmpleadoResponse existeEmpleado = empleadoClient.buscarEmpleadoPorId(updateRequest.getIdEmpleado());
             checkIn.setIdEmpleado(updateRequest.getIdEmpleado());

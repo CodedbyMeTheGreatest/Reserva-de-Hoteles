@@ -1,6 +1,7 @@
 package cl.duoc.dsy1103.check_in.dto;
 
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,18 +13,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckInRequest {
-
-    @NotNull(message = "La fecha de ingreso es obligatoria")
-    private LocalDateTime fechaIngreso;
-
     @NotNull(message = "La ID de la reserva es obligatoria")
     private Long idReserva;
 
     @NotNull(message = "La ID del empleado es obligatoria")
     private Long idEmpleado;
 
-    @Size(max = 250, message = "Las observaciones deben tener máximo 250 caracteres")
+    @NotNull(message = "La fecha de ingreso es obligatoria")
+    @PastOrPresent(message = "La fecha de ingreso no debe ser futura")
+    private LocalDateTime fechaIngreso;
+
     private String observaciones;
-
-
 }

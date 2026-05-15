@@ -13,8 +13,8 @@ import java.time.LocalDateTime;
 @Builder
 public class CheckInResponse {
     private Long id;
-    private LocalDateTime fechaIngreso;
     private Long idReserva;
     private Long idEmpleado;
+    private LocalDateTime fechaIngreso;
     private String observaciones;
 }

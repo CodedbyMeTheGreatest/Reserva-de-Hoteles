@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
 public class CheckInMapper {
     public CheckIn fromRequest(CheckInRequest request){
         return CheckIn.builder()
-                .fechaIngreso(request.getFechaIngreso())
                 .idReserva(request.getIdReserva())
                 .idEmpleado(request.getIdEmpleado())
+                .fechaIngreso(request.getFechaIngreso())
                 .observaciones(request.getObservaciones())
                 .build();
     }
@@ -19,9 +19,9 @@ public class CheckInMapper {
     public CheckInResponse toResponse(CheckIn checkIn){
         return CheckInResponse.builder()
                 .id(checkIn.getId())
-                .fechaIngreso(checkIn.getFechaIngreso())
                 .idReserva(checkIn.getIdReserva())
                 .idEmpleado(checkIn.getIdEmpleado())
+                .fechaIngreso(checkIn.getFechaIngreso())
                 .observaciones(checkIn.getObservaciones())
                 .build();
     }

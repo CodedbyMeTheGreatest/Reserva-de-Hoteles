@@ -19,15 +19,15 @@ public class CheckIn {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fecha_ingreso", nullable = false)
-    private LocalDateTime fechaIngreso;
-
     @Column(name = "id_reserva", nullable = false, unique = true)
     private Long idReserva;
 
     @Column(name = "id_empleado", nullable = false)
     private Long idEmpleado;
 
-    @Column(length = 250)
+    @Column(name = "fecha_ingreso", nullable = false)
+    private LocalDateTime fechaIngreso;
+
+    @Column(name = "observaciones")
     private String observaciones;
 }

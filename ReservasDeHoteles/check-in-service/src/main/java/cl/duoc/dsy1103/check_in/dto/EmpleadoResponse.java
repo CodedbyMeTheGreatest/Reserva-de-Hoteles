@@ -13,4 +13,5 @@ public class EmpleadoResponse {
     private String nombreCompleto;
     private String cargo;
     private Long idHotel;
+    private String nombreHotel;
 }

@@ -18,18 +18,18 @@ public class ReservaClient {
     private WebClient reservasWebClient;
 
     public List<ReservaResponse> obtenerReservasPorRunEmpleado(String run){
-        log.info("Obteniendo reservas para el empleado con RUN -> {}", run);
+        log.info("Obteniendo reservas por el empleado con RUN -> {}", run);
         try {
             return reservasWebClient.get()
-                    .uri("empleados/run/{run}", run)
+                    .uri("/api/reservas/empleado/{run}", run)
                     .retrieve()
                     .bodyToFlux(ReservaResponse.class)
                     .collectList()
                     .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()){
-                case 404 -> throw new EntityNotFoundException("No se encontraron reservas para el empleado con RUN "+ run);
-                default -> throw new RuntimeException("Error buscando reservas para el empleado con RUN "+ run, ex);
+                case 404 -> throw new EntityNotFoundException("No se encontraron reservas por el empleado con RUN "+ run);
+                default -> throw new RuntimeException("Error buscando reservas por el empleado con RUN "+ run, ex);
             }
         }
     }

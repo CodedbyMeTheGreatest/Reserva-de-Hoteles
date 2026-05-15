@@ -19,7 +19,7 @@ public class PagoClient {
         log.info("Obteniendo pago con ID -> {}", id);
         try {
             return pagosWebClient.get()
-                    .uri("/{id}", id)
+                    .uri("/api/pagos/{id}", id)
                     .retrieve()
                     .bodyToMono(PagoResponse.class)
                     .block();

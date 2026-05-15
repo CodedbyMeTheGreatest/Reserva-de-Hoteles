@@ -22,45 +22,42 @@ public class Factura {
     @Column(nullable = false, unique = true)
     private String folio;
 
-    @Column(nullable = false, unique = true,  name = "id_reserva")
+    @Column(name = "id_reserva", nullable = false, unique = true)
     private Long idReserva;
 
-    @Column(nullable = false, unique = true, name = "id_pago")
+    @Column(name = "id_pago", nullable = false, unique = true)
     private Long idPago;
 
-    @Column(nullable = false, name = "run_huesped")
+    @Column(name = "run_huesped", nullable = false)
     private String runHuesped;
 
-    @Column(nullable = false, name = "nombre_huesped")
+    @Column(name = "nombre_huesped", nullable = false)
     private String nombreHuesped;
 
-    @Column(nullable = false, name = "fecha_check_in")
+    @Column(name = "fecha_check_in", nullable = false)
     private LocalDateTime fechaIngreso;
 
     @Column(name = "fecha_check_out")
     private LocalDateTime fechaSalida;
 
-    @Column(nullable = false, name = "descripcion_habitacion")
+    @Column(name = "descripcion_habitacion", nullable = false)
     private String descripcionHabitacion;
 
-    @Column(nullable = false, name = "cant_dias")
+    @Column(name = "cantidad_dias", nullable = false)
     private Integer cantDias;
 
-    @Column(nullable = false)
+    @Column(name = "subtotal", nullable = false)
     private Integer subtotal;
 
-    @Column(nullable = false)
+    @Column(name = "impuestos", nullable = false)
     private Integer impuestos;
 
-    @Column(nullable = false)
+    @Column(name = "total", nullable = false)
     private Integer total;
 
-    @Column(nullable = false)
+    @Column(name = "estado", nullable = false)
     private String estado;
 
-    @Column(nullable = false, name = "fecha_factura")
+    @Column(name = "fecha_factura", nullable = false)
     private LocalDateTime fechaFactura;
-
-
-
 }

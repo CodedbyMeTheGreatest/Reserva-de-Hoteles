@@ -31,35 +31,37 @@ public class EmpleadoService {
     public List<EmpleadoResponse> obtenerEmpleados(){
         log.info("Obteniendo todos los empleados...");
         return empleadoRepository.findAll()
-        .stream().map(empleadoMapper::toResponse)
-        .toList();
+                .stream().map(empleadoMapper::toResponse)
+                .toList();
     }
 
     public EmpleadoResponse buscarEmpleadoPorId(Long id){
         log.info("Buscando empleado con ID -> {}", id);
         Empleado encontrado = empleadoRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id));
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id));
         return empleadoMapper.toResponse(encontrado);
     }
 
     public EmpleadoResponse buscarEmpleadoPorRut(String run){
         log.info("Buscando empleado con RUN -> {}", run);
         Empleado encontrado = empleadoRepository.findByRun(run)
-        .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run));
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run));
         return empleadoMapper.toResponse(encontrado);
     }
 
     public EmpleadoResponse agregarEmpleado(EmpleadoRequest request){
         log.info("Añadiendo empleado con RUN -> {}", request.getRun());
         //HotelResponse existehotel = hotelClient.findHotelById(request.getIdHotel());
-        //empleadoResponse.setNombreHotel(existehotel.getNombre());
-        Empleado agregado = empleadoRepository.save(empleadoMapper.fromRequest(request));
+        Empleado empleado = empleadoMapper.fromRequest(request);
+        //empleado.setNombreHotel(existehotel.getNombre());
+        Empleado agregado = empleadoRepository.save(empleado);
         return empleadoMapper.toResponse(agregado);
     }
 
     public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoUpdateRequest updateRequest){
         log.info("Actualizando empleado con id -> {}", id);
-        Empleado empleado = empleadoRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id));
+        Empleado empleado = empleadoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id));
 
         if(updateRequest.getRun() != null){
             empleado.setRun(updateRequest.getRun());
@@ -70,8 +72,8 @@ public class EmpleadoService {
         if(updateRequest.getCargo() != null) {
             empleado.setCargo(updateRequest.getCargo());
         }
-        //HotelResponse existeHotel = hotelClient.findHotelById(id);
         if(updateRequest.getIdHotel() != null) {
+            //HotelResponse existeHotel = hotelClient.findHotelById(id);
             empleado.setIdHotel(updateRequest.getIdHotel());
             //empleado.setNombreHotel(existeHotel.getNombre());
         }

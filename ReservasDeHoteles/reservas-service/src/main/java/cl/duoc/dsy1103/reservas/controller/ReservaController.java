@@ -59,4 +59,6 @@ public class ReservaController {
         reservaService.eliminarReserva(idReserva);
         return ResponseEntity.noContent().build();
     }
+
+    //haz que obtenga reservas (response) por run de empleado :) i need it bro con esta uri -> /empleado/{run}
 }

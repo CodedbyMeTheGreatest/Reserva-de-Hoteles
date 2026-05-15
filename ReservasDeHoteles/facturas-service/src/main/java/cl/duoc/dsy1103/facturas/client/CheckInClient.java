@@ -18,7 +18,7 @@ public class CheckInClient {
         log.info("Obteniendo check in con ID -> {}", id);
         try {
             return checkInWebClient.get()
-                    .uri("/{id}", id)
+                    .uri("/api/check_in/{id}", id)
                     .retrieve()
                     .bodyToMono(CheckInResponse.class)
                     .block();

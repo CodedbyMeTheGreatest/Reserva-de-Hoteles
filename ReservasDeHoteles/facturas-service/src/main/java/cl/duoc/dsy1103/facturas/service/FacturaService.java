@@ -93,9 +93,8 @@ public class FacturaService {
         if(updateRequest.getFolio() != null){
             factura.setFolio(updateRequest.getFolio());
         }
-
-        ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
         if (updateRequest.getIdReserva() != null){
+            ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
             factura.setIdReserva(updateRequest.getIdReserva());
 
             CheckInResponse checkIn = checkInClient.obtenerCheckInPorId(existeReserva.getIdCheckIn());
@@ -106,9 +105,8 @@ public class FacturaService {
 
             factura.setCantDias(existeReserva.getCantDias());
         }
-
-        HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(updateRequest.getRunHuesped());
         if (updateRequest.getRunHuesped() != null){
+            HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(updateRequest.getRunHuesped());
             factura.setRunHuesped(updateRequest.getRunHuesped());
             factura.setNombreHuesped(existeHuesped.getNombreCompleto());
         }
@@ -126,7 +124,6 @@ public class FacturaService {
         if (updateRequest.getEstado() != null){
             factura.setEstado(updateRequest.getEstado());
         }
-
         if (updateRequest.getFechaFactura() != null){
             factura.setFechaFactura(updateRequest.getFechaFactura());
         }
@@ -140,6 +137,5 @@ public class FacturaService {
             throw new EntityNotFoundException("No se encontró factura con ID -> " +id);
         }
         facturaRepository.deleteById(id);
-        log.info("Factura ha sido eliminada con exito...");
      }
 }

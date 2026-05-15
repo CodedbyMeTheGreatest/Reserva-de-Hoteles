@@ -19,7 +19,7 @@ public class ReservaClient {
         log.info("Obteniendo reservas con ID-> {}", id);
         try {
             return reservasWebClient.get()
-                    .uri("/{id}", id)
+                    .uri("/api/reservas/{id}", id)
                     .retrieve()
                     .bodyToMono(ReservaResponse.class)
                     .block();

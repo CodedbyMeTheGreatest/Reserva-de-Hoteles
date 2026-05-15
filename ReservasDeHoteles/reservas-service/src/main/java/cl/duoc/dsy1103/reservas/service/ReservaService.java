@@ -82,4 +82,6 @@ public class ReservaService {
         reservaRepository.deleteById(idReserva);
     }
 
+    //haz que busque reservas por run de empleado :) i need it bro
+
 }

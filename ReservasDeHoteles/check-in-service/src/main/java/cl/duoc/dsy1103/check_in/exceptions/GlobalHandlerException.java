@@ -20,7 +20,7 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiErrorResponse> handleEntityNotFound(EntityNotFoundException ex, HttpServletRequest request){
-        log.error("404 CheckIn no encontrado -> {}", ex.getMessage());
+        log.error("404 Entity Not Found -> {}", ex.getMessage());
 
         ApiErrorResponse errorResponse = ApiErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
@@ -34,13 +34,13 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(DataIntegrityViolationException ex, HttpServletRequest request){
-        log.error("409 Argumentos entregados son inválidos -> {}", ex.getMessage());
+        log.error("409 Data Integrity Violation -> {}", ex.getMessage());
 
         ApiErrorResponse errorResponse = ApiErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.CONFLICT.value())
                 .error(HttpStatus.CONFLICT.name())
-                .message("Data Integrity Violation -> " + ex.getMessage())
+                .message("Conflicto de Integridad de Datos")
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
@@ -48,14 +48,14 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpServletRequest request){
-        log.error("400 Argumentos entregados son inválidos -> {}", ex.getMessage());
+        log.error("400 Method Arguments Not Valid -> {}", ex.getMessage());
 
         List<String> errors = ex.getBindingResult().getFieldErrors().stream().map(e -> e.getField() + ": " + e.getDefaultMessage()).toList();
         ApiErrorResponse errorResponse = ApiErrorResponse.builder()
                 .timestamp(LocalDateTime.now())
                 .status(HttpStatus.BAD_REQUEST.value())
                 .error(HttpStatus.BAD_REQUEST.name())
-                .message("Invalid Request -> " + ex.getMessage())
+                .message("Datos Enviados son Inválidos")
                 .path(request.getRequestURI())
                 .errors(errors)
                 .build();
@@ -64,11 +64,12 @@ public class GlobalHandlerException {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ApiErrorResponse> handleRuntime(RuntimeException ex, HttpServletRequest request){
-        log.error("500 Error interno en el servidor -> {}", ex.getMessage());
-        ApiErrorResponse errorResponse = ApiErrorResponse.builder().timestamp(LocalDateTime.now())
+        log.error("500 Runtime Exception -> {}", ex.getMessage());
+        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
                 .status(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .error(HttpStatus.INTERNAL_SERVER_ERROR.name())
-                .message("Internal Server Error -> " + ex.getMessage())
+                .message("Error Interno del Servidor")
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
