@@ -1,7 +1,6 @@
 package cl.duoc.dsy1103.facturas.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.PastOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

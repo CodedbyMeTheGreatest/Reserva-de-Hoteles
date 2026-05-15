@@ -1,6 +1,5 @@
 package cl.duoc.dsy1103.check_out.dto;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotNull;
