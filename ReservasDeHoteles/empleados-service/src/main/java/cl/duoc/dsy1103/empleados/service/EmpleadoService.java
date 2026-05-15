@@ -1,8 +1,8 @@
 package cl.duoc.dsy1103.empleados.service;
 
-import cl.duoc.dsy1103.empleados.client.HotelClient;
 import cl.duoc.dsy1103.empleados.client.ReservaClient;
 import cl.duoc.dsy1103.empleados.dto.*;
+import cl.duoc.dsy1103.empleados.exception.BadRequestException;
 import cl.duoc.dsy1103.empleados.mapper.EmpleadoMapper;
 import cl.duoc.dsy1103.empleados.model.Empleado;
 import cl.duoc.dsy1103.empleados.repository.EmpleadoRepository;
@@ -10,6 +10,7 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -54,6 +55,10 @@ public class EmpleadoService {
         //HotelResponse existehotel = hotelClient.findHotelById(request.getIdHotel());
         Empleado empleado = empleadoMapper.fromRequest(request);
         //empleado.setNombreHotel(existehotel.getNombre());
+        List<String> cargosValidos = List.of("Recepcionista", "Supervisor Recepcion", "Administrador");
+        if(!cargosValidos.contains(request.getCargo())){
+            throw new BadRequestException("El cargo ingresado no es valido. Debe ser 'Recepcionista', 'Supervisor Recepcion' o 'Administrador'");
+        }
         Empleado agregado = empleadoRepository.save(empleado);
         return empleadoMapper.toResponse(agregado);
     }

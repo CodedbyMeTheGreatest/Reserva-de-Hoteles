@@ -16,7 +16,6 @@ public class FacturaUpdateRequest {
     private String folio;
 
     private Long idReserva;
-
     private Long idPago;
 
     @Size(max = 12, message = "El run debe tener entre 9 y 12 caracteres")

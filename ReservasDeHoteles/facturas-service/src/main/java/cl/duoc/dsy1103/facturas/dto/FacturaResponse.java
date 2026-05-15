@@ -17,20 +17,14 @@ public class FacturaResponse {
     private Long idReserva;
     private Long idPago;
     private String runHuesped;
-
     private String nombreHuesped;
-
     private LocalDateTime fechaIngreso;
     private LocalDateTime fechaSalida;
-
     private String descripcionHabitacion;
-
     private Integer cantDias;
-
     private Integer subtotal;
     private Integer impuestos;
     private Integer total;
-
     private String estado;
     private LocalDateTime fechaFactura;
 

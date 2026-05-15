@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class PagoResponse {
-
     private Long idPago;
     private Long idHabitacion;
     private Long idHuesped;
