@@ -40,13 +40,13 @@ public class HuespedService {
     public HuespedResponse buscarHuespedPorId(Long id){
         log.info("Obteniendo Huésped con ID -> {}", id);
         return huespedMapper.toResponse(huespedRepository.findById(id).orElseThrow(()
-        -> new EntityNotFoundException("No se encontró Huésped con ID -> "+id)));
+        -> new EntityNotFoundException("No se encontró huésped con ID -> "+id)));
     }
 
     public HuespedResponse buscarHuespedPorRun(String run){
         log.info("Buscando Huésped con RUN -> {}", run);
         Huesped encontrado = huespedRepository.findByRun(run)
-        .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún Huésped con el RUN "+ run));
+        .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún huésped con el RUN -> "+ run));
         return huespedMapper.toResponse(encontrado);
     }
 

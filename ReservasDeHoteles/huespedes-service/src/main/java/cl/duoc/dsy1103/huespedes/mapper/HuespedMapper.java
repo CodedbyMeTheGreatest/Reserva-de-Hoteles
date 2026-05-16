@@ -20,6 +20,7 @@ public class HuespedMapper {
 
     public HuespedResponse toResponse(Huesped huesped){
         return HuespedResponse.builder()
+                .id(huesped.getId())
                 .run(huesped.getRun())
                 .nombreCompleto(huesped.getNombreCompleto())
                 .email(huesped.getEmail())
