@@ -1,20 +1,22 @@
 spring:
   application:
-      name: disponibilidad-service
+    name: hoteles-service
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_disponibilidades
+    url: jdbc:mysql://localhost:3306/db_hoteleria_hoteles
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
+ 
   jpa: 
     hibernate:
       ddl-auto: validate
     show-sql: false
     open-in-view: false
+
   flyway:
     enabled: true
     baseline-on-migrate: true
     locations: classpath:db/migration
  
 server:
-  port: 8082
+  port: 8080

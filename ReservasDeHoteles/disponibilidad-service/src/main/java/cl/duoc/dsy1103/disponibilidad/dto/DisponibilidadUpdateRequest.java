@@ -4,16 +4,14 @@ import java.time.LocalDateTime;
 
 import cl.duoc.dsy1103.disponibilidad.enums.EstadoDisponibilidad;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class DisponibilidadResponse {
-    private Long idDisponibilidad;
+public class DisponibilidadUpdateRequest {
+
     private EstadoDisponibilidad estado;
     private LocalDateTime fechaDesde;
     private LocalDateTime fechaHasta;

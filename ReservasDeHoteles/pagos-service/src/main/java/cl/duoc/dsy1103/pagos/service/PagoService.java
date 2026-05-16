@@ -57,9 +57,9 @@ public class PagoService {
         pago.setEstadoPago(EstadoPago.PENDIENTE);
         pago.setFechaPago(null);
 
-        Pago pagoCreado = pagoRepository.save(pago);
-        log.info("Pago creado con ID: {}", pagoCreado.getIdPago());
-        return pagoMapper.toResponse(pagoCreado);
+        pago = pagoRepository.save(pago);
+        log.info("Pago creado con ID: {}", pago.getIdPago());
+        return pagoMapper.toResponse(pago);
     }
 
     public PagoResponse actualizarPago(Long idPago, PagoUpdateRequest request) {

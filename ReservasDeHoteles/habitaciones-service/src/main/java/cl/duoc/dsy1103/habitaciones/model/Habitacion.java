@@ -29,7 +29,7 @@ public class Habitacion {
     @Column(nullable = false, name = "descripcion", length = 200)
     private String descripcion;
 
-    @Column(nullable = false)
+    @Column(nullable = false, name = "precio_por_noche")
     private Integer precioPorNoche;
 
     @Column(nullable = false, name = "id_hotel")

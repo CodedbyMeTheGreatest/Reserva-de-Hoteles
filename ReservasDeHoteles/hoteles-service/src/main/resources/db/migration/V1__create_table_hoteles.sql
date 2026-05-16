@@ -1,0 +1,6 @@
+CREATE TABLE hoteles (
+    id_hotel BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    rut_hotel VARCHAR(12) UNIQUE NOT NULL,
+    direccion VARCHAR(200) NOT NULL,
+    nombre_hotel VARCHAR(100) NOT NULL
+)

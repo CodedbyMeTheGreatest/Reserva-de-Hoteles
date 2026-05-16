@@ -67,11 +67,11 @@ public class ReservaService {
 
     public ReservaResponse crearReserva(ReservaRequest request) {
         log.info("Creando nueva reserva para habitación ID: {}", request.getIdHabitacion());
-        //huespedClient.buscarHuespedPorId(request.getIdHuesped());
-        //empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
-        //checkinClient.buscarCheckInPorId(request.getIdCheckIn());
-        //checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
-        //habitacionClient.buscarHabitacionPorId(request.getIdHabitacion());
+        huespedClient.buscarHuespedPorId(request.getIdHuesped());
+        empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
+        checkinClient.buscarCheckInPorId(request.getIdCheckIn());
+        checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
+        habitacionClient.buscarHabitacionPorId(request.getIdHabitacion());
         Reserva reserva = reservaRepository.save(reservaMapper.fromRequest(request));
         return reservaMapper.toResponse(reserva);
     }
@@ -82,26 +82,26 @@ public class ReservaService {
                 .orElseThrow(() -> new NoSuchElementException("Reserva no encontrada."));
         
         if (request.getIdHabitacion() != null) {
-            //habitacionClient.buscarHabitacionPorId(request.getIdHabitacion());
+            habitacionClient.buscarHabitacionPorId(request.getIdHabitacion());
             reservaExistente.setIdHabitacion(request.getIdHabitacion());
         }
         if (request.getIdHuesped() != null) {
-            //huespedClient.buscarHuespedPorId(request.getIdHuesped());
+            huespedClient.buscarHuespedPorId(request.getIdHuesped());
             reservaExistente.setIdHuesped(request.getIdHuesped());
         }
         if (request.getIdEmpleado() != null) {
-            //empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
+            empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
             reservaExistente.setIdEmpleado(request.getIdEmpleado());
         }
         if (request.getCantDias() != null) {
             reservaExistente.setCantDias(request.getCantDias());
         }
         if (request.getIdCheckIn() != null) {
-            //checkinClient.buscarCheckInPorId(request.getIdCheckIn());
+            checkinClient.buscarCheckInPorId(request.getIdCheckIn());
             reservaExistente.setIdCheckIn(request.getIdCheckIn());
         }
         if (request.getIdCheckOut() != null) {
-            //checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
+            checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
             reservaExistente.setIdCheckOut(request.getIdCheckOut());
         }
 
@@ -116,7 +116,5 @@ public class ReservaService {
         }
         reservaRepository.deleteById(idReserva);
     }
-
-    //haz que busque reservas por run de empleado :) i need it bro
 
 }
