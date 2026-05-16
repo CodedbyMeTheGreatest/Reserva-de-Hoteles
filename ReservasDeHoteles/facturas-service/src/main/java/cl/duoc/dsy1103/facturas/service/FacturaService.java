@@ -2,6 +2,7 @@ package cl.duoc.dsy1103.facturas.service;
 
 import cl.duoc.dsy1103.facturas.client.*;
 import cl.duoc.dsy1103.facturas.dto.*;
+import cl.duoc.dsy1103.facturas.exception.BadRequestException;
 import cl.duoc.dsy1103.facturas.mapper.FacturaMapper;
 import cl.duoc.dsy1103.facturas.model.Factura;
 import cl.duoc.dsy1103.facturas.repository.FacturaRepository;
@@ -59,10 +60,10 @@ public class FacturaService {
      public FacturaResponse agregarFactura(FacturaRequest request){
         log.info("Agregando factura con FOLIO -> {}", request.getFolio());
          if(facturaRepository.existsByIdReserva(request.getIdReserva())){
-             throw new EntityNotFoundException("Ya existe una factura para la reserva con ID -> "+ request.getIdReserva());
+             throw new BadRequestException("Ya existe una factura para la reserva con ID -> "+ request.getIdReserva());
          }
          if(facturaRepository.existsByIdPago(request.getIdPago())){
-             throw new EntityNotFoundException("Ya existe una factura con el pago de ID -> " + request.getIdPago());
+             throw new BadRequestException("Ya existe una factura con el pago de ID -> " + request.getIdPago());
          }
          Factura factura = facturaMapper.fomRequest(request);
 

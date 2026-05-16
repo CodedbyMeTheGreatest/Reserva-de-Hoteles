@@ -12,19 +12,19 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class FacturaUpdateRequest {
-    @Size(max=30, message = "El folio debe tener entre 4 y 30 caracteres")
+    @Size(max=5, message = "El folio debe tener entre 3 y 5 caracteres")
     private String folio;
 
     private Long idReserva;
     private Long idPago;
 
-    @Size(max = 12, message = "El run debe tener entre 9 y 12 caracteres")
+    @Size(min = 4, max = 10, message = "El run debe tener máximo 4 y 10 caracteres")
     private String runHuesped;
 
-    @Size(max = 250, message = "La descripción debe tener máximo 250 caracteres")
+    @Size(min = 4, max = 50, message = "La descripción debe tener enter 4 y  50 caracteres")
     private String descripcionHabitacion;
 
-    @Size(max = 50, message = "El estado debe tener máximo 50 caracteres")
+    @Size(min = 4, max = 20, message = "El estado debe tener entre 4 y 20 caracteres")
     private String estado;
 
     @PastOrPresent(message = "La fecha no puede ser fututa")

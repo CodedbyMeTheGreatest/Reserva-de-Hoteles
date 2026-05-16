@@ -1,4 +1,4 @@
-package cl.duoc.dsy1103.check_in.exceptions;
+package cl.duoc.dsy1103.check_in.exception;
 
 import cl.duoc.dsy1103.check_in.dto.ApiErrorResponse;
 import jakarta.persistence.EntityNotFoundException;
@@ -44,6 +44,19 @@ public class GlobalHandlerException {
                 .path(request.getRequestURI())
                 .build();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
+    }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ApiErrorResponse> handleBadRequest(BadRequestException ex, HttpServletRequest request){
+        log.error("400 Bad Request -> {}", ex.getMessage());
+        ApiErrorResponse errorResponse = ApiErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.BAD_REQUEST.value())
+                .error(HttpStatus.BAD_REQUEST.name())
+                .message(ex.getMessage())
+                .path(request.getRequestURI())
+                .build();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

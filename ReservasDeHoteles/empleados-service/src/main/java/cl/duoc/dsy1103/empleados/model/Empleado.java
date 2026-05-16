@@ -17,19 +17,19 @@ public class Empleado {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "run", nullable = false, unique = true)
+    @Column(name = "run", length = 10, nullable = false, unique = true)
     private String run;
 
-    @Column(name = "nombre_completo", nullable = false)
+    @Column(name = "nombre_completo", length = 150, nullable = false)
     private String nombreCompleto;
 
-    @Column(name = "cargo")
+    @Column(name = "cargo", length = 20)
     private String cargo;
 
     @Column(name = "id_hotel", nullable = false)
     private Long idHotel;
 
-    @Column(name = "nombre_hotel")
+    @Column(name = "nombre_hotel", length = 50)
     private String nombreHotel;
 
 }

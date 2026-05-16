@@ -19,7 +19,7 @@ public class Factura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "folio", length = 5, nullable = false, unique = true)
     private String folio;
 
     @Column(name = "id_reserva", nullable = false, unique = true)
@@ -28,10 +28,10 @@ public class Factura {
     @Column(name = "id_pago", nullable = false, unique = true)
     private Long idPago;
 
-    @Column(name = "run_huesped", nullable = false)
+    @Column(name = "run_huesped", length = 10, nullable = false)
     private String runHuesped;
 
-    @Column(name = "nombre_huesped", nullable = false)
+    @Column(name = "nombre_huesped", length = 150, nullable = false)
     private String nombreHuesped;
 
     @Column(name = "fecha_check_in", nullable = false)
@@ -40,7 +40,7 @@ public class Factura {
     @Column(name = "fecha_check_out")
     private LocalDateTime fechaSalida;
 
-    @Column(name = "descripcion_habitacion", nullable = false)
+    @Column(name = "descripcion_habitacion", length = 50, nullable = false)
     private String descripcionHabitacion;
 
     @Column(name = "cantidad_dias", nullable = false)
@@ -55,7 +55,7 @@ public class Factura {
     @Column(name = "total", nullable = false)
     private Integer total;
 
-    @Column(name = "estado", nullable = false)
+    @Column(name = "estado", length = 20, nullable = false)
     private String estado;
 
     @Column(name = "fecha_factura", nullable = false)

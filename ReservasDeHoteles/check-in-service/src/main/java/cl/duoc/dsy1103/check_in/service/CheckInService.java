@@ -3,13 +3,13 @@ package cl.duoc.dsy1103.check_in.service;
 import cl.duoc.dsy1103.check_in.client.EmpleadoClient;
 import cl.duoc.dsy1103.check_in.client.ReservaClient;
 import cl.duoc.dsy1103.check_in.dto.*;
+import cl.duoc.dsy1103.check_in.exception.BadRequestException;
 import cl.duoc.dsy1103.check_in.mapper.CheckInMapper;
 import cl.duoc.dsy1103.check_in.model.CheckIn;
 import cl.duoc.dsy1103.check_in.repository.CheckInRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -48,7 +48,7 @@ public class CheckInService {
         log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
         ReservaResponse existeReserva = reservaClient.buscarReservaPorId(request.getIdReserva());
         if(checkInRepository.existsByIdReserva(request.getIdReserva())){
-            throw new DataIntegrityViolationException("Ya existe un check-in para la reserva con ID -> "+ request.getIdReserva());
+            throw new BadRequestException("Ya existe un check-in para la reserva con ID -> "+ request.getIdReserva());
         }
         EmpleadoResponse existeEmpleado = empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
         return checkInMapper.toResponse(checkInRepository.save(checkInMapper.fromRequest(request)));

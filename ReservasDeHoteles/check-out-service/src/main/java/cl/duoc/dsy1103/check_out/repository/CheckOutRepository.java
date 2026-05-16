@@ -1,6 +1,5 @@
 package cl.duoc.dsy1103.check_out.repository;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +9,7 @@ import cl.duoc.dsy1103.check_out.model.CheckOut;
 
 @Repository
 public interface CheckOutRepository extends JpaRepository<CheckOut, Long> {
-
-    Optional<CheckOut> findByIdReserva(Long id);
-
-    List<CheckOut> findAllByIdEmpleado(Long idEmpleado);
+    Optional<CheckOut> findByIdReserva(Long idReserva);
+    boolean existsByIdReserva(Long idReserva);
 }
 

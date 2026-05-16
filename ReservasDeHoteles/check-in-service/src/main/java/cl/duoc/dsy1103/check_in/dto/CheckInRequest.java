@@ -23,5 +23,6 @@ public class CheckInRequest {
     @PastOrPresent(message = "La fecha de ingreso no debe ser futura")
     private LocalDateTime fechaIngreso;
 
+    @Size(max = 250, message = "Las observaciones pueden ser de maximo 250 caracteres")
     private String observaciones;
 }
