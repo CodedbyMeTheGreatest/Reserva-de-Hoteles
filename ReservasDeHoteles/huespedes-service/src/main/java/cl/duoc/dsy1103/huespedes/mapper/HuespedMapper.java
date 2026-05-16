@@ -1,10 +1,10 @@
-package cl.duoc.dsy1103.usuarios.mapper;
+package cl.duoc.dsy1103.huespedes.mapper;
 
 import org.springframework.stereotype.Component;
 
-import cl.duoc.dsy1103.usuarios.dto.HuespedRequest;
-import cl.duoc.dsy1103.usuarios.dto.HuespedResponse;
-import cl.duoc.dsy1103.usuarios.model.Huesped;
+import cl.duoc.dsy1103.huespedes.dto.HuespedRequest;
+import cl.duoc.dsy1103.huespedes.dto.HuespedResponse;
+import cl.duoc.dsy1103.huespedes.model.Huesped;
 
 @Component
 public class HuespedMapper {
@@ -18,7 +18,6 @@ public class HuespedMapper {
                 .build();
     }
 
-
     public HuespedResponse toResponse(Huesped huesped){
         return HuespedResponse.builder()
                 .run(huesped.getRun())
@@ -28,7 +27,4 @@ public class HuespedMapper {
                 .nacionalidad(huesped.getNacionalidad())
                 .build();
     }
-
-
-
 }

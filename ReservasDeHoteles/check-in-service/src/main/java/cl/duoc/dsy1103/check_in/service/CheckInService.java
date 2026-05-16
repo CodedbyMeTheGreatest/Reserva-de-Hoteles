@@ -41,7 +41,7 @@ public class CheckInService {
     public CheckInResponse buscarCheckInPorId(Long id){
         log.info("Obteniendo check-in con ID -> {}", id);
         return checkInMapper.toResponse(checkInRepository.findById(id)
-        .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id)));
+                .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id)));
     }
 
     public CheckInResponse agregarCheckIn(CheckInRequest request){
@@ -51,8 +51,7 @@ public class CheckInService {
             throw new DataIntegrityViolationException("Ya existe un check-in para la reserva con ID -> "+ request.getIdReserva());
         }
         EmpleadoResponse existeEmpleado = empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
-        CheckIn agregado = checkInRepository.save(checkInMapper.fromRequest(request));
-        return checkInMapper.toResponse(agregado);
+        return checkInMapper.toResponse(checkInRepository.save(checkInMapper.fromRequest(request)));
     }
     
     public CheckInResponse actualizarCheckIn(Long id, CheckInUpdateRequest updateRequest){
@@ -73,8 +72,7 @@ public class CheckInService {
         if(updateRequest.getObservaciones() != null){
             checkIn.setObservaciones(updateRequest.getObservaciones());
         }
-        CheckIn actualizado = checkInRepository.save(checkIn);
-        return checkInMapper.toResponse(actualizado);
+        return checkInMapper.toResponse(checkInRepository.save(checkIn));
     }
     
     public void eliminarCheckIn(Long id){

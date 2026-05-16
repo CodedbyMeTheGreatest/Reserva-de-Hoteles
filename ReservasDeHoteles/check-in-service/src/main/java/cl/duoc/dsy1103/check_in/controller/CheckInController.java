@@ -7,6 +7,7 @@ import cl.duoc.dsy1103.check_in.service.CheckInService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +34,8 @@ public class CheckInController {
 
     @PostMapping
     public ResponseEntity<CheckInResponse> agregarCheckIn(@Valid @RequestBody CheckInRequest request){
-        log.info("GET /api/check_in -> {}", request.getIdReserva());
-        return ResponseEntity.ok(checkInService.agregarCheckIn(request));
+        log.info("GET /api/check_in -> ID: {}", request.getIdReserva());
+        return ResponseEntity.status(HttpStatus.CREATED).body(checkInService.agregarCheckIn(request));
     }
 
     @PutMapping("/{id}")

@@ -3,7 +3,7 @@ spring:
     name: facturas-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_vm_facturas
+    url: jdbc:mysql://localhost:3306/db_hoteleria_facturas
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver

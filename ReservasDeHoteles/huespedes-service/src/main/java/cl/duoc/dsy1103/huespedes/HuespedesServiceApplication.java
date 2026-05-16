@@ -1,13 +1,13 @@
-package cl.duoc.dsy1103.usuarios;
+package cl.duoc.dsy1103.huespedes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class UsuariosServiceApplication {
+public class HuespedesServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(UsuariosServiceApplication.class, args);
+		SpringApplication.run(HuespedesServiceApplication.class, args);
 	}
 
 }

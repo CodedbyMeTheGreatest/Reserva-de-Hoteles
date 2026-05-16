@@ -7,6 +7,7 @@ import cl.duoc.dsy1103.facturas.service.FacturaService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +41,8 @@ public class FacturaController {
 
     @PostMapping
     public ResponseEntity<FacturaResponse> agregarFactura(@Valid @RequestBody FacturaRequest request){
-        log.info("POST /api/facturas");
-        return ResponseEntity.ok(facturaService.agregarFactura(request));
+        log.info("POST /api/facturas -> FOLIO: {}", request.getFolio());
+        return ResponseEntity.status(HttpStatus.CREATED).body(facturaService.agregarFactura(request));
     }
 
     @PutMapping("/{id}")

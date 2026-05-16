@@ -1,5 +1,6 @@
 package cl.duoc.dsy1103.empleados.service;
 
+import cl.duoc.dsy1103.empleados.client.HotelClient;
 import cl.duoc.dsy1103.empleados.client.ReservaClient;
 import cl.duoc.dsy1103.empleados.dto.*;
 import cl.duoc.dsy1103.empleados.exception.BadRequestException;
@@ -26,8 +27,8 @@ public class EmpleadoService {
     @Autowired
     private ReservaClient reservaClient;
 
-    //@Autowired
-    //private HotelClient hotelClient;
+    @Autowired
+    private HotelClient hotelClient;
 
     public List<EmpleadoResponse> obtenerEmpleados(){
         log.info("Obteniendo todos los empleados...");
@@ -38,29 +39,26 @@ public class EmpleadoService {
 
     public EmpleadoResponse buscarEmpleadoPorId(Long id){
         log.info("Buscando empleado con ID -> {}", id);
-        Empleado encontrado = empleadoRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id));
-        return empleadoMapper.toResponse(encontrado);
+        return empleadoMapper.toResponse(empleadoRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id)));
     }
 
     public EmpleadoResponse buscarEmpleadoPorRut(String run){
         log.info("Buscando empleado con RUN -> {}", run);
-        Empleado encontrado = empleadoRepository.findByRun(run)
-                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run));
-        return empleadoMapper.toResponse(encontrado);
+        return empleadoMapper.toResponse(empleadoRepository.findByRun(run)
+                .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run)));
     }
 
     public EmpleadoResponse agregarEmpleado(EmpleadoRequest request){
         log.info("Añadiendo empleado con RUN -> {}", request.getRun());
-        //HotelResponse existehotel = hotelClient.findHotelById(request.getIdHotel());
+        HotelResponse existehotel = hotelClient.buscarHotelPorId(request.getIdHotel());
         Empleado empleado = empleadoMapper.fromRequest(request);
-        //empleado.setNombreHotel(existehotel.getNombre());
+        empleado.setNombreHotel(existehotel.getNombre());
         List<String> cargosValidos = List.of("Recepcionista", "Supervisor Recepcion", "Administrador");
         if(!cargosValidos.contains(request.getCargo())){
             throw new BadRequestException("El cargo ingresado no es valido. Debe ser 'Recepcionista', 'Supervisor Recepcion' o 'Administrador'");
         }
-        Empleado agregado = empleadoRepository.save(empleado);
-        return empleadoMapper.toResponse(agregado);
+        return empleadoMapper.toResponse(empleadoRepository.save(empleado));
     }
 
     public EmpleadoResponse actualizarEmpleado(Long id, EmpleadoUpdateRequest updateRequest){
@@ -78,12 +76,11 @@ public class EmpleadoService {
             empleado.setCargo(updateRequest.getCargo());
         }
         if(updateRequest.getIdHotel() != null) {
-            //HotelResponse existeHotel = hotelClient.findHotelById(id);
+            HotelResponse existeHotel = hotelClient.buscarHotelPorId(id);
             empleado.setIdHotel(updateRequest.getIdHotel());
-            //empleado.setNombreHotel(existeHotel.getNombre());
+            empleado.setNombreHotel(existeHotel.getNombre());
         }
-        Empleado actualizado = empleadoRepository.save(empleado);
-        return empleadoMapper.toResponse(actualizado);
+        return empleadoMapper.toResponse(empleadoRepository.save(empleado));
     }
 
     public void eliminarEmpleado(Long id){

@@ -8,6 +8,7 @@ import cl.duoc.dsy1103.empleados.service.EmpleadoService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,29 +31,25 @@ public class EmpleadoController {
     @GetMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorId(@PathVariable Long id){
         log.info("GET /api/empleados/id/{}", id);
-        EmpleadoResponse encontrado = empleadoService.buscarEmpleadoPorId(id);
-        return ResponseEntity.ok(encontrado);
+        return ResponseEntity.ok(empleadoService.buscarEmpleadoPorId(id));
     }
 
     @GetMapping("/run/{run}")
     public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorRut(@PathVariable String run){
         log.info("GET /api/empleados/run/{}", run);
-        EmpleadoResponse encontrado = empleadoService.buscarEmpleadoPorRut(run);
-        return ResponseEntity.ok(encontrado);
+        return ResponseEntity.ok(empleadoService.buscarEmpleadoPorRut(run));
     }
 
     @PostMapping
     public ResponseEntity<EmpleadoResponse> agregarEmpleado(@Valid @RequestBody EmpleadoRequest request){
-        log.info("POST /api/empleados -> run: {}", request.getRun());
-        EmpleadoResponse agregado = empleadoService.agregarEmpleado(request);
-        return ResponseEntity.ok(agregado);
+        log.info("POST /api/empleados -> RUN: {}", request.getRun());
+        return ResponseEntity.status(HttpStatus.CREATED).body(empleadoService.agregarEmpleado(request));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<EmpleadoResponse> actualizarEmpleado(@PathVariable Long id, @Valid @RequestBody EmpleadoUpdateRequest updateRequest){
-        log.info("PUT /api/empleados/{} -> run: {}", id,updateRequest.getRun());
-        EmpleadoResponse actualizado = empleadoService.actualizarEmpleado(id, updateRequest);
-        return ResponseEntity.ok(actualizado);
+        log.info("PUT /api/empleados/{} -> RUN: {}", id,updateRequest.getRun());
+        return ResponseEntity.ok(empleadoService.actualizarEmpleado(id, updateRequest));
     }
 
     @DeleteMapping("/{id}")

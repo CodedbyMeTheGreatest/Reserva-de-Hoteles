@@ -83,8 +83,7 @@ public class FacturaService {
          factura.setImpuestos(existePago.getImpuestos());
          factura.setTotal(existePago.getTotal());
 
-         Factura guardada = facturaRepository.save(factura);
-         return facturaMapper.toResponse(guardada);
+         return facturaMapper.toResponse(facturaRepository.save(factura));
      }
 
      public FacturaResponse actualizarFactura(Long id, FacturaUpdateRequest updateRequest){
@@ -127,8 +126,7 @@ public class FacturaService {
         if (updateRequest.getFechaFactura() != null){
             factura.setFechaFactura(updateRequest.getFechaFactura());
         }
-        Factura actualizado = facturaRepository.save(factura);
-        return facturaMapper.toResponse(actualizado);
+        return facturaMapper.toResponse(facturaRepository.save(factura));
      }
 
      public void eliminarFactura(Long id){

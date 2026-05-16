@@ -1,4 +1,4 @@
-package cl.duoc.dsy1103.usuarios.dto;
+package cl.duoc.dsy1103.huespedes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,15 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 public class HuespedResponse {
-
     private Long id;
     private String run;
     private String nombreCompleto;
     private String email;
-    private int telefono;
+    private String telefono;
     private String nacionalidad;
-
-
 }

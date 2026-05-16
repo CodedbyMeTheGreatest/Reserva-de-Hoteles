@@ -1,4 +1,4 @@
-package cl.duoc.dsy1103.usuarios.model;
+package cl.duoc.dsy1103.huespedes.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,7 +12,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "Huespedes")
+@Table(name = "huespedes")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,19 +22,18 @@ public class Huesped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "run_huesped", nullable = false)
+    @Column(name = "run", length = 10, nullable = false, unique = true)
     private String run;
 
-    @Column(name = "nombre_huesped", nullable = false)
+    @Column(name = "nombre_completo", length = 150, nullable = false)
     private String nombreCompleto;
 
-    @Column(name = "email_huesped", nullable = false)
+    @Column(name = "email", length = 150, nullable = false)
     private String email;
 
-    @Column(name = "telefono_huesped", nullable = false)
-    private int telefono;
+    @Column(name = "telefono", length = 20, nullable = false)
+    private String telefono;
 
-    @Column(name = "nacionalidad_huesped", nullable = false)
+    @Column(name = "nacionalidad", length = 50, nullable = false)
     private String nacionalidad;
-
 }
