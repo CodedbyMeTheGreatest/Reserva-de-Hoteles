@@ -30,15 +30,15 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping
-    public List<ReservaResponse> buscarReservas(){
+    public ResponseEntity<List<ReservaResponse>> buscarReservas(){
         log.info("GET /api/reservas/buscarReservas");
-        return reservaService.buscarReservas();
+        return ResponseEntity.ok().body(reservaService.buscarReservas());
     }
 
     @GetMapping("/{id}")
-    public ReservaResponse buscarReservaPorId(@PathVariable Long id){
+    public ResponseEntity<ReservaResponse> buscarReservaPorId(@PathVariable("id") Long id){
         log.info("GET /api/reservas/{}", id);
-        return reservaService.buscarReservaPorId(id);
+        return ResponseEntity.ok().body(reservaService.buscarReservaPorId(id));
     }
 
     @PostMapping
@@ -48,17 +48,21 @@ public class ReservaController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ReservaResponse> actualizarReserva (@PathVariable Long idReserva, @Valid @RequestBody ReservaUpdateRequest request){
+    public ResponseEntity<ReservaResponse> actualizarReserva (@PathVariable("id") Long idReserva, @Valid @RequestBody ReservaUpdateRequest request){
         log.info("PUT /api/reservas/actualizarReserva/{}", idReserva);
         return ResponseEntity.ok().body(reservaService.actualizarReserva(idReserva, request));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarReserva (@PathVariable Long idReserva){
+    public ResponseEntity<Void> eliminarReserva (@PathVariable("id") Long idReserva){
         log.info("DELETE /api/reservas/eliminarReserva/{}", idReserva);
         reservaService.eliminarReserva(idReserva);
         return ResponseEntity.noContent().build();
     }
 
-    //haz que obtenga reservas (response) por run de empleado :) i need it bro con esta uri -> /empleado/{run}
+    @GetMapping("/empleado/{run}")
+    public ResponseEntity<List<ReservaResponse>> buscarReservasPorEmpleado(@PathVariable("run") String run){
+        log.info("GET /api/reservas/empleado/{}", run);
+        return ResponseEntity.ok().body(reservaService.buscarReservasPorEmpleado(run));
+    }
 }

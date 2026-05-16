@@ -15,7 +15,7 @@ public class HabitacionRequest {
     @NotNull(message = "El número de habitación es obligatorio")
     private String numero;
 
-    @Size(min = 1, max = 50, message = "La descripción debe tener entre 1 y 50 caracteres")
+    @Size(min = 1, max = 200, message = "La descripción debe tener entre 1 y 200 caracteres")
     @NotNull(message = "La descripción es obligatoria")
     private String descripcion;
 

@@ -1,12 +1,13 @@
 package cl.duoc.dsy1103.pagos.client;
 
+import java.util.NoSuchElementException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 
 import cl.duoc.dsy1103.pagos.dto.HabitacionResponse;
-import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 
 @Component
@@ -20,14 +21,14 @@ public class HabitacionClient {
         log.info("Buscando habitacion con ID -> {}",idHabitacion);
         try{
             return webClient.get()
-                .uri("http://localhost:8081/api/habitaciones",idHabitacion)
+                .uri("http://localhost:8081/api/habitaciones/{id}",idHabitacion)
                 .retrieve()
                 .bodyToMono(HabitacionResponse.class)
                 .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()) {
-                case 404 -> throw new EntityNotFoundException("No se encontro habitacion con ID -> {}"+idHabitacion);            
-                default -> throw new RuntimeException("Error obteniendo habitacion con ID -> {}"+idHabitacion);
+                case 404 -> throw new NoSuchElementException("No se encontro habitacion con ID -> "+idHabitacion);            
+                default -> throw new RuntimeException("Error obteniendo habitacion con ID -> "+idHabitacion);
             }
         }
     }

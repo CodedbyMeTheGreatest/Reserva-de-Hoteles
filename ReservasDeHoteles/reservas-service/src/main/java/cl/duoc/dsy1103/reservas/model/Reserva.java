@@ -34,7 +34,7 @@ public class Reserva {
     private Long idEmpleado;
 
     @Column(nullable = false, length = 15, name = "cant_dias")
-    private String cantDias;
+    private Integer cantDias;
 
     @Column(nullable = false, name = "id_checkin")
     private Long idCheckIn;

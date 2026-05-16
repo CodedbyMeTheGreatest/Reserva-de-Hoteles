@@ -26,7 +26,6 @@ public class DisponibilidadClient {
                     .bodyToMono(DisponibilidadResponse.class)
                     .block();
         } catch (WebClientResponseException ex) {
-            log.error("Error al obtener disponibilidad con ID: {}", idDisponibilidad, ex);
             switch (ex.getStatusCode().value()) {
                 case 404 -> throw new NoSuchElementException("No se encontró disponibilidad con ID: " + idDisponibilidad);
                 default -> throw new RuntimeException("Error obteniendo disponibilidad con ID -> {}" + idDisponibilidad);

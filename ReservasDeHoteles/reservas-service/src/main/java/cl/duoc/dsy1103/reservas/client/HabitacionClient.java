@@ -16,18 +16,18 @@ public class HabitacionClient {
     @Autowired
     private WebClient webClient;
 
-    public HabitacionResponse findHabitacionById (Long idHabitacion){
+    public HabitacionResponse buscarHabitacionPorId (Long idHabitacion){
         log.info("Buscando habitacion con ID -> {}",idHabitacion);
         try{
             return webClient.get()
-                .uri("http://localhost:8081/api/habitaciones",idHabitacion)
+                .uri("http://localhost:8081/api/habitaciones/{id}",idHabitacion)
                 .retrieve()
                 .bodyToMono(HabitacionResponse.class)
                 .block();
         }catch (WebClientResponseException ex){
             switch (ex.getStatusCode().value()) {
-                case 404 -> throw new EntityNotFoundException("No se encontro habitacion con ID -> {}"+idHabitacion);            
-                default -> throw new RuntimeException("Error obteniendo habitacion con ID -> {}"+idHabitacion);
+                case 404 -> throw new EntityNotFoundException("No se encontro habitacion con ID -> "+idHabitacion);            
+                default -> throw new RuntimeException("Error obteniendo habitacion con ID -> "+idHabitacion);
             }
         }
     }

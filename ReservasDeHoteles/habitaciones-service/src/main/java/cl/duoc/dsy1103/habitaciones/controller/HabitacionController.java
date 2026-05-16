@@ -55,9 +55,15 @@ public class HabitacionController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarHabitacion (@PathVariable("id") Long idHabitacion){
-        log.info("DELETE /api/habitaciones/eliminarHabitacion/{id}",idHabitacion);
+        log.info("DELETE /api/habitaciones/eliminarHabitacion/{}",idHabitacion);
         habitacionService.eliminarHabitacion(idHabitacion);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("numero/{numero}")
+    public ResponseEntity<HabitacionResponse> buscarHabitacionPorNumero(@PathVariable("numero") String numero){
+        log.info("GET /api/habitaciones/numero/{}", numero);
+        return ResponseEntity.ok().body(habitacionService.buscarHabitacionPorNumero(numero));
     }
     
 }

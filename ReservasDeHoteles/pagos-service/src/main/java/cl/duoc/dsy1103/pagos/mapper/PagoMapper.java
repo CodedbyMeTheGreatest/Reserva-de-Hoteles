@@ -22,6 +22,7 @@ public class PagoMapper {
     public PagoResponse toResponse (Pago pago) {
         return PagoResponse.builder()
                 .idPago(pago.getIdPago())
+                .idHabitacion(pago.getIdHabitacion())
                 .idHuesped(pago.getIdHuesped())
                 .precioPorNoche(pago.getPrecioPorNoche())
                 .cantDias(pago.getCantDias())

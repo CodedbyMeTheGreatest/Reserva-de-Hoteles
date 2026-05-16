@@ -5,18 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Builder
-public class ReservaResponse {
+public class CheckOutResponse {
+    private Long id;
+    private LocalDateTime fechaSalida;
     private Long idReserva;
-
-    private Long idHabitacion;
-    private Long idHuesped;
     private Long idEmpleado;
-
-    private Integer cantDias;
-    private Long idCheckIn;
-    private Long idCheckOut;
+    private String observaciones;
 }
+
