@@ -1,20 +1,8 @@
-# Reserva-de-Hoteles
-Sistema de gestión de reservas de hoteles
+# Reserva-de-Hoteles - Sistema de Gestion de Reservas de Hoteles
 
-### Microservicios
+Microservicios desarrollados en Spring Boot encargado de una gestion de reservas de hoteles.
 
-    Hoteles
-    Disponibilidad
-    Habitaciones  
-    Huespedes
-    Empleados
-    Reservas
-    Check-In
-    Check-Out
-    Pago
-    Factura
-
-## Puertos por Microservicio
+### Microservicios y sus Puertos
 
     Hoteles         -> 8080
     Habitaciones    -> 8081
@@ -26,9 +14,74 @@ Sistema de gestión de reservas de hoteles
     Check-Out       -> 8087
     Pago            -> 8088
     Factura         -> 8089
-### Integrantes
+
+### Funcionalidades
     
-    Jean     Lefiman
+CRUD en cada microservicio
+- Crean instancias
+- Leer y Buscar instancias por ID y/o RUN.
+- Actualizar instancias
+- Eliminar instancias
+
+### Tecnologias utilizadas
+
+### Backend
+- Java 17
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Spring Validation
+
+### Base de Datos
+- MySQL
+- Flyway
+
+### Utilidades y Dependencias
+- Lombok
+- WebClient
+- Maven
+
+
+### Ejecucion
+#### Programas utilizados
+- Laragon
+- Postman
+
+#### Pasos Realizados
+1. Clonar Repositorio
+
+```bash
+git clone https://github.com/CodedbyMeTheGreatest/Reserva-de-Hoteles.git
+```
+
+2. Iniciar MySQL desde Laragon
+
+3. Crear la base de datos correspondiente
+
+```sql
+DROP DATABASE IF EXISTS db_hoteleria_hoteles;
+DROP DATABASE IF EXISTS db_hoteleria_habitaciones;
+DROP DATABASE IF EXISTS db_hoteleria_pagos;
+DROP DATABASE IF EXISTS db_hoteleria_reservas;
+DROP DATABASE IF EXISTS db_hoteleria_disponibilidades;
+
+CREATE DATABASE db_hoteleria_hoteles;
+CREATE DATABASE db_hoteleria_habitaciones;
+CREATE DATABASE db_hoteleria_pagos;
+CREATE DATABASE db_hoteleria_reservas;
+CREATE DATABASE db_hoteleria_disponibilidades;
+```
+
+4. Ejecutar el proyecto
+
+```bash
+mvn spring-boot:run
+```
+
+
+### Integrantes 
+    Jean Lefiman
+    Corina Urrutia
     Benjamin Moya
-    Corina   Urrutia
+    
 
