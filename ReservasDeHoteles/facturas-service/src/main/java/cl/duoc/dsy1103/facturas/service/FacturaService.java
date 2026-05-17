@@ -70,20 +70,20 @@ public class FacturaService {
         ReservaResponse existeReserva = reservaClient.buscarReservaPorId(factura.getIdReserva());
         HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(factura.getRunHuesped());
         if(!existeReserva.getIdHuesped().equals(existeHuesped.getId())){
-            throw new BadRequestException("La reserva con ID -> " + existeReserva.getId() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
+            throw new BadRequestException("La reserva con ID -> " + existeReserva.getIdReserva() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
         }
         factura.setNombreHuesped(existeHuesped.getNombreCompleto());
         factura.setCantDias(existeReserva.getCantDias());
 
         CheckInResponse existeCheckIn = checkInClient.obtenerCheckInPorId(factura.getIdCheckIn());
-        if(!existeCheckIn.getIdReserva().equals(existeReserva.getId())){
-            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        if(!existeCheckIn.getIdReserva().equals(existeReserva.getIdReserva())){
+            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getIdReserva());
         }
         factura.setFechaIngreso(existeCheckIn.getFechaIngreso());
 
         CheckOutResponse existeCheckOut = checkOutClient.obtenerCheckOutPorId(factura.getIdCheckOut());
-        if(!existeCheckOut.getIdReserva().equals(existeReserva.getId())){
-            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        if(!existeCheckOut.getIdReserva().equals(existeReserva.getIdReserva())){
+            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getIdReserva());
         }
         factura.setFechaSalida(existeCheckOut.getFechaSalida());
 
@@ -138,19 +138,19 @@ public class FacturaService {
 
         HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(factura.getRunHuesped());
         if(!existeReserva.getIdHuesped().equals(existeHuesped.getId())){
-            throw new BadRequestException("La reserva con ID -> " + existeReserva.getId() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
+            throw new BadRequestException("La reserva con ID -> " + existeReserva.getIdReserva() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
         }
         factura.setNombreHuesped(existeHuesped.getNombreCompleto());
 
         CheckInResponse existeCheckIn = checkInClient.obtenerCheckInPorId(factura.getIdCheckIn());
-        if(!existeCheckIn.getIdReserva().equals(existeReserva.getId())){
-            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        if(!existeCheckIn.getIdReserva().equals(existeReserva.getIdReserva())){
+            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getIdReserva());
         }
         factura.setFechaIngreso(existeCheckIn.getFechaIngreso());
 
         CheckOutResponse existeCheckOut = checkOutClient.obtenerCheckOutPorId(factura.getIdCheckOut());
-        if(!existeCheckOut.getIdReserva().equals(existeReserva.getId())){
-            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        if(!existeCheckOut.getIdReserva().equals(existeReserva.getIdReserva())){
+            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getIdReserva());
         }
         factura.setFechaSalida(existeCheckOut.getFechaSalida());
 

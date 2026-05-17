@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ReservaResponse {
-    private Long id;
+    private Long idReserva;
     private Long idHabitacion;
     private Long idHuesped;
     private Long idEmpleado;
