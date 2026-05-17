@@ -13,10 +13,5 @@ public class ReservaUpdateRequest {
     private Long idHabitacion;
     private Long idHuesped;
     private Long idEmpleado;
-
     private Integer cantDias;
-    
-    private Long idCheckIn;
-    private Long idCheckOut;
-
 }

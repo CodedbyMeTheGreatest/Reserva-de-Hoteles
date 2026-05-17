@@ -15,8 +15,6 @@ public class ReservaMapper {
                 .idHuesped(request.getIdHuesped())
                 .idEmpleado(request.getIdEmpleado())
                 .cantDias(request.getCantDias())
-                .idCheckIn(request.getIdCheckIn())
-                .idCheckOut(request.getIdCheckOut())
                 .build();
     }
 
@@ -27,8 +25,6 @@ public class ReservaMapper {
                 .idHuesped(reserva.getIdHuesped())
                 .idEmpleado(reserva.getIdEmpleado())
                 .cantDias(reserva.getCantDias())
-                .idCheckIn(reserva.getIdCheckIn())
-                .idCheckOut(reserva.getIdCheckOut())
                 .build();
     }
 }

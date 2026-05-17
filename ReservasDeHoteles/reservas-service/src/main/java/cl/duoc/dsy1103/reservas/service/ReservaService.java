@@ -6,8 +6,6 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import cl.duoc.dsy1103.reservas.client.CheckinClient;
-import cl.duoc.dsy1103.reservas.client.CheckoutClient;
 import cl.duoc.dsy1103.reservas.client.EmpleadoClient;
 import cl.duoc.dsy1103.reservas.client.HabitacionClient;
 import cl.duoc.dsy1103.reservas.client.HuespedClient;
@@ -33,13 +31,11 @@ public class ReservaService {
     private ReservaMapper reservaMapper;
 
     @Autowired
-    private CheckinClient checkinClient;
-    @Autowired
-    private CheckoutClient checkoutClient;
-    @Autowired
     private EmpleadoClient empleadoClient;
+
     @Autowired
     private HuespedClient huespedClient;
+
     @Autowired
     private HabitacionClient habitacionClient;
 
@@ -69,8 +65,6 @@ public class ReservaService {
         log.info("Creando nueva reserva para habitación ID: {}", request.getIdHabitacion());
         huespedClient.buscarHuespedPorId(request.getIdHuesped());
         empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
-        checkinClient.buscarCheckInPorId(request.getIdCheckIn());
-        checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
         habitacionClient.buscarHabitacionPorId(request.getIdHabitacion());
         Reserva reserva = reservaRepository.save(reservaMapper.fromRequest(request));
         return reservaMapper.toResponse(reserva);
@@ -95,14 +89,6 @@ public class ReservaService {
         }
         if (request.getCantDias() != null) {
             reservaExistente.setCantDias(request.getCantDias());
-        }
-        if (request.getIdCheckIn() != null) {
-            checkinClient.buscarCheckInPorId(request.getIdCheckIn());
-            reservaExistente.setIdCheckIn(request.getIdCheckIn());
-        }
-        if (request.getIdCheckOut() != null) {
-            checkoutClient.buscarCheckOutPorId(request.getIdCheckOut());
-            reservaExistente.setIdCheckOut(request.getIdCheckOut());
         }
 
         Reserva reservaActualizada = reservaRepository.save(reservaExistente);

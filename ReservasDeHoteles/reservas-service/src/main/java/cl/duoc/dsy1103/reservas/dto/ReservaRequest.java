@@ -22,8 +22,4 @@ public class ReservaRequest {
     @NotNull(message = "La cantidad de días es obligatoria")
     private Integer cantDias;
 
-    @NotNull(message = "El ID del check-in es obligatorio")
-    private Long idCheckIn;
-
-    private Long idCheckOut;
 }

@@ -3,7 +3,5 @@ CREATE TABLE reservas (
     id_habitacion BIGINT NOT NULL,
     id_huesped BIGINT NOT NULL,
     id_empleado BIGINT NOT NULL,
-    cant_dias INT NOT NULL,
-    id_checkin BIGINT NOT NULL,
-    id_checkout BIGINT
+    cant_dias INT NOT NULL
 );

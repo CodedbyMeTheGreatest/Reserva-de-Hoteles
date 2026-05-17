@@ -36,10 +36,4 @@ public class Reserva {
     @Column(nullable = false, length = 15, name = "cant_dias")
     private Integer cantDias;
 
-    @Column(nullable = false, name = "id_checkin")
-    private Long idCheckIn;
-
-    @Column(nullable = true, name = "id_checkout")
-    private Long idCheckOut;
-
 }
