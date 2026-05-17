@@ -107,9 +107,6 @@ public class FacturaService {
             factura.setFolio(updateRequest.getFolio());
         }
         if (updateRequest.getIdReserva() != null){
-            if(facturaRepository.existsByIdReserva(updateRequest.getIdReserva())){
-                throw new BadRequestException("Ya existe una factura para la reserva con ID -> "+ updateRequest.getIdReserva());
-            }
             factura.setIdReserva(updateRequest.getIdReserva());
         }
 
@@ -124,9 +121,6 @@ public class FacturaService {
             factura.setIdCheckOut(updateRequest.getIdCheckOut());
         }
         if (updateRequest.getIdPago() != null){
-            if(facturaRepository.existsByIdPago(updateRequest.getIdPago())){
-                throw new BadRequestException("Ya existe una factura con el pago de ID -> " + updateRequest.getIdPago());
-            }
             factura.setIdPago(updateRequest.getIdPago());
         }
         if (updateRequest.getDescripcionHabitacion() != null){
