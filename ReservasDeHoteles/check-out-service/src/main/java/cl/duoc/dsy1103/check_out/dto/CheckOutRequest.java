@@ -12,10 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckOutRequest {
-
-    @NotNull(message = "La fecha de salida es obligatoria")
-    private LocalDateTime fechaSalida;
-
     @NotNull(message = "La ID de la reserva es obligatoria")
     private Long idReserva;
 

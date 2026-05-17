@@ -10,7 +10,6 @@ import cl.duoc.dsy1103.check_out.model.CheckOut;
 public class CheckOutMapper {
     public CheckOut fromRequest(CheckOutRequest request){
         return CheckOut.builder()
-                .fechaSalida(request.getFechaSalida())
                 .idReserva(request.getIdReserva())
                 .idEmpleado(request.getIdEmpleado())
                 .observaciones(request.getObservaciones())

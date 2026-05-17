@@ -11,10 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class CheckOutUpdateRequest {
-    private LocalDateTime fechaSalida;
-
     private Long idReserva;
-
     private Long idEmpleado;
 
     @Size(max = 250, message = "Las observaciones deben tener máximo 250 caracteres")

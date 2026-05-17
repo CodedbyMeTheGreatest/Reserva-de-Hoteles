@@ -28,16 +28,12 @@ public class FacturaRequest {
     @Size(min = 4, max = 10, message = "El run debe tener máximo 4 y 10 caracteres")
     private String runHuesped;
 
+    @NotNull(message = "El id de check in es obligatorio")
+    private Long idCheckIn;
+    @NotNull(message = "El id de check out es obligatorio")
+    private Long idCheckOut;
+
     @NotBlank(message = "La descripción de la habitación es obligatoria")
     @Size(min = 4, max = 50, message = "La descripción debe tener entre 4 y 50 caracteres")
     private String descripcionHabitacion;
-
-    @NotBlank(message = "El estado es obligatorio")
-    @Size(min = 4, max = 20, message = "El estado debe tener entre 4 y 20 caracteres")
-    private String estado;
-
-    @NotNull(message = "La fecha de la factura es obligatoria")
-    @PastOrPresent(message = "La fecha no puede ser fututa")
-    private LocalDateTime fechaFactura;
-
 }

@@ -58,9 +58,7 @@ public class CheckInService {
         log.info("Actualizando check-in con ID -> {}", id);
         CheckIn checkIn = checkInRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id));
-        if(updateRequest.getFechaIngreso() != null) {
-            checkIn.setFechaIngreso(updateRequest.getFechaIngreso());
-        }
+
         if (updateRequest.getIdReserva() != null) {
             ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
             checkIn.setIdReserva(updateRequest.getIdReserva());

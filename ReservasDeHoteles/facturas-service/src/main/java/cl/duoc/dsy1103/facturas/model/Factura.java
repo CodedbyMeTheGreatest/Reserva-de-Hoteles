@@ -1,5 +1,7 @@
 package cl.duoc.dsy1103.facturas.model;
 
+import cl.duoc.dsy1103.facturas.enums.EstadoPago;
+import cl.duoc.dsy1103.facturas.enums.MetodoPago;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,6 +36,12 @@ public class Factura {
     @Column(name = "nombre_huesped", length = 150, nullable = false)
     private String nombreHuesped;
 
+    @Column(name = "id_check_in", nullable = false, unique = true)
+    private Long idCheckIn;
+
+    @Column(name = "id_check_out", unique = true)
+    private Long idCheckOut;
+
     @Column(name = "fecha_check_in", nullable = false)
     private LocalDateTime fechaIngreso;
 
@@ -55,9 +63,18 @@ public class Factura {
     @Column(name = "total", nullable = false)
     private Integer total;
 
-    @Column(name = "estado", length = 20, nullable = false)
-    private String estado;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "metodo_pago",nullable = false)
+    private MetodoPago metodoPago;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "estado_pago", nullable = false)
+    private EstadoPago estadoPago;
 
     @Column(name = "fecha_factura", nullable = false)
     private LocalDateTime fechaFactura;
+    @PrePersist
+    protected void onCreate(){
+        this.fechaFactura = LocalDateTime.now();
+    }
 }

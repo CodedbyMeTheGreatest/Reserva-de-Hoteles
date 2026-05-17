@@ -45,96 +45,132 @@ public class FacturaService {
                 .toList();
     }
 
-     public FacturaResponse buscarFacturaPorId(Long id){
+    public FacturaResponse buscarFacturaPorId(Long id){
         log.info("Buscando factura con ID -> {}", id);
         return facturaMapper.toResponse(facturaRepository.findById(id).orElseThrow(()
         -> new EntityNotFoundException("No se encontró factura con ID -> "+id)));
-     }
+    }
 
-     public FacturaResponse buscarFacturaPorFolio(String folio){
+    public FacturaResponse buscarFacturaPorFolio(String folio){
          log.info("Buscando factura con FOLIO -> {}", folio);
          return facturaMapper.toResponse(facturaRepository.findByFolio(folio).orElseThrow(()
                  -> new EntityNotFoundException("No se encontró factura con FOLIO -> "+folio)));
-     }
+    }
 
-     public FacturaResponse agregarFactura(FacturaRequest request){
+    public FacturaResponse agregarFactura(FacturaRequest request){
         log.info("Agregando factura con FOLIO -> {}", request.getFolio());
-         if(facturaRepository.existsByIdReserva(request.getIdReserva())){
+        if(facturaRepository.existsByIdReserva(request.getIdReserva())){
              throw new BadRequestException("Ya existe una factura para la reserva con ID -> "+ request.getIdReserva());
-         }
-         if(facturaRepository.existsByIdPago(request.getIdPago())){
-             throw new BadRequestException("Ya existe una factura con el pago de ID -> " + request.getIdPago());
-         }
-         Factura factura = facturaMapper.fomRequest(request);
+        }
+        if(facturaRepository.existsByIdPago(request.getIdPago())){
+            throw new BadRequestException("Ya existe una factura con el pago de ID -> " + request.getIdPago());
+        }
+        Factura factura = facturaMapper.fomRequest(request);
 
-         HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(factura.getRunHuesped());
-         factura.setNombreHuesped(existeHuesped.getNombreCompleto());
+        ReservaResponse existeReserva = reservaClient.buscarReservaPorId(factura.getIdReserva());
+        HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(factura.getRunHuesped());
+        if(!existeReserva.getIdHuesped().equals(existeHuesped.getId())){
+            throw new BadRequestException("La reserva con ID -> " + existeReserva.getId() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
+        }
+        factura.setNombreHuesped(existeHuesped.getNombreCompleto());
+        factura.setCantDias(existeReserva.getCantDias());
 
-         ReservaResponse existeReserva = reservaClient.buscarReservaPorId(factura.getIdReserva());
-         factura.setCantDias(existeReserva.getCantDias());
+        CheckInResponse existeCheckIn = checkInClient.obtenerCheckInPorId(factura.getIdCheckIn());
+        if(!existeCheckIn.getIdReserva().equals(existeReserva.getId())){
+            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        }
+        factura.setFechaIngreso(existeCheckIn.getFechaIngreso());
 
-         CheckInResponse checkIn = checkInClient.obtenerCheckInPorId(existeReserva.getIdCheckIn());
-         factura.setFechaIngreso(checkIn.getFechaIngreso());
+        CheckOutResponse existeCheckOut = checkOutClient.obtenerCheckOutPorId(factura.getIdCheckOut());
+        if(!existeCheckOut.getIdReserva().equals(existeReserva.getId())){
+            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        }
+        factura.setFechaSalida(existeCheckOut.getFechaSalida());
 
-         CheckOutResponse checkOut = checkOutClient.obtenerCheckOutPorId(existeReserva.getIdCheckOut());
-         factura.setFechaSalida(checkOut.getFechaSalida());
+        PagoResponse existePago = pagoClient.buscarPagoPorId(factura.getIdPago());
+        if(!existeHuesped.getId().equals(existePago.getIdHuesped())){
+            throw new BadRequestException("El pago con ID -> " + existePago.getIdPago() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
+        }
+        factura.setSubtotal(existePago.getSubtotal());
+        factura.setImpuestos(existePago.getImpuestos());
+        factura.setTotal(existePago.getTotal());
+        factura.setMetodoPago(existePago.getMetodoPago());
+        factura.setEstadoPago(existePago.getEstadoPago());
 
-         PagoResponse existePago = pagoClient.buscarPagoPorId(factura.getIdPago());
-         factura.setSubtotal(existePago.getSubtotal());
-         factura.setImpuestos(existePago.getImpuestos());
-         factura.setTotal(existePago.getTotal());
+        return facturaMapper.toResponse(facturaRepository.save(factura));
+    }
 
-         return facturaMapper.toResponse(facturaRepository.save(factura));
-     }
-
-     public FacturaResponse actualizarFactura(Long id, FacturaUpdateRequest updateRequest){
+    public FacturaResponse actualizarFactura(Long id, FacturaUpdateRequest updateRequest){
         log.info("Actualizando factura con ID -> {}", id);
         Factura factura = facturaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("No se encontró factura con ID -> " + id));
         if(updateRequest.getFolio() != null){
             factura.setFolio(updateRequest.getFolio());
         }
         if (updateRequest.getIdReserva() != null){
-            ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
+            if(facturaRepository.existsByIdReserva(updateRequest.getIdReserva())){
+                throw new BadRequestException("Ya existe una factura para la reserva con ID -> "+ updateRequest.getIdReserva());
+            }
             factura.setIdReserva(updateRequest.getIdReserva());
-
-            CheckInResponse checkIn = checkInClient.obtenerCheckInPorId(existeReserva.getIdCheckIn());
-            factura.setFechaIngreso(checkIn.getFechaIngreso());
-
-            CheckOutResponse checkOut = checkOutClient.obtenerCheckOutPorId(existeReserva.getIdCheckOut());
-            factura.setFechaSalida(checkOut.getFechaSalida());
-
-            factura.setCantDias(existeReserva.getCantDias());
         }
+
         if (updateRequest.getRunHuesped() != null){
-            HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(updateRequest.getRunHuesped());
             factura.setRunHuesped(updateRequest.getRunHuesped());
-            factura.setNombreHuesped(existeHuesped.getNombreCompleto());
+        }
+
+        if(updateRequest.getIdCheckIn() != null){
+            factura.setIdCheckIn(updateRequest.getIdCheckIn());
+        }
+        if(updateRequest.getIdCheckOut() != null){
+            factura.setIdCheckOut(updateRequest.getIdCheckOut());
         }
         if (updateRequest.getIdPago() != null){
-            PagoResponse existePago = pagoClient.buscarPagoPorId(updateRequest.getIdPago());
+            if(facturaRepository.existsByIdPago(updateRequest.getIdPago())){
+                throw new BadRequestException("Ya existe una factura con el pago de ID -> " + updateRequest.getIdPago());
+            }
             factura.setIdPago(updateRequest.getIdPago());
-
-            factura.setSubtotal(existePago.getSubtotal());
-            factura.setImpuestos(existePago.getImpuestos());
-            factura.setTotal(existePago.getTotal());
         }
         if (updateRequest.getDescripcionHabitacion() != null){
             factura.setDescripcionHabitacion(updateRequest.getDescripcionHabitacion());
         }
-        if (updateRequest.getEstado() != null){
-            factura.setEstado(updateRequest.getEstado());
-        }
-        if (updateRequest.getFechaFactura() != null){
-            factura.setFechaFactura(updateRequest.getFechaFactura());
-        }
-        return facturaMapper.toResponse(facturaRepository.save(factura));
-     }
 
-     public void eliminarFactura(Long id){
-        log.info("Eliminando factura con ID -> {}", id);
-        if(!facturaRepository.existsById(id)){
-            throw new EntityNotFoundException("No se encontró factura con ID -> " +id);
+        ReservaResponse existeReserva = reservaClient.buscarReservaPorId(factura.getIdReserva());
+        factura.setCantDias(existeReserva.getCantDias());
+
+        HuespedResponse existeHuesped = huespedClient.buscarHuespedPorRun(factura.getRunHuesped());
+        if(!existeReserva.getIdHuesped().equals(existeHuesped.getId())){
+            throw new BadRequestException("La reserva con ID -> " + existeReserva.getId() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
         }
-        facturaRepository.deleteById(id);
-     }
+        factura.setNombreHuesped(existeHuesped.getNombreCompleto());
+
+        CheckInResponse existeCheckIn = checkInClient.obtenerCheckInPorId(factura.getIdCheckIn());
+        if(!existeCheckIn.getIdReserva().equals(existeReserva.getId())){
+            throw new BadRequestException("El check-in con ID -> " + existeCheckIn.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        }
+        factura.setFechaIngreso(existeCheckIn.getFechaIngreso());
+
+        CheckOutResponse existeCheckOut = checkOutClient.obtenerCheckOutPorId(factura.getIdCheckOut());
+        if(!existeCheckOut.getIdReserva().equals(existeReserva.getId())){
+            throw new BadRequestException("El check-out con ID -> " + existeCheckOut.getId() + " no pertenece a la reserva con ID -> " + existeReserva.getId());
+        }
+        factura.setFechaSalida(existeCheckOut.getFechaSalida());
+
+        PagoResponse existePago = pagoClient.buscarPagoPorId(factura.getIdPago());
+        if(!existeHuesped.getId().equals(existePago.getIdHuesped())){
+            throw new BadRequestException("El pago con ID -> " + existePago.getIdPago() + " no pertenece al huésped con ID -> " + existeHuesped.getId());
+        }
+        factura.setSubtotal(existePago.getSubtotal());
+        factura.setImpuestos(existePago.getImpuestos());
+        factura.setTotal(existePago.getTotal());
+        factura.setMetodoPago(existePago.getMetodoPago());
+        factura.setEstadoPago(existePago.getEstadoPago());
+        return facturaMapper.toResponse(facturaRepository.save(factura));
+    }
+
+    public void eliminarFactura(Long id){
+       log.info("Eliminando factura con ID -> {}", id);
+       if(!facturaRepository.existsById(id)){
+           throw new EntityNotFoundException("No se encontró factura con ID -> " +id);
+       }
+       facturaRepository.deleteById(id);
+    }
 }

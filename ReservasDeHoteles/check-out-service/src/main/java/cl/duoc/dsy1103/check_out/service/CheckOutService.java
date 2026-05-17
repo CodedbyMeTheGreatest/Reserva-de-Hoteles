@@ -63,9 +63,6 @@ public class CheckOutService {
         CheckOut checkOut = checkOutRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-out con ID -> "+id));
 
-        if(updateRequest.getFechaSalida() != null){
-            checkOut.setFechaSalida(updateRequest.getFechaSalida());
-        }
         if (updateRequest.getIdReserva() != null) {
             ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
             checkOut.setIdReserva(updateRequest.getIdReserva());

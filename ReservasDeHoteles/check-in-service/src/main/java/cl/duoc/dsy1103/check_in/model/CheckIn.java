@@ -25,8 +25,13 @@ public class CheckIn {
     @Column(name = "id_empleado", nullable = false)
     private Long idEmpleado;
 
-    @Column(name = "fecha_ingreso", nullable = false)
+    @Column(name = "fecha_ingreso", nullable = false, updatable = false)
     private LocalDateTime fechaIngreso;
+
+    @PrePersist
+    protected void onEnter() {
+        this.fechaIngreso = LocalDateTime.now();
+    }
 
     @Column(name = "observaciones", length = 250)
     private String observaciones;

@@ -14,9 +14,9 @@ public class FacturaMapper {
                 .idReserva(request.getIdReserva())
                 .idPago(request.getIdPago())
                 .runHuesped(request.getRunHuesped())
+                .idCheckIn(request.getIdCheckIn())
+                .idCheckOut(request.getIdCheckOut())
                 .descripcionHabitacion(request.getDescripcionHabitacion())
-                .estado(request.getEstado())
-                .fechaFactura(request.getFechaFactura())
                 .build();
     }
 
@@ -28,6 +28,8 @@ public class FacturaMapper {
                 .idPago(factura.getIdPago())
                 .runHuesped(factura.getRunHuesped())
                 .nombreHuesped(factura.getNombreHuesped())
+                .idCheckIn(factura.getIdCheckIn())
+                .idCheckOut(factura.getIdCheckOut())
                 .fechaIngreso(factura.getFechaIngreso())
                 .fechaSalida(factura.getFechaSalida())
                 .descripcionHabitacion(factura.getDescripcionHabitacion())
@@ -35,7 +37,8 @@ public class FacturaMapper {
                 .subtotal(factura.getSubtotal())
                 .impuestos(factura.getImpuestos())
                 .total(factura.getTotal())
-                .estado(factura.getEstado())
+                .metodoPago(factura.getMetodoPago())
+                .estadoPago(factura.getEstadoPago())
                 .fechaFactura(factura.getFechaFactura())
                 .build();
     }

@@ -14,6 +14,6 @@ public class HuespedResponse {
     private String run;
     private String nombreCompleto;
     private String email;
-    private int telefono;
+    private String telefono;
     private String nacionalidad;
 }

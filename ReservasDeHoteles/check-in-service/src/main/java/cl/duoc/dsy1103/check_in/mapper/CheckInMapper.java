@@ -11,7 +11,6 @@ public class CheckInMapper {
         return CheckIn.builder()
                 .idReserva(request.getIdReserva())
                 .idEmpleado(request.getIdEmpleado())
-                .fechaIngreso(request.getFechaIngreso())
                 .observaciones(request.getObservaciones())
                 .build();
     }

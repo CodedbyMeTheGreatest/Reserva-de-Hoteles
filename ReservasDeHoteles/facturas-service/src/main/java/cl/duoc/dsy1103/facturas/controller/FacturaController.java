@@ -52,7 +52,7 @@ public class FacturaController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarFactura(Long id){
+    public ResponseEntity<Void> eliminarFactura(@PathVariable Long id){
         log.info("DELETE /api/facturas/{}", id);
         facturaService.eliminarFactura(id);
         return ResponseEntity.noContent().build();
