@@ -64,12 +64,22 @@ DROP DATABASE IF EXISTS db_hoteleria_habitaciones;
 DROP DATABASE IF EXISTS db_hoteleria_pagos;
 DROP DATABASE IF EXISTS db_hoteleria_reservas;
 DROP DATABASE IF EXISTS db_hoteleria_disponibilidades;
+DROP DATABASE IF EXISTS db_hoteleria_huespedes;
+DROP DATABASE IF EXISTS db_hoteleria_empleados;
+DROP DATABASE IF EXISTS db_hoteleria_facturas;
+DROP DATABASE IF EXISTS db_hoteleria_check_in;
+DROP DATABASE IF EXISTS db_hoteleria_check_out;
 
 CREATE DATABASE db_hoteleria_hoteles;
 CREATE DATABASE db_hoteleria_habitaciones;
 CREATE DATABASE db_hoteleria_pagos;
 CREATE DATABASE db_hoteleria_reservas;
 CREATE DATABASE db_hoteleria_disponibilidades;
+CREATE DATABASE db_hoteleria_huespedes;
+CREATE DATABASE db_hoteleria_empleados;
+CREATE DATABASE db_hoteleria_facturas;
+CREATE DATABASE db_hoteleria_check_in;
+CREATE DATABASE db_hoteleria_check_out;
 ```
 
 4. Ejecutar el proyecto
