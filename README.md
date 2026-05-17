@@ -4,8 +4,8 @@ Sistema de gestión de reservas de hoteles
 ### Microservicios
 
     Hoteles
-    Habitaciones  
     Disponibilidad
+    Habitaciones  
     Huespedes
     Empleados
     Reservas

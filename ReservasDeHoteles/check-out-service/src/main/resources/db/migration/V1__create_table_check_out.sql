@@ -1,4 +1,4 @@
-CREATE TABLE(
+CREATE TABLE check_out(
     id              BIGINT          PRIMARY KEY AUTO_INCREMENT,
     fecha_salida    DATETIME        NOT NULL,
     id_reserva      BIGINT          NOT NULL    UNIQUE,

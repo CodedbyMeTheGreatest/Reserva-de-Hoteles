@@ -24,6 +24,7 @@ public class EmpleadoMapper {
                 .nombreCompleto(empleado.getNombreCompleto())
                 .cargo(empleado.getCargo())
                 .idHotel(empleado.getIdHotel())
+                .nombreHotel(empleado.getNombreHotel())
                 .build();
     }
 }

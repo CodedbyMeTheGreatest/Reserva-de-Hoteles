@@ -8,10 +8,10 @@ CREATE TABLE facturas(
     fecha_check_in          DATETIME    NOT NULL,
     fecha_check_out         DATETIME    NULL,
     descripcion_habitacion  VARCHAR(50)   NOT NULL,
-    cantidad_dias           NUMERIC     NOT NULL,
-    subtotal                NUMERIC     NOT NULL,
-    impuestos               NUMERIC     NOT NULL,
-    total                   NUMERIC     NOT NULL,
+    cantidad_dias           INT     NOT NULL,
+    subtotal                INT     NOT NULL,
+    impuestos               INT     NOT NULL,
+    total                   INT     NOT NULL,
     estado                  VARCHAR(20)   NOT NULL,
     fecha_factura           DATETIME    NOT NULL
 );

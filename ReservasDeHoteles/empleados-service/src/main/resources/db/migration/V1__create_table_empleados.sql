@@ -4,5 +4,5 @@ CREATE TABLE empleados(
     nombre_completo VARCHAR(150)   NOT NULL,
     cargo           VARCHAR(20)   NULL,
     id_hotel        BIGINT      NOT NULL,
-    nombre_hotel    VARCHAR(50   NULL
+    nombre_hotel    VARCHAR(50)   NULL
 )
