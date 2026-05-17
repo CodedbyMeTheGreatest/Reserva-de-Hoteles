@@ -2,7 +2,6 @@ package cl.duoc.dsy1103.facturas.dto;
 
 import cl.duoc.dsy1103.facturas.enums.EstadoPago;
 import cl.duoc.dsy1103.facturas.enums.MetodoPago;
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

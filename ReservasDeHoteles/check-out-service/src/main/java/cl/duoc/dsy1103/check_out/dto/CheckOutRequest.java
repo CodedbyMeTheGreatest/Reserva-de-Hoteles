@@ -1,7 +1,5 @@
 package cl.duoc.dsy1103.check_out.dto;
 
-import java.time.LocalDateTime;
-
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
