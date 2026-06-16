@@ -4,16 +4,16 @@ Microservicios desarrollados en Spring Boot encargado de una gestion de reservas
 
 ### Microservicios y sus Puertos
 
-    Hoteles         -> 8080
-    Habitaciones    -> 8081
+    Hoteles         -> 8081
     Disponibilidad  -> 8082
-    Huespedes       -> 8083
+    Habitaciones    -> 8083
     Empleados       -> 8084
-    Reservas        -> 8085
-    Check-In        -> 8086
-    Check-Out       -> 8087
-    Pago            -> 8088
-    Factura         -> 8089
+    Huespedes       -> 8085
+    Reservas        -> 8086
+    Check-In        -> 8087
+    Check-Out       -> 8088
+    Pago            -> 8089
+    Factura         -> 8090
 
 ### Funcionalidades
     

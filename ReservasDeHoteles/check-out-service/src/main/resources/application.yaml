@@ -18,14 +18,14 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: 8087
+  port: 8088
 
 #Client
 services:
   empleados:
     url: http://localhost:8084
   reservas:
-    url: http://localhost:8085
+    url: http://localhost:8086
 
 #Swagger
 springdoc:
@@ -33,4 +33,4 @@ springdoc:
     enabled: true
   swagger-ui:
     enabled: true
-    path: /doc/swagger-ui.html
+    path: /swagger-ui.html

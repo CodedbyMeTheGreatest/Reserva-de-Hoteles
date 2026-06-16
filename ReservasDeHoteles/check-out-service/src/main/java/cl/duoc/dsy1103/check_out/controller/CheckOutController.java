@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +21,14 @@ import java.util.List;
 @RequestMapping("/api/check_out")
 @Slf4j
 public class CheckOutController {
-    @Autowired
-    private CheckOutService checkOutService;
+    private final CheckOutService checkOutService;
+
+    CheckOutController(CheckOutService checkOutService) {
+        this.checkOutService = checkOutService;
+    }
 
     @GetMapping
-    @Operation(summary = "Obtener todos los check out", description = "Obtiene todos los check out existentes en la base de datos")
+    @Operation(summary = "Obtener todos los check out", description = "Retorna todos los check out existentes con su información")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación exitosa", 
                     content = @Content(mediaType = "application/json", 
@@ -38,7 +40,7 @@ public class CheckOutController {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener check out por ID", description = "Obtiene un check out existente con la ID del check out")
+    @Operation(summary = "Obtener check out por ID", description = "Retorna un check out específico existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación existosa", 
                     content = @Content(mediaType = "application/json",
@@ -51,7 +53,7 @@ public class CheckOutController {
     }
 
     @GetMapping("/reserva/{idReserva}")
-    @Operation(summary = "Obtener check out por ID de reserva", description = "Obtiene un check out existente con la ID de la reserva a la que pertenece el check out")
+    @Operation(summary = "Obtener check out por ID de reserva", description = "Retorna un check out existente con la ID de la reserva a la que pertenece")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Operación existosa", 
                     content = @Content(mediaType = "application/json", 
@@ -64,7 +66,7 @@ public class CheckOutController {
     }
 
     @PostMapping
-    @Operation(summary = "Agregar el check out de una reserva", description = "Agrega un check out de una reserva existente")
+    @Operation(summary = "Agregar el check out de una reserva", description = "Agrega un check out de una reserva existente, verificando la existencia del empleado y la reserva asociada")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Check out agregado existosamente", 
                     content = @Content(mediaType = "application/json", 
@@ -79,7 +81,7 @@ public class CheckOutController {
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "", description = "")
+    @Operation(summary = "Actualizar un check out", description = "Actualiza algunos o todos los campos de un check out existente")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Check out actualizado existosamente",
                     content = @Content(mediaType = "application/json",
@@ -95,7 +97,7 @@ public class CheckOutController {
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar check out por ID", description = "Elimina un check out existente por la ID ingresada")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Check out eliminado existosamente"),
+            @ApiResponse(responseCode = "204", description = "Check out eliminado existosamente"),
             @ApiResponse(responseCode = "404", description = "Check out no encontrado")
     })
     public ResponseEntity<Void> eliminarCheckOut(Long id){

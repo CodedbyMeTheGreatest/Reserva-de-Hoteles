@@ -9,7 +9,6 @@ import cl.duoc.dsy1103.empleados.model.Empleado;
 import cl.duoc.dsy1103.empleados.repository.EmpleadoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -18,17 +17,20 @@ import java.util.List;
 @Service
 @Slf4j
 public class EmpleadoService {
-    @Autowired
-    private EmpleadoRepository empleadoRepository;
+    private final EmpleadoRepository empleadoRepository;
 
-    @Autowired
-    private EmpleadoMapper empleadoMapper;
+    private final EmpleadoMapper empleadoMapper;
 
-    @Autowired
-    private ReservaClient reservaClient;
+    private final ReservaClient reservaClient;
 
-    @Autowired
-    private HotelClient hotelClient;
+    private final HotelClient hotelClient;
+
+    EmpleadoService(EmpleadoRepository empleadoRepository, ReservaClient reservaClient, HotelClient hotelClient) {
+        this.empleadoRepository = empleadoRepository;
+        this.empleadoMapper = new EmpleadoMapper();
+        this.reservaClient = reservaClient;
+        this.hotelClient = hotelClient;
+    }
 
     public List<EmpleadoResponse> obtenerEmpleados(){
         log.info("Obteniendo todos los empleados...");
@@ -51,6 +53,7 @@ public class EmpleadoService {
 
     public EmpleadoResponse agregarEmpleado(EmpleadoRequest request){
         log.info("Añadiendo empleado con RUN -> {}", request.getRun());
+        Empleado empleadoExiste = empleadoRepository.findByRun(request.getRun()).orElseThrow(() -> new BadRequestException("Ya existe un empleado con ese RUN"));
         HotelResponse existehotel = hotelClient.buscarHotelPorId(request.getIdHotel());
         Empleado empleado = empleadoMapper.fromRequest(request);
         empleado.setNombreHotel(existehotel.getNombre());
