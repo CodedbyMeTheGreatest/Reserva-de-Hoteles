@@ -2,7 +2,7 @@ spring:
   application:
     name: check-out-service
   datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_check_out
+    url: jdbc:mysql://localhost:3306/db_hoteleria_check_out #recordar de cambiar a puerto 3307 para la base de datos, por que en el insti tienen ocupado el 3306.
     username: root
     password:
     driver-class-name: com.mysql.jdbc.Driver
@@ -20,8 +20,17 @@ spring:
 server:
   port: 8087
 
+#Client
 services:
   empleados:
     url: http://localhost:8084
   reservas:
     url: http://localhost:8085
+
+#Swagger
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /doc/swagger-ui.html

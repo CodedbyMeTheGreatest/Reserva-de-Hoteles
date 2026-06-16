@@ -4,6 +4,11 @@ import cl.duoc.dsy1103.check_out.dto.CheckOutRequest;
 import cl.duoc.dsy1103.check_out.dto.CheckOutResponse;
 import cl.duoc.dsy1103.check_out.dto.CheckOutUpdateRequest;
 import cl.duoc.dsy1103.check_out.service.CheckOutService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,36 +26,78 @@ public class CheckOutController {
     private CheckOutService checkOutService;
 
     @GetMapping
+    @Operation(summary = "Obtener todos los check out", description = "Obtiene todos los check out existentes en la base de datos")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación exitosa", 
+                    content = @Content(mediaType = "application/json", 
+                            schema = @Schema(implementation = CheckOutResponse.class)))
+    })
     public ResponseEntity<List<CheckOutResponse>> obtenerCheckOut(){
         log.info("GET /api/check_out");
         return ResponseEntity.ok(checkOutService.obtenerCheckOut());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener check out por ID", description = "Obtiene un check out existente con la ID del check out")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación existosa", 
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CheckOutResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Check out no encontrado")
+    })
     public ResponseEntity<CheckOutResponse> buscarCheckOutPorId(@PathVariable Long id){
         log.info("GET /api/check_out/{}", id);
         return ResponseEntity.ok(checkOutService.buscarCheckOutPorId(id));
     }
 
     @GetMapping("/reserva/{idReserva}")
+    @Operation(summary = "Obtener check out por ID de reserva", description = "Obtiene un check out existente con la ID de la reserva a la que pertenece el check out")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operación existosa", 
+                    content = @Content(mediaType = "application/json", 
+                            schema = @Schema(implementation = CheckOutResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Check out no encontrado")
+    })
     public ResponseEntity<CheckOutResponse> buscarCheckOutPorIdReserva(@PathVariable Long idReserva){
         log.info("GET /api/check_out/reserva/{}", idReserva);
         return ResponseEntity.ok(checkOutService.buscarCheckOutPorIdReserva(idReserva));
     }
 
     @PostMapping
+    @Operation(summary = "Agregar el check out de una reserva", description = "Agrega un check out de una reserva existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Check out agregado existosamente", 
+                    content = @Content(mediaType = "application/json", 
+                            schema = @Schema(implementation = CheckOutResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Empleado o Reserva no encontrada"),
+            @ApiResponse(responseCode = "400", description = "Ya existe check out de esa reserva"),
+            @ApiResponse(responseCode = "500", description = "Operación fallida")
+    })
     public ResponseEntity<CheckOutResponse> agregarCheckOut(@Valid @RequestBody CheckOutRequest request){
         log.info("GET /api/check_out -> ID: {}", request.getIdReserva());
         return ResponseEntity.status(HttpStatus.CREATED).body(checkOutService.agregarCheckOut(request));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "", description = "")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Check out actualizado existosamente",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = CheckOutResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Check out, Empleado o Reserva no encontrada"),
+            @ApiResponse(responseCode = "500", description = "Operación fallida")
+    })
     public ResponseEntity<CheckOutResponse> actualizarCheckOut(@PathVariable Long id, @Valid @RequestBody CheckOutUpdateRequest updateRequest){
         log.info("PUT /api/check_out/{}", id);
         return ResponseEntity.ok(checkOutService.actualizarCheckOut(id, updateRequest));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar check out por ID", description = "Elimina un check out existente por la ID ingresada")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Check out eliminado existosamente"),
+            @ApiResponse(responseCode = "404", description = "Check out no encontrado")
+    })
     public ResponseEntity<Void> eliminarCheckOut(Long id){
         log.info("DELETE /api/check_out/{}", id);
         checkOutService.eliminarCheckOut(id);

@@ -91,7 +91,6 @@ mvn spring-boot:run
 
 ### Integrantes 
     Jean Lefiman
-    Corina Urrutia
-    Benjamin Moya
+    Corina Urrutia  
     
 
