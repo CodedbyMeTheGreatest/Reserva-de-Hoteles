@@ -54,9 +54,7 @@ public class PagoController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = PagoResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Pago no encontrado",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Pago no encontrado")
     })
     public ResponseEntity<PagoResponse> buscarPagoPorId(@PathVariable("id") Long id){
         log.info("GET /api/pagos/{}", id);
@@ -69,15 +67,9 @@ public class PagoController {
         @ApiResponse(responseCode = "201", description = "Pago creado exitosamente",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = PagoResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Solicitud inválida",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Habitacion o Huesped no encontrado",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
+        @ApiResponse(responseCode = "404", description = "Habitacion o Huesped no encontrado"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<PagoResponse> crearPago (@Valid @RequestBody PagoRequest request) {
         log.info("POST /api/pagos/crearPago");
@@ -90,12 +82,8 @@ public class PagoController {
         @ApiResponse(responseCode = "200", description = "Pago actualizado exitosamente",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = PagoResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Pago no encontrado",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Pago no encontrado"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<PagoResponse> actualizarPago (@PathVariable("id") Long idPago, @Valid @RequestBody PagoUpdateRequest request){
         log.info("PUT /api/pagos/actualizarPago/{}", idPago);
@@ -106,12 +94,8 @@ public class PagoController {
     @Operation(summary = "Eliminar un pago", description = "Elimina un pago existente en la base de datos")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Pago eliminado exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Pago no encontrado",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Pago no encontrado"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<Void> eliminarPago (@PathVariable("id") Long idPago){
         log.info("DELETE /api/pagos/eliminarPago/{}", idPago);

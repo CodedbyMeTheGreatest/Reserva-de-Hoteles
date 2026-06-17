@@ -18,6 +18,11 @@ import cl.duoc.dsy1103.reservas.dto.ReservaRequest;
 import cl.duoc.dsy1103.reservas.dto.ReservaResponse;
 import cl.duoc.dsy1103.reservas.dto.ReservaUpdateRequest;
 import cl.duoc.dsy1103.reservas.service.ReservaService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,30 +35,69 @@ public class ReservaController {
     private ReservaService reservaService;
 
     @GetMapping
+    @Operation(summary = "Obtener reservas", description = "Obtiene todas las reservas ingresadas")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operacion exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservaResponse.class)
+            )
+        )
+    })
     public ResponseEntity<List<ReservaResponse>> buscarReservas(){
         log.info("GET /api/reservas/buscarReservas");
         return ResponseEntity.ok().body(reservaService.buscarReservas());
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Obtener reserva por ID", description = "Obtiene una reserva especifica por su ID")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operacion exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservaResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrado"),
+        
+    })
     public ResponseEntity<ReservaResponse> buscarReservaPorId(@PathVariable("id") Long id){
         log.info("GET /api/reservas/{}", id);
         return ResponseEntity.ok().body(reservaService.buscarReservaPorId(id));
     }
 
     @PostMapping
+    @Operation(summary = "Crear una nueva reserva", description = "Agrega una nueva reserva al sistema")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operacion exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservaResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada"),
+        @ApiResponse(responseCode = "400", description = "Ingreso de datos invalidos"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<ReservaResponse> crearReserva (@Valid @RequestBody ReservaRequest request) {
         log.info("POST /api/reservas/crearReserva");
         return ResponseEntity.status(HttpStatus.CREATED).body(reservaService.crearReserva(request));
     }
 
     @PutMapping("/{id}")
+    @Operation(summary = "Actualizar una reserva", description = "Actualiza uno o todos los campos de una reserva existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operacion exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservaResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada"),
+        @ApiResponse(responseCode = "400", description = "Ingreso de datos invalidos"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    })
     public ResponseEntity<ReservaResponse> actualizarReserva (@PathVariable("id") Long idReserva, @Valid @RequestBody ReservaUpdateRequest request){
         log.info("PUT /api/reservas/actualizarReserva/{}", idReserva);
         return ResponseEntity.ok().body(reservaService.actualizarReserva(idReserva, request));
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Eliminar una reserva por su ID", description = "Elimina una reserva existente por la ID ingresada")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "204", description = "Reserva eliminada exitosamente"),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrada")
+    })
     public ResponseEntity<Void> eliminarReserva (@PathVariable("id") Long idReserva){
         log.info("DELETE /api/reservas/eliminarReserva/{}", idReserva);
         reservaService.eliminarReserva(idReserva);
@@ -61,6 +105,13 @@ public class ReservaController {
     }
 
     @GetMapping("/empleado/{run}")
+    @Operation(summary = "Obtener reserva por run", description = "Obtiene una reserva por el run del empleado que la realizo")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Operacion exitosa",
+            content = @Content(mediaType = "application/json",
+                schema = @Schema(implementation = ReservaResponse.class))),
+        @ApiResponse(responseCode = "404", description = "Reserva no encontrado"),
+    })    
     public ResponseEntity<List<ReservaResponse>> buscarReservasPorEmpleado(@PathVariable("run") String run){
         log.info("GET /api/reservas/empleado/{}", run);
         return ResponseEntity.ok().body(reservaService.buscarReservasPorEmpleado(run));

@@ -54,9 +54,7 @@ public class HabitacionController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = HabitacionResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Habitación no encontrada",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Habitación no encontrada")
     })
     public ResponseEntity<HabitacionResponse> buscarHabitacionPorId(@PathVariable("id")Long idHabitacion){
         log.info("GET /api/habitaciones/{}", idHabitacion);
@@ -69,12 +67,8 @@ public class HabitacionController {
         @ApiResponse(responseCode = "201", description = "Habitación creada exitosamente",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = HabitacionResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Solicitud inválida",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "400", description = "Solicitud inválida"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<HabitacionResponse> crearHabitacion (@Valid @RequestBody HabitacionRequest request) {
         log.info("POST /api/habitaciones/crearHabitacion");
@@ -87,12 +81,8 @@ public class HabitacionController {
         @ApiResponse(responseCode = "200", description = "Habitación actualizada exitosamente",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = HabitacionResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Habitación no encontrada",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Habitación no encontrada"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable("id") Long idHabitacion, @Valid @RequestBody HabitacionUpdateRequest request){
         log.info("PUT /api/habitaciones/actualizarHabitacion/{}", idHabitacion);
@@ -103,12 +93,8 @@ public class HabitacionController {
     @Operation(summary = "Eliminar una habitación", description = "Elimina una habitación existente en la base de datos")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "204", description = "Habitación eliminada exitosamente"),
-        @ApiResponse(responseCode = "404", description = "Habitación no encontrada",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class))),
-        @ApiResponse(responseCode = "500", description = "Error interno del servidor",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Habitación no encontrada"),
+        @ApiResponse(responseCode = "500", description = "Error interno del servidor")
     })
     public ResponseEntity<Void> eliminarHabitacion (@PathVariable("id") Long idHabitacion){
         log.info("DELETE /api/habitaciones/eliminarHabitacion/{}",idHabitacion);
@@ -122,9 +108,7 @@ public class HabitacionController {
         @ApiResponse(responseCode = "200", description = "Operación exitosa",
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = HabitacionResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Habitación no encontrada",
-                content = @Content(mediaType = "application/json",
-                        schema = @Schema(implementation = ApiErrorResponse.class)))
+        @ApiResponse(responseCode = "404", description = "Habitación no encontrada")
     })
     public ResponseEntity<HabitacionResponse> buscarHabitacionPorNumero(@PathVariable("numero") String numero){
         log.info("GET /api/habitaciones/numero/{}", numero);
