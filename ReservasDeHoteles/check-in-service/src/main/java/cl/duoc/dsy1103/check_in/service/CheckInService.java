@@ -48,11 +48,13 @@ public class CheckInService {
 
     public CheckInResponse agregarCheckIn(CheckInRequest request){
         log.info("Agregando check-in para reserva con ID -> {}", request.getIdReserva());
-        ReservaResponse existeReserva = reservaClient.buscarReservaPorId(request.getIdReserva());
+        //Verificamos que exista una reserva con esa ID
+        reservaClient.buscarReservaPorId(request.getIdReserva());
         if(checkInRepository.existsByIdReserva(request.getIdReserva())){
             throw new BadRequestException("Ya existe un check-in para la reserva con ID -> "+ request.getIdReserva());
         }
-        EmpleadoResponse existeEmpleado = empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
+        //Verificamos que exista un empleado con ese ID
+        empleadoClient.buscarEmpleadoPorId(request.getIdEmpleado());
         return checkInMapper.toResponse(checkInRepository.save(checkInMapper.fromRequest(request)));
     }
     
@@ -62,11 +64,13 @@ public class CheckInService {
                 .orElseThrow(() -> new EntityNotFoundException("No se ha encontrado check-in con ID ->"+ id));
 
         if (updateRequest.getIdReserva() != null) {
-            ReservaResponse existeReserva = reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
+            //Verificamos que exista una reserva con esa ID
+            reservaClient.buscarReservaPorId(updateRequest.getIdReserva());
             checkIn.setIdReserva(updateRequest.getIdReserva());
         }
         if(updateRequest.getIdEmpleado() != null) {
-            EmpleadoResponse existeEmpleado = empleadoClient.buscarEmpleadoPorId(updateRequest.getIdEmpleado());
+            //Verificamos que exista un empleado con ese ID
+            empleadoClient.buscarEmpleadoPorId(updateRequest.getIdEmpleado());
             checkIn.setIdEmpleado(updateRequest.getIdEmpleado());
         }
         if(updateRequest.getObservaciones() != null){

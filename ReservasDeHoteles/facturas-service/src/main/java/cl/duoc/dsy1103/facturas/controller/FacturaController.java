@@ -11,9 +11,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
@@ -34,9 +38,13 @@ public class FacturaController {
                 content = @Content(mediaType = "application/json", 
                         schema = @Schema(implementation = FacturaResponse.class)))
     })
-    public ResponseEntity<List<FacturaResponse>> obtenerFacturas(){
+    public ResponseEntity<CollectionModel<FacturaResponse>> obtenerFacturas(){
         log.info("GET /api/facturas");
-        return ResponseEntity.ok(facturaService.obtenerFacturas());
+        List<FacturaResponse> facturas = facturaService.obtenerFacturas();
+        facturas.forEach(this::agregarLinks);
+        CollectionModel<FacturaResponse> collection = CollectionModel.of(facturas, 
+            linkTo(methodOn(FacturaController.class).obtenerFacturas()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
 
@@ -50,7 +58,9 @@ public class FacturaController {
     })    
     public ResponseEntity<FacturaResponse> buscarFacturaPorId(@PathVariable Long id){
         log.info("GET /api/facturas/{}", id);
-        return ResponseEntity.ok(facturaService.buscarFacturaPorId(id));
+        FacturaResponse encontrado = facturaService.buscarFacturaPorId(id);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @GetMapping("/folio/{folio}")
@@ -63,7 +73,9 @@ public class FacturaController {
     })       
     public ResponseEntity<FacturaResponse> buscarFacturaPorFolio(@PathVariable String folio){
         log.info("GET /api/facturas/folio/{}", folio);
-        return ResponseEntity.ok(facturaService.buscarFacturaPorFolio(folio));
+        FacturaResponse encontrado = facturaService.buscarFacturaPorFolio(folio);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @PostMapping
@@ -78,7 +90,9 @@ public class FacturaController {
     })    
     public ResponseEntity<FacturaResponse> agregarFactura(@Valid @RequestBody FacturaRequest request){
         log.info("POST /api/facturas -> FOLIO: {}", request.getFolio());
-        return ResponseEntity.status(HttpStatus.CREATED).body(facturaService.agregarFactura(request));
+        FacturaResponse agregado = facturaService.agregarFactura(request);
+        agregarLinks(agregado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agregado);
     }
 
     @PutMapping("/{id}")
@@ -93,7 +107,9 @@ public class FacturaController {
     })    
     public ResponseEntity<FacturaResponse> actualizarFactura(@PathVariable Long id, @Valid @RequestBody FacturaUpdateRequest updateRequest){
         log.info("PUT /api/facturas/{}", id);
-        return ResponseEntity.ok(facturaService.actualizarFactura(id, updateRequest));
+        FacturaResponse actualizado = facturaService.actualizarFactura(id, updateRequest);
+        agregarLinks(actualizado);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -106,5 +122,13 @@ public class FacturaController {
         log.info("DELETE /api/facturas/{}", id);
         facturaService.eliminarFactura(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public void agregarLinks(FacturaResponse response){
+        response.add(
+            linkTo(methodOn(FacturaController.class).buscarFacturaPorId(response.getId())).withSelfRel(),
+            linkTo(methodOn(FacturaController.class).buscarFacturaPorFolio(response.getFolio())).withSelfRel(),
+            linkTo(methodOn(FacturaController.class).obtenerFacturas()).withRel("all")
+        );
     }
 }

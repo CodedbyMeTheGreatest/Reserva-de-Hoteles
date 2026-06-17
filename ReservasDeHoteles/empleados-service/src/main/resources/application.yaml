@@ -24,9 +24,9 @@ server:
 
 services:
   hoteles:
-    url: http://localhost:8080
+    url: http://localhost:8081
   reservas:
-    url: http://localhost:8085
+    url: http://localhost:8086
 
 springdoc:
   api-docs:

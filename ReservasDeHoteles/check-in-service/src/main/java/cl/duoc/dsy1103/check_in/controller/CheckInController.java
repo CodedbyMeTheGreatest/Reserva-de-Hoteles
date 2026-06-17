@@ -8,17 +8,23 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/check_in")
+@Tag(name = "Check In", description = "Gestión de Check In")
 @Slf4j
 public class CheckInController {
     private final CheckInService checkInService;
@@ -35,9 +41,13 @@ public class CheckInController {
                             schema = @Schema(implementation = CheckInResponse.class)))
 
     })
-    public ResponseEntity<List<CheckInResponse>> obtenerCheckIns(){
+    public ResponseEntity<CollectionModel<CheckInResponse>> obtenerCheckIns(){
         log.info("GET /api/check_in");
-        return ResponseEntity.ok(checkInService.obtenerCheckIns());
+        List<CheckInResponse> checkIns = checkInService.obtenerCheckIns();
+        checkIns.forEach(this::agregarLinks);
+        CollectionModel<CheckInResponse> collection =  CollectionModel.of(checkIns, 
+                linkTo(methodOn(CheckInController.class).obtenerCheckIns()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
@@ -50,7 +60,9 @@ public class CheckInController {
     })    
     public ResponseEntity<CheckInResponse> buscarCheckInPorId(@PathVariable Long id){
         log.info("GET /api/check_in/{}", id);
-        return ResponseEntity.ok(checkInService.buscarCheckInPorId(id));
+        CheckInResponse encontrado = checkInService.buscarCheckInPorId(id);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @PostMapping
@@ -65,7 +77,9 @@ public class CheckInController {
     })    
     public ResponseEntity<CheckInResponse> agregarCheckIn(@Valid @RequestBody CheckInRequest request){
         log.info("GET /api/check_in -> ID: {}", request.getIdReserva());
-        return ResponseEntity.status(HttpStatus.CREATED).body(checkInService.agregarCheckIn(request));
+        CheckInResponse agregado = checkInService.agregarCheckIn(request);
+        agregarLinks(agregado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agregado);
     }
 
     @PutMapping("/{id}")
@@ -79,7 +93,9 @@ public class CheckInController {
     })    
     public ResponseEntity<CheckInResponse> actualizarCheckIn(@PathVariable Long id, @Valid @RequestBody CheckInUpdateRequest updateRequest){
         log.info("PUT /api/check_in/{}", id);
-        return ResponseEntity.ok(checkInService.actualizarCheckIn(id, updateRequest));
+        CheckInResponse actualizado = checkInService.actualizarCheckIn(id, updateRequest);
+        agregarLinks(actualizado);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -94,5 +110,11 @@ public class CheckInController {
         log.info("DELETE /api/check_in/{}", id);
         checkInService.eliminarCheckIn(id);
         return ResponseEntity.noContent().build();
+    }    
+
+    public void agregarLinks(CheckInResponse response){
+        response.add(
+                linkTo(methodOn(CheckInController.class).obtenerCheckIns()).withRel("all"),
+                linkTo(methodOn(CheckInController.class).buscarCheckInPorId(response.getId())).withSelfRel());
     }
 }

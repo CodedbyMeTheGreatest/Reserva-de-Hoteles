@@ -1,6 +1,5 @@
 package cl.duoc.dsy1103.huespedes.dto;
 
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;

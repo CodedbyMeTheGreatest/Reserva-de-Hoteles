@@ -10,16 +10,22 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/empleados")
+@Tag(name = "Empleados", description = "Gestión de Empleados")
 @Slf4j
 public class EmpleadoController {
     private final EmpleadoService empleadoService;
@@ -35,13 +41,17 @@ public class EmpleadoController {
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = EmpleadoResponse.class)))
     })
-    public List<EmpleadoResponse> obtenerEmpleados(){
+    public ResponseEntity<CollectionModel<EmpleadoResponse>> obtenerEmpleados(){
         log.info("GET /api/empleados");
-        return empleadoService.obtenerEmpleados();
+        List<EmpleadoResponse> empleados = empleadoService.obtenerEmpleados();
+        empleados.forEach(this::agregarLinks);
+        CollectionModel<EmpleadoResponse> collection = CollectionModel.of(empleados, 
+            linkTo(methodOn(EmpleadoController.class).obtenerEmpleados()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener un empleado por una ID específica", description = "Retorna un empleado existente en la base de datos asociado a una ID ingresada")
+    @Operation(summary = "Obtener un empleado por una ID", description = "Retorna un empleado existente en la base de datos asociado a una ID ingresada")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Operación exitosa", 
                 content = @Content(mediaType = "application/json",
@@ -50,20 +60,24 @@ public class EmpleadoController {
     })
     public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorId(@PathVariable Long id){
         log.info("GET /api/empleados/id/{}", id);
-        return ResponseEntity.ok(empleadoService.buscarEmpleadoPorId(id));
+        EmpleadoResponse encontrado = empleadoService.buscarEmpleadoPorId(id);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @GetMapping("/run/{run}")
-    @Operation(summary = "Obtener un empleado por un RUT específico", description = "Retorna un empleado existente en la base de datos asociado a un RUT ingresado")
+    @Operation(summary = "Obtener un empleado por un RUN", description = "Retorna un empleado existente en la base de datos asociado a un RUN ingresado")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Operación exitosa", 
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = EmpleadoResponse.class))),
         @ApiResponse(responseCode = "404", description = "Empleado no encontrado")
     })
-    public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorRut(@PathVariable String run){
+    public ResponseEntity<EmpleadoResponse> buscarEmpleadoPorRun(@PathVariable String run){
         log.info("GET /api/empleados/run/{}", run);
-        return ResponseEntity.ok(empleadoService.buscarEmpleadoPorRut(run));
+        EmpleadoResponse encontrado = empleadoService.buscarEmpleadoPorRun(run);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @PostMapping
@@ -73,12 +87,13 @@ public class EmpleadoController {
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = EmpleadoResponse.class))),
         @ApiResponse(responseCode = "400", description = "Ingreso de datos inválidos"),
-        @ApiResponse(responseCode = "404", description = "Hotel no encontrado"),
         @ApiResponse(responseCode = "500", description = "Operación fallida")
     })
     public ResponseEntity<EmpleadoResponse> agregarEmpleado(@Valid @RequestBody EmpleadoRequest request){
         log.info("POST /api/empleados -> RUN: {}", request.getRun());
-        return ResponseEntity.status(HttpStatus.CREATED).body(empleadoService.agregarEmpleado(request));
+        EmpleadoResponse agregado = empleadoService.agregarEmpleado(request);
+        agregarLinks(agregado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agregado);
     }
 
     @PutMapping("/{id}")
@@ -92,7 +107,9 @@ public class EmpleadoController {
     })
     public ResponseEntity<EmpleadoResponse> actualizarEmpleado(@PathVariable Long id, @Valid @RequestBody EmpleadoUpdateRequest updateRequest){
         log.info("PUT /api/empleados/{} -> RUN: {}", id,updateRequest.getRun());
-        return ResponseEntity.ok(empleadoService.actualizarEmpleado(id, updateRequest));
+        EmpleadoResponse actualizado = empleadoService.actualizarEmpleado(id, updateRequest);
+        agregarLinks(actualizado);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -119,4 +136,10 @@ public class EmpleadoController {
         return ResponseEntity.ok(empleadoService.obtenerReservasPorRunEmpleado(run));
     }
 
+    public void agregarLinks(EmpleadoResponse response){
+        response.add(
+            linkTo(methodOn(EmpleadoController.class).buscarEmpleadoPorId(response.getIdEmpleado())).withSelfRel(),
+            linkTo(methodOn(EmpleadoController.class).buscarEmpleadoPorRun(response.getRun())).withSelfRel(),
+            linkTo(methodOn(EmpleadoController.class).obtenerEmpleados()).withRel("all"));
+    }
 }

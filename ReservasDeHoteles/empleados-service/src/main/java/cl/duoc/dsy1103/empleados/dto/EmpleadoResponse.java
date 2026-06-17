@@ -1,15 +1,19 @@
 package cl.duoc.dsy1103.empleados.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class EmpleadoResponse {
+public class EmpleadoResponse extends RepresentationModel<EmpleadoResponse>{
     private Long idEmpleado;
     private String run;
     private String nombreCompleto;

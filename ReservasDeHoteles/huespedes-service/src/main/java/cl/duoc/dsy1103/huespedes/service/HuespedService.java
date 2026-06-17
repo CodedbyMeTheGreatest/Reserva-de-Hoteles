@@ -5,7 +5,6 @@ import java.util.NoSuchElementException;
 
 import cl.duoc.dsy1103.huespedes.dto.HuespedRequest;
 import cl.duoc.dsy1103.huespedes.dto.HuespedUpdateRequest;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.dsy1103.huespedes.dto.HuespedResponse;
@@ -19,15 +18,14 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HuespedService {
 
-    @Autowired
-    private HuespedRepository huespedRepository;
+    private final HuespedRepository huespedRepository;
 
-    @Autowired
-    private HuespedMapper huespedMapper;
+    private final HuespedMapper huespedMapper;
 
-    //@Autowired
-    //private ReservaClient reservaClient;
-
+    HuespedService(HuespedMapper huespedMapper, HuespedRepository huespedRepository) {
+        this.huespedMapper = huespedMapper;
+        this.huespedRepository = huespedRepository;
+    }
 
     public List<HuespedResponse> obtenerHuespedes(){
         log.info("Obteniendo huéspedes...");

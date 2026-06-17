@@ -45,7 +45,7 @@ public class EmpleadoService {
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el ID "+ id)));
     }
 
-    public EmpleadoResponse buscarEmpleadoPorRut(String run){
+    public EmpleadoResponse buscarEmpleadoPorRun(String run){
         log.info("Buscando empleado con RUN -> {}", run);
         return empleadoMapper.toResponse(empleadoRepository.findByRun(run)
                 .orElseThrow(() -> new EntityNotFoundException("No se encontró ningún empleado con el RUN "+ run)));
@@ -53,7 +53,10 @@ public class EmpleadoService {
 
     public EmpleadoResponse agregarEmpleado(EmpleadoRequest request){
         log.info("Añadiendo empleado con RUN -> {}", request.getRun());
-        Empleado empleadoExiste = empleadoRepository.findByRun(request.getRun()).orElseThrow(() -> new BadRequestException("Ya existe un empleado con ese RUN"));
+        //Verifica que no exista un empleado con ese RUN
+        if(empleadoRepository.existsByRun(request.getRun())){
+            throw new BadRequestException("Ya existe un empleado con ese RUN");
+        }
         HotelResponse existehotel = hotelClient.buscarHotelPorId(request.getIdHotel());
         Empleado empleado = empleadoMapper.fromRequest(request);
         empleado.setNombreHotel(existehotel.getNombre());

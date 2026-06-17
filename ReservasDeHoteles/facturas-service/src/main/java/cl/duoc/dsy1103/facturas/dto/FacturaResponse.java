@@ -4,16 +4,20 @@ import cl.duoc.dsy1103.facturas.enums.EstadoPago;
 import cl.duoc.dsy1103.facturas.enums.MetodoPago;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
-@Data
+import org.springframework.hateoas.RepresentationModel;
+
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FacturaResponse {
+public class FacturaResponse extends RepresentationModel<FacturaResponse>{
     private Long id;
     private String folio;
     private Long idReserva;

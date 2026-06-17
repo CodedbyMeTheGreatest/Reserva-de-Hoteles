@@ -18,13 +18,13 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: 8086
+  port: 8087
 
 services:
   empleados:
     url: http://localhost:8084
   reservas:
-    url: http://localhost:8085
+    url: http://localhost:8086
   
 springdoc:
   api-docs:

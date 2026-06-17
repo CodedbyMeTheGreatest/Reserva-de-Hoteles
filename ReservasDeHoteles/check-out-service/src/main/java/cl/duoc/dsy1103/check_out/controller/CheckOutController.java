@@ -11,9 +11,13 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import java.util.List;
 
@@ -34,9 +38,13 @@ public class CheckOutController {
                     content = @Content(mediaType = "application/json", 
                             schema = @Schema(implementation = CheckOutResponse.class)))
     })
-    public ResponseEntity<List<CheckOutResponse>> obtenerCheckOut(){
+    public ResponseEntity<CollectionModel<CheckOutResponse>> obtenerCheckOut(){
         log.info("GET /api/check_out");
-        return ResponseEntity.ok(checkOutService.obtenerCheckOut());
+        List<CheckOutResponse> checkOuts = checkOutService.obtenerCheckOut();
+        checkOuts.forEach(this::agregarLinks);
+        CollectionModel<CheckOutResponse> collection = CollectionModel.of(checkOuts,
+                linkTo(methodOn(CheckOutController.class).obtenerCheckOut()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
@@ -49,7 +57,9 @@ public class CheckOutController {
     })
     public ResponseEntity<CheckOutResponse> buscarCheckOutPorId(@PathVariable Long id){
         log.info("GET /api/check_out/{}", id);
-        return ResponseEntity.ok(checkOutService.buscarCheckOutPorId(id));
+        CheckOutResponse encontrado = checkOutService.buscarCheckOutPorId(id);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @GetMapping("/reserva/{idReserva}")
@@ -62,7 +72,9 @@ public class CheckOutController {
     })
     public ResponseEntity<CheckOutResponse> buscarCheckOutPorIdReserva(@PathVariable Long idReserva){
         log.info("GET /api/check_out/reserva/{}", idReserva);
-        return ResponseEntity.ok(checkOutService.buscarCheckOutPorIdReserva(idReserva));
+        CheckOutResponse encontrado = checkOutService.buscarCheckOutPorIdReserva(idReserva);
+        agregarLinks(encontrado);
+        return ResponseEntity.ok(encontrado);
     }
 
     @PostMapping
@@ -77,7 +89,9 @@ public class CheckOutController {
     })
     public ResponseEntity<CheckOutResponse> agregarCheckOut(@Valid @RequestBody CheckOutRequest request){
         log.info("GET /api/check_out -> ID: {}", request.getIdReserva());
-        return ResponseEntity.status(HttpStatus.CREATED).body(checkOutService.agregarCheckOut(request));
+        CheckOutResponse agregado = checkOutService.agregarCheckOut(request);
+        agregarLinks(agregado);
+        return ResponseEntity.status(HttpStatus.CREATED).body(agregado);
     }
 
     @PutMapping("/{id}")
@@ -91,7 +105,9 @@ public class CheckOutController {
     })
     public ResponseEntity<CheckOutResponse> actualizarCheckOut(@PathVariable Long id, @Valid @RequestBody CheckOutUpdateRequest updateRequest){
         log.info("PUT /api/check_out/{}", id);
-        return ResponseEntity.ok(checkOutService.actualizarCheckOut(id, updateRequest));
+        CheckOutResponse actualizado = checkOutService.actualizarCheckOut(id, updateRequest);
+        agregarLinks(actualizado);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
@@ -104,5 +120,12 @@ public class CheckOutController {
         log.info("DELETE /api/check_out/{}", id);
         checkOutService.eliminarCheckOut(id);
         return ResponseEntity.noContent().build();
+    }
+
+    public void agregarLinks(CheckOutResponse response){
+        response.add(
+                linkTo(methodOn(CheckOutController.class).buscarCheckOutPorId(response.getId())).withSelfRel(),
+                linkTo(methodOn(CheckOutController.class).buscarCheckOutPorIdReserva(response.getIdReserva())).withSelfRel(),
+                linkTo(methodOn(CheckOutController.class).obtenerCheckOut()).withRel("all"));
     }
 }
