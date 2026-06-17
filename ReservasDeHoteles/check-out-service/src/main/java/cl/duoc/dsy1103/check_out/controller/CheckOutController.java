@@ -72,7 +72,7 @@ public class CheckOutController {
                     content = @Content(mediaType = "application/json", 
                             schema = @Schema(implementation = CheckOutResponse.class))),
             @ApiResponse(responseCode = "404", description = "Empleado o Reserva no encontrada"),
-            @ApiResponse(responseCode = "400", description = "Ya existe check out de esa reserva"),
+            @ApiResponse(responseCode = "400", description = "Ingreso de datos inválidos"),
             @ApiResponse(responseCode = "500", description = "Operación fallida")
     })
     public ResponseEntity<CheckOutResponse> agregarCheckOut(@Valid @RequestBody CheckOutRequest request){
@@ -86,7 +86,7 @@ public class CheckOutController {
             @ApiResponse(responseCode = "200", description = "Check out actualizado existosamente",
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CheckOutResponse.class))),
-            @ApiResponse(responseCode = "404", description = "Check out, Empleado o Reserva no encontrada"),
+            @ApiResponse(responseCode = "404", description = "Datos no encontrados"),
             @ApiResponse(responseCode = "500", description = "Operación fallida")
     })
     public ResponseEntity<CheckOutResponse> actualizarCheckOut(@PathVariable Long id, @Valid @RequestBody CheckOutUpdateRequest updateRequest){

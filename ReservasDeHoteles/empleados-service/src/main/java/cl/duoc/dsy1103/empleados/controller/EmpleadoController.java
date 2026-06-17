@@ -72,8 +72,8 @@ public class EmpleadoController {
         @ApiResponse(responseCode = "201", description = "Empleado agregado", 
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = EmpleadoResponse.class))),
+        @ApiResponse(responseCode = "400", description = "Ingreso de datos inválidos"),
         @ApiResponse(responseCode = "404", description = "Hotel no encontrado"),
-        @ApiResponse(responseCode = "400", description = "Empleado ya existe o datos ingresados inválidos"),
         @ApiResponse(responseCode = "500", description = "Operación fallida")
     })
     public ResponseEntity<EmpleadoResponse> agregarEmpleado(@Valid @RequestBody EmpleadoRequest request){
@@ -87,7 +87,7 @@ public class EmpleadoController {
         @ApiResponse(responseCode = "200", description = "Empleado actualizado exitosamente", 
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = EmpleadoResponse.class))),
-        @ApiResponse(responseCode = "404", description = "Empleado no encontrado"),
+        @ApiResponse(responseCode = "404", description = "Datos no encontrados"),
         @ApiResponse(responseCode = "500", description = "Operación fallida")
     })
     public ResponseEntity<EmpleadoResponse> actualizarEmpleado(@PathVariable Long id, @Valid @RequestBody EmpleadoUpdateRequest updateRequest){

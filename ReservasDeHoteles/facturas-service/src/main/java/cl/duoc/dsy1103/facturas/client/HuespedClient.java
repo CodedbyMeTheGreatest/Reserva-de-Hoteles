@@ -3,7 +3,6 @@ package cl.duoc.dsy1103.facturas.client;
 import cl.duoc.dsy1103.facturas.dto.HuespedResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -11,8 +10,11 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Component
 @Slf4j
 public class HuespedClient {
-    @Autowired
-    private WebClient huespedesWebClient;
+    private final WebClient huespedesWebClient;
+
+    HuespedClient(WebClient huespedesWebClient) {
+        this.huespedesWebClient = huespedesWebClient;
+    }
 
     public HuespedResponse buscarHuespedPorRun(String run){
         log.info("Obteniendo huésped con RUN -> {}", run);

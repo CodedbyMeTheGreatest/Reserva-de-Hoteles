@@ -33,3 +33,10 @@ services:
     url: http://localhost:8086
   check_out:
     url: http://localhost:8087
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
