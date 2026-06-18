@@ -3,6 +3,7 @@ package cl.duoc.dsy1103.pagos.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,16 +25,25 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @Slf4j
 @RequestMapping("/api/pagos")
+@Tag(name = "Pagos", description = "Gestión de pagos")
 public class PagoController {
 
     @Autowired
     private PagoService pagoService;
+
+    private void agregarLinks(PagoResponse pago){
+        pago.add(linkTo(methodOn(PagoController.class).buscarPagoPorId(pago.getIdPago())).withSelfRel());
+        pago.add(linkTo(methodOn(PagoController.class).buscarPagos()).withRel("todos-los-pagos"));
+        pago.add(linkTo(methodOn(PagoController.class).eliminarPago(pago.getIdPago())).withRel("eliminar"));
+    }
 
     @GetMapping
     @Operation(summary = "Obtener todos los pagos", description = "Obtiene todos los pagos existentes en la base de datos")
@@ -42,9 +52,13 @@ public class PagoController {
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = PagoResponse.class)))
     })
-    public ResponseEntity<List<PagoResponse>> buscarPagos(){
+    public ResponseEntity<CollectionModel<PagoResponse>> buscarPagos(){
         log.info("GET /api/pagos");
-        return ResponseEntity.ok().body(pagoService.buscarPagos());
+        List<PagoResponse> pagos = pagoService.buscarPagos();
+        pagos.forEach(this::agregarLinks);
+        CollectionModel<PagoResponse> collection = CollectionModel.of(pagos,
+                linkTo(methodOn(PagoController.class).buscarPagos()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
 
@@ -58,7 +72,9 @@ public class PagoController {
     })
     public ResponseEntity<PagoResponse> buscarPagoPorId(@PathVariable("id") Long id){
         log.info("GET /api/pagos/{}", id);
-        return ResponseEntity.ok().body(pagoService.buscarPagoPorId(id));
+        PagoResponse pago = pagoService.buscarPagoPorId(id);
+        agregarLinks(pago);
+        return ResponseEntity.ok(pago);
     }
 
     @PostMapping
@@ -73,7 +89,9 @@ public class PagoController {
     })
     public ResponseEntity<PagoResponse> crearPago (@Valid @RequestBody PagoRequest request) {
         log.info("POST /api/pagos/crearPago");
-        return ResponseEntity.status(HttpStatus.CREATED).body(pagoService.crearPago(request));
+        PagoResponse pago = pagoService.crearPago(request);
+        agregarLinks(pago);
+        return ResponseEntity.status(HttpStatus.CREATED).body(pago);
     }
 
     @PutMapping("/{id}")
@@ -87,7 +105,9 @@ public class PagoController {
     })
     public ResponseEntity<PagoResponse> actualizarPago (@PathVariable("id") Long idPago, @Valid @RequestBody PagoUpdateRequest request){
         log.info("PUT /api/pagos/actualizarPago/{}", idPago);
-        return ResponseEntity.ok().body(pagoService.actualizarPago(idPago, request));
+        PagoResponse pago = pagoService.buscarPagoPorId(idPago);
+        agregarLinks(pago);
+        return ResponseEntity.ok(pago);
     }
 
     @DeleteMapping("/{id}")

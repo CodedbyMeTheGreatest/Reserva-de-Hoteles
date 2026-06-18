@@ -3,18 +3,22 @@ package cl.duoc.dsy1103.pagos.dto;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import cl.duoc.dsy1103.pagos.enums.EstadoPago;
 import cl.duoc.dsy1103.pagos.enums.MetodoPago;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @Builder
-public class PagoResponse {
+public class PagoResponse extends RepresentationModel<PagoResponse> {
 
     private Long idPago;
     private Long idHabitacion;
