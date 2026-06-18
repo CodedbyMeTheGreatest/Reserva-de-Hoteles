@@ -3,6 +3,7 @@ package cl.duoc.dsy1103.hotel.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -24,17 +25,26 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 
 @RestController
 @Slf4j
 @RequestMapping("/api/hoteles")
-
+@Tag(name = "Hotel", description = "Gestion de hoteles")
 public class HotelController {
 
     @Autowired
     private HotelService hotelService;
+
+    private void agregarLinks(HotelResponse hotel){
+        hotel.add(linkTo(methodOn(HotelController.class).buscarHotelPorId(hotel.getIdHotel())).withSelfRel());
+        hotel.add(linkTo(methodOn(HotelController.class).buscarHoteles()).withRel("todos-los-hoteles"));
+        hotel.add(linkTo(methodOn(HotelController.class).eliminarHotel(hotel.getIdHotel())).withRel("eliminar"));
+    }
     
     @GetMapping
     @Operation(summary = "Obtener todos los hoteles", description = "Obtiene todos los pagos existentes con su informacion")
@@ -45,9 +55,13 @@ public class HotelController {
                 )
         )
     })
-    public ResponseEntity<List<HotelResponse>> buscarHoteles(){
+    public ResponseEntity<CollectionModel<HotelResponse>> buscarHoteles(){
         log.info("GET /api/hoteles");
-        return ResponseEntity.ok().body(hotelService.buscarHoteles());
+        List<HotelResponse> hoteles = hotelService.buscarHoteles();
+        hoteles.forEach(this::agregarLinks);
+        CollectionModel<HotelResponse> collection = CollectionModel.of(hoteles,
+                linkTo(methodOn(HotelController.class).buscarHoteles()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
     
     @GetMapping("/{id}")
@@ -61,7 +75,9 @@ public class HotelController {
     })
     public ResponseEntity<HotelResponse> buscarHotelPorId(@PathVariable("id")Long idHotel){
         log.info("GET /api/hoteles/{}", idHotel);
-        return ResponseEntity.ok().body(hotelService.buscarHotelPorId(idHotel));
+        HotelResponse hotel = hotelService.buscarHotelPorId(idHotel);
+        agregarLinks(hotel);
+        return ResponseEntity.ok(hotel);
     }
 
     @PostMapping
@@ -76,7 +92,9 @@ public class HotelController {
     })
     public ResponseEntity<HotelResponse> crearHotel(@Valid @RequestBody HotelRequest request){
         log.info("POST /api/hoteles/crearHotel");
-        return ResponseEntity.status(HttpStatus.CREATED).body(hotelService.crearHotel(request));
+        HotelResponse hotel = hotelService.crearHotel(request);
+        agregarLinks(hotel);
+        return ResponseEntity.status(HttpStatus.CREATED).body(hotel);
     }
 
     @PutMapping("/{id}")
@@ -91,7 +109,9 @@ public class HotelController {
     })
     public ResponseEntity<HotelResponse> actualizarHotel(@PathVariable("id") Long idHotel, @Valid @RequestBody HotelUpdateRequest request){
         log.info("PUT /api/hoteles/actualizarHotel/{}", idHotel);
-        return ResponseEntity.ok().body(hotelService.actualizarHotel(idHotel, request));
+        HotelResponse hotel = hotelService.actualizarHotel(idHotel, request);
+        agregarLinks(hotel);
+        return ResponseEntity.ok(hotel);
     }
 
     @DeleteMapping("/{id}")
@@ -117,7 +137,9 @@ public class HotelController {
     })    
     public ResponseEntity<HotelResponse> buscarHotelPorNombre(@PathVariable("nombre") String nombre) {
         log.info("GET /api/hoteles/nombre/{}", nombre);
-        return ResponseEntity.ok().body(hotelService.buscarHotelPorNombre(nombre));
+        HotelResponse hotel = hotelService.buscarHotelPorNombre(nombre);
+        agregarLinks(hotel);
+        return ResponseEntity.ok(hotel);
     }
 
     

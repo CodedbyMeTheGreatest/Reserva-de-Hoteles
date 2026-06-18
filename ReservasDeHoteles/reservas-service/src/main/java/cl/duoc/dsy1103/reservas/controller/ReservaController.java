@@ -3,6 +3,7 @@ package cl.duoc.dsy1103.reservas.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -23,16 +24,26 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 @RequestMapping("/api/reservas")
 @Slf4j
+@Tag(name = "Reservas", description = "Gestion de reservas")
 public class ReservaController {
 
     @Autowired
     private ReservaService reservaService;
+
+    private void agregarLinks(ReservaResponse reservaResponse) {
+        reservaResponse.add(linkTo(methodOn(ReservaController.class).buscarReservaPorId(reservaResponse.getIdReserva())).withSelfRel());
+        reservaResponse.add(linkTo(methodOn(ReservaController.class).buscarReservas()).withRel("todos-las-reservas"));
+        reservaResponse.add(linkTo(methodOn(ReservaController.class).eliminarReserva(reservaResponse.getIdReserva())).withRel("eliminar"));
+    }
 
     @GetMapping
     @Operation(summary = "Obtener reservas", description = "Obtiene todas las reservas ingresadas")
@@ -43,9 +54,13 @@ public class ReservaController {
             )
         )
     })
-    public ResponseEntity<List<ReservaResponse>> buscarReservas(){
+    public ResponseEntity<CollectionModel<ReservaResponse>> buscarReservas(){
         log.info("GET /api/reservas/buscarReservas");
-        return ResponseEntity.ok().body(reservaService.buscarReservas());
+        List<ReservaResponse> reservas = reservaService.buscarReservas();
+        reservas.forEach(this::agregarLinks);
+        CollectionModel<ReservaResponse> collection = CollectionModel.of(reservas,
+                linkTo(methodOn(ReservaController.class).buscarReservas()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
@@ -59,7 +74,9 @@ public class ReservaController {
     })
     public ResponseEntity<ReservaResponse> buscarReservaPorId(@PathVariable("id") Long id){
         log.info("GET /api/reservas/{}", id);
-        return ResponseEntity.ok().body(reservaService.buscarReservaPorId(id));
+        ReservaResponse reserva = reservaService.buscarReservaPorId(id);
+        agregarLinks(reserva);
+        return ResponseEntity.ok(reserva);
     }
 
     @PostMapping
@@ -74,7 +91,9 @@ public class ReservaController {
     })
     public ResponseEntity<ReservaResponse> crearReserva (@Valid @RequestBody ReservaRequest request) {
         log.info("POST /api/reservas/crearReserva");
-        return ResponseEntity.status(HttpStatus.CREATED).body(reservaService.crearReserva(request));
+        ReservaResponse reserva = reservaService.crearReserva(request);
+        agregarLinks(reserva);
+        return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
     }
 
     @PutMapping("/{id}")
@@ -89,7 +108,9 @@ public class ReservaController {
     })
     public ResponseEntity<ReservaResponse> actualizarReserva (@PathVariable("id") Long idReserva, @Valid @RequestBody ReservaUpdateRequest request){
         log.info("PUT /api/reservas/actualizarReserva/{}", idReserva);
-        return ResponseEntity.ok().body(reservaService.actualizarReserva(idReserva, request));
+        ReservaResponse reserva = reservaService.actualizarReserva(idReserva, request);
+        agregarLinks(reserva);
+        return ResponseEntity.ok(reserva);
     }
 
     @DeleteMapping("/{id}")
@@ -114,6 +135,8 @@ public class ReservaController {
     })    
     public ResponseEntity<List<ReservaResponse>> buscarReservasPorEmpleado(@PathVariable("run") String run){
         log.info("GET /api/reservas/empleado/{}", run);
-        return ResponseEntity.ok().body(reservaService.buscarReservasPorEmpleado(run));
+        List<ReservaResponse> reservas = reservaService.buscarReservasPorEmpleado(run);
+        reservas.forEach(this::agregarLinks);
+        return ResponseEntity.ok(reservas);
     }
 }

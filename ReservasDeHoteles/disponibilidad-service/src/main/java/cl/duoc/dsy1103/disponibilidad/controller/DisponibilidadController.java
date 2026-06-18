@@ -3,6 +3,7 @@ package cl.duoc.dsy1103.disponibilidad.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,18 +23,28 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PutMapping;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 
 @RestController
 @Slf4j
 @RequestMapping("/api/disponibilidades")
+@Tag(name = "Disponibilidad", description = "Gestion de disponibilidades de habitaciones")
 public class DisponibilidadController {
 
     @Autowired
     private DisponibilidadService disponibilidadService;
+
+    private void agregarLinks(DisponibilidadResponse disponibilidad){
+        disponibilidad.add(linkTo(methodOn(DisponibilidadController.class).buscarDisponibilidadPorId(disponibilidad.getIdDisponibilidad())).withSelfRel());
+        disponibilidad.add(linkTo(methodOn(DisponibilidadController.class).buscarDisponibilidades()).withRel("todas-las-disponibilidades"));
+        disponibilidad.add(linkTo(methodOn(DisponibilidadController.class).eliminarDisponibilidad(disponibilidad.getIdDisponibilidad())).withRel("eliminar"));
+    }
 
     @GetMapping
     @Operation(summary = "Obtener disponibilidades", description = "Obtiene todas las disponibilidades de habitacion ingresadas")
@@ -44,9 +55,13 @@ public class DisponibilidadController {
             )
         )
     })
-    public ResponseEntity<List<DisponibilidadResponse>> buscarDisponibilidades(){
+    public ResponseEntity<CollectionModel<DisponibilidadResponse>> buscarDisponibilidades(){
         log.info("GET /api/disponibilidades");
-        return ResponseEntity.ok().body(disponibilidadService.buscarDisponibilidades());
+        List<DisponibilidadResponse> disponibilidades = disponibilidadService.buscarDisponibilidades();
+        disponibilidades.forEach(this::agregarLinks);
+        CollectionModel<DisponibilidadResponse> collection = CollectionModel.of(disponibilidades,
+                linkTo(methodOn(DisponibilidadController.class).buscarDisponibilidades()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
@@ -60,7 +75,9 @@ public class DisponibilidadController {
     })
     public ResponseEntity<DisponibilidadResponse> buscarDisponibilidadPorId(@PathVariable("id")Long idDisponibilidad){
         log.info("GET /api/disponibilidades/{}", idDisponibilidad);
-        return ResponseEntity.ok().body(disponibilidadService.buscarDisponibilidadPorId(idDisponibilidad));
+        DisponibilidadResponse disponibilidad = disponibilidadService.buscarDisponibilidadPorId(idDisponibilidad);
+        agregarLinks(disponibilidad);
+        return ResponseEntity.ok(disponibilidad);
     }
 
     @PostMapping
@@ -75,7 +92,9 @@ public class DisponibilidadController {
     })
     public ResponseEntity<DisponibilidadResponse> crearDisponibilidad (@Valid @RequestBody DisponibilidadRequest request) {
         log.info("POST /api/disponibilidades/crearDisponibilidad");
-        return ResponseEntity.status(HttpStatus.CREATED).body(disponibilidadService.crearDisponibilidad(request));
+        DisponibilidadResponse disponibilidad = disponibilidadService.crearDisponibilidad(request);
+        agregarLinks(disponibilidad);
+        return ResponseEntity.status(HttpStatus.CREATED).body(disponibilidad);
     }
 
     @PutMapping("/{id}")
@@ -90,7 +109,9 @@ public class DisponibilidadController {
     })
     public ResponseEntity<DisponibilidadResponse> actualizarDisponibilidad (@PathVariable("id") Long idDisponibilidad, @Valid @RequestBody DisponibilidadUpdateRequest request){
         log.info("PUT /api/disponibilidades/actualizarDisponibilidad/{}", idDisponibilidad);
-        return ResponseEntity.ok().body(disponibilidadService.actualizarDisponibilidad(idDisponibilidad, request));
+        DisponibilidadResponse disponibilidad = disponibilidadService.actualizarDisponibilidad(idDisponibilidad, request);
+        agregarLinks(disponibilidad);
+        return ResponseEntity.ok(disponibilidad);
     }
 
     @DeleteMapping("/{id}")

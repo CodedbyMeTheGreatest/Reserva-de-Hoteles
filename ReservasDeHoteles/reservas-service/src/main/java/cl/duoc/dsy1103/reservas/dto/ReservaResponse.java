@@ -1,15 +1,20 @@
 package cl.duoc.dsy1103.reservas.dto;
 
+import org.springframework.hateoas.RepresentationModel;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ReservaResponse {
+public class ReservaResponse extends RepresentationModel<ReservaResponse> {
     private Long idReserva;
 
     private Long idHabitacion;

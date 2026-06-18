@@ -3,6 +3,7 @@ package cl.duoc.dsy1103.habitaciones.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +26,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,6 +39,12 @@ public class HabitacionController {
     @Autowired
     private HabitacionService habitacionService;
 
+    private void agregarLinks(HabitacionResponse habitacion){
+        habitacion.add(linkTo(methodOn(HabitacionController.class).buscarHabitacionPorId(habitacion.getIdHabitacion())).withSelfRel());
+        habitacion.add(linkTo(methodOn(HabitacionController.class).buscarHabitaciones()).withRel("todas-las-habitaciones"));
+        habitacion.add(linkTo(methodOn(HabitacionController.class).eliminarHabitacion(habitacion.getIdHabitacion())).withRel("eliminar"));
+    }
+
     @GetMapping
     @Operation(summary = "Obtener todas las habitaciones", description = "Obtiene todas las habitaciones existentes en la base de datos")
     @ApiResponses(value = {
@@ -43,9 +52,13 @@ public class HabitacionController {
                 content = @Content(mediaType = "application/json",
                         schema = @Schema(implementation = HabitacionResponse.class)))
     })
-    public ResponseEntity<List<HabitacionResponse>> buscarHabitaciones(){
+    public ResponseEntity<CollectionModel<HabitacionResponse>> buscarHabitaciones(){
         log.info("GET /api/habitaciones");
-        return ResponseEntity.ok().body(habitacionService.buscarHabitaciones());
+        List<HabitacionResponse> habitaciones = habitacionService.buscarHabitaciones();
+        habitaciones.forEach(this::agregarLinks);
+        CollectionModel<HabitacionResponse> collection = CollectionModel.of(habitaciones,
+                linkTo(methodOn(HabitacionController.class).buscarHabitaciones()).withSelfRel());
+        return ResponseEntity.ok(collection);
     }
 
     @GetMapping("/{id}")
@@ -58,7 +71,9 @@ public class HabitacionController {
     })
     public ResponseEntity<HabitacionResponse> buscarHabitacionPorId(@PathVariable("id")Long idHabitacion){
         log.info("GET /api/habitaciones/{}", idHabitacion);
-        return ResponseEntity.ok().body(habitacionService.buscarHabitacionPorId(idHabitacion));
+        HabitacionResponse habitacion = habitacionService.buscarHabitacionPorId(idHabitacion);
+        agregarLinks(habitacion);
+        return ResponseEntity.ok(habitacion);
     }
 
     @PostMapping
@@ -72,7 +87,9 @@ public class HabitacionController {
     })
     public ResponseEntity<HabitacionResponse> crearHabitacion (@Valid @RequestBody HabitacionRequest request) {
         log.info("POST /api/habitaciones/crearHabitacion");
-        return ResponseEntity.status(HttpStatus.CREATED).body(habitacionService.crearHabitacion(request));
+        HabitacionResponse habitacion = habitacionService.crearHabitacion(request);
+        agregarLinks(habitacion);
+        return ResponseEntity.status(HttpStatus.CREATED).body(habitacion);
     }
 
     @PutMapping("/{id}")
@@ -86,7 +103,9 @@ public class HabitacionController {
     })
     public ResponseEntity<HabitacionResponse> actualizarHabitacion (@PathVariable("id") Long idHabitacion, @Valid @RequestBody HabitacionUpdateRequest request){
         log.info("PUT /api/habitaciones/actualizarHabitacion/{}", idHabitacion);
-        return ResponseEntity.ok().body(habitacionService.actualizarHabitacion(idHabitacion, request));
+        HabitacionResponse habitacion = habitacionService.actualizarHabitacion(idHabitacion, request);
+        agregarLinks(habitacion);
+        return ResponseEntity.ok().body(habitacion);
     }
 
     @DeleteMapping("/{id}")
@@ -112,7 +131,9 @@ public class HabitacionController {
     })
     public ResponseEntity<HabitacionResponse> buscarHabitacionPorNumero(@PathVariable("numero") String numero){
         log.info("GET /api/habitaciones/numero/{}", numero);
-        return ResponseEntity.ok().body(habitacionService.buscarHabitacionPorNumero(numero));
+        HabitacionResponse habitacion = habitacionService.buscarHabitacionPorNumero(numero);
+        agregarLinks(habitacion);
+        return ResponseEntity.ok().body(habitacion);
     }
     
 }

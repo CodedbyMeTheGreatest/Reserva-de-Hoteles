@@ -19,7 +19,7 @@ spring:
     locations: classpath:db/migration
 
 server:
-  port: 8085
+  port: 8086
 
 springdoc:
   api-docs:
