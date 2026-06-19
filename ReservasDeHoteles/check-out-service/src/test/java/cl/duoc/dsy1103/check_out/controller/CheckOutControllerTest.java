@@ -1,8 +1,10 @@
-package cl.duoc.dsy1103.check_in.controller;
+package cl.duoc.dsy1103.check_out.controller;
 
-public class CheckInControllerTest {
+public class CheckOutControllerTest {
     /*
     - - obtener
+    - - - Retorna 200
+    - - buscarPor
     - - - Retorna 200
     - - buscarPor
     - - - Retorna 200
@@ -11,6 +13,6 @@ public class CheckInControllerTest {
     - - actualizar
     - - - Retorna 200
     - - eliminar
-    - - - Retorna 204 
-    */
+    - - - Retorna 204
+ */
 }

@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.NoSuchElementException;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -14,13 +13,16 @@ import cl.duoc.dsy1103.reservas.dto.EmpleadoResponse;
 @Component
 @Slf4j
 public class EmpleadoClient {
-    @Autowired
-    private WebClient webClient;
+    private final WebClient webClient;
+
+    EmpleadoClient(WebClient webClient) {
+        this.webClient = webClient;
+    }
 
     public EmpleadoResponse buscarEmpleadoPorId(Long id){
         try{
             return webClient.get()
-                    .uri("http://localhost:8084/api/empleados/{id}", id)
+                    .uri("http://localhost:8085/api/empleados/{id}", id)
                     .retrieve()
                     .bodyToMono(EmpleadoResponse.class)
                     .block();

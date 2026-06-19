@@ -1,8 +1,10 @@
-package cl.duoc.dsy1103.check_in.controller;
+package cl.duoc.dsy1103.empleados.controller;
 
-public class CheckInControllerTest {
+public class EmpleadoControllerTest {
     /*
     - - obtener
+    - - - Retorna 200
+    - - buscarPor
     - - - Retorna 200
     - - buscarPor
     - - - Retorna 200
