@@ -1,34 +1,28 @@
 spring:
   application:
     name: check-in-service
-  datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_check_in
-    username: root
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
-
   jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
     open-in-view: false
-
-  flyway:
-    baseline-on-migrate: true
-    locations: classpath:db/migration
 
 server:
   port: 8087
 
-services:
-  empleados:
-    url: http://localhost:8084
-  reservas:
-    url: http://localhost:8086
-  
+eureka: 
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    
 springdoc:
   api-docs:
     enabled: true
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+
+clients:
+  empleados:
+    url: ${EMPLEADOS_SERVICE_URL:lb://empleados-service}
+  reservas:
+    url: ${RESERVAS_SERVICE_URL:lb://reservas-service}

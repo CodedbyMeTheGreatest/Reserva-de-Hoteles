@@ -1,32 +1,25 @@
 spring:
   application:
-    name: empleados-service
-
-  datasource:
-    url: jdbc:mysql://localhost:3306/db_hoteleria_empleados
-    username: root
-    password:
-    driver-class-name: com.mysql.jdbc.Driver
-
-  flyway:
-    enabled: true
-    locations: classpath:db/migration
-    baseline-on-migrate: true
+    name: empleados-service    
 
   jpa:
-    hibernate:
-      ddl-auto: validate
-    show-sql: false
     open-in-view: false
 
 server:
   port: 8084
 
-services:
+eureka: 
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
+  instance:
+    prefer-ip-address: true
+    
+clients:
   hoteles:
-    url: http://localhost:8081
+    url: ${HOTELES_SERVICE_URL:lb://hoteles-service}
   reservas:
-    url: http://localhost:8086
+    url: ${RESERVAS_SERVICE_URL:lb://reservas-service}
 
 springdoc:
   api-docs:

@@ -27,3 +27,9 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
+  
+clients:
+  disponibilidad:
+    url:${DISPONIBILIDAD_SERVICE_URL:lb://disponibilidad-service}
+  hoteles:
+    url: ${HOTELES:lb://hoteles-service}

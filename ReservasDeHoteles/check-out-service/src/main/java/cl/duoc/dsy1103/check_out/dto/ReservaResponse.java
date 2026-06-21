@@ -14,7 +14,5 @@ public class ReservaResponse {
     private Long idHuesped;
     private Long idEmpleado;
     private int cantDias;
-    private Long idCheckIn;
-    private Long idCheckOut;
 }
 

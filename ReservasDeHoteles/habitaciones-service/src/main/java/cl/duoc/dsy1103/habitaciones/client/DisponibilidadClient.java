@@ -15,13 +15,13 @@ import lombok.extern.slf4j.Slf4j;
 public class DisponibilidadClient {
 
     @Autowired
-    private WebClient webClient;
+    private WebClient disponibilidadWebClient;
 
     public DisponibilidadResponse findDisponibilidadById(Long idDisponibilidad) {
         log.info("Obteniendo disponibilidad con ID -> {}", idDisponibilidad);
         try {
-            return webClient.get()
-                    .uri("http://localhost:8082/api/disponibilidades/" + idDisponibilidad)
+            return disponibilidadWebClient.get()
+                    .uri("/api/disponibilidades/" + idDisponibilidad)
                     .retrieve()
                     .bodyToMono(DisponibilidadResponse.class)
                     .block();

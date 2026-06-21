@@ -14,13 +14,13 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class HotelClient {
     @Autowired
-    private WebClient webClient;
+    private WebClient hotelesWebClient;
 
     public HotelResponse findHotelById(Long id){
         log.info("Obteniendo hotel con ID -> {}", id);
         try {
-            return webClient.get()
-                    .uri("http://localhost:8080/api/hoteles/" + id)
+            return hotelesWebClient.get()
+                    .uri("/api/hoteles/" + id)
                     .retrieve()
                     .bodyToMono(HotelResponse.class)
                     .block();
