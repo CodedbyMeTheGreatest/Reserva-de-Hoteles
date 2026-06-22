@@ -2,12 +2,14 @@ package cl.duoc.dsy1103.huespedes.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class HuespedUpdateRequest {
     @Size(min = 4, max = 10, message = "El run debe tener entre 4 y 10 caracteres")
     private String run;

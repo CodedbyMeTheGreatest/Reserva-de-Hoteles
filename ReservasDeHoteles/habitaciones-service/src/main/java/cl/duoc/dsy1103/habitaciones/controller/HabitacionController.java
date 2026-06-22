@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.duoc.dsy1103.habitaciones.dto.ApiErrorResponse;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionRequest;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionResponse;
 import cl.duoc.dsy1103.habitaciones.dto.HabitacionUpdateRequest;

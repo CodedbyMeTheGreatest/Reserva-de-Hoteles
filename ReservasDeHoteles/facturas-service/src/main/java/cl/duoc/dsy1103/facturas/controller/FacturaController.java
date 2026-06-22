@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,8 @@ import java.util.List;
 @RequestMapping("/api/facturas")
 @Slf4j
 public class FacturaController {
-    private final FacturaService facturaService;
-
-    FacturaController(FacturaService facturaService) {
-        this.facturaService = facturaService;
-    }
+    @Autowired
+    private FacturaService facturaService;
 
     @GetMapping
     @Operation(summary = "Obtener todas las facturas", description = "Obtiene todas las facturas existentes de reservas del habitaciones")

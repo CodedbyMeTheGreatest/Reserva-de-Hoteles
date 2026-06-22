@@ -2,6 +2,7 @@ package cl.duoc.dsy1103.reservas.client;
 
 import java.util.NoSuchElementException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -12,12 +13,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class HuespedClient {
-
-    private final WebClient webClient;
-
-    HuespedClient(WebClient webClient) {
-        this.webClient = webClient;
-    }
+    @Autowired
+    private WebClient webClient;
     
     public HuespedResponse buscarHuespedPorId(Long id) {
         log.info("Buscando huesped con ID -> {}", id);

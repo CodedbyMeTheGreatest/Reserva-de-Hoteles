@@ -1,11 +1,9 @@
 package cl.duoc.dsy1103.check_in.service;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,8 +19,8 @@ import cl.duoc.dsy1103.check_in.client.EmpleadoClient;
 import cl.duoc.dsy1103.check_in.client.ReservaClient;
 import cl.duoc.dsy1103.check_in.dto.CheckInRequest;
 import cl.duoc.dsy1103.check_in.dto.CheckInResponse;
-import cl.duoc.dsy1103.check_in.dto.EmpleadoResponse;
-import cl.duoc.dsy1103.check_in.dto.ReservaResponse;
+import cl.duoc.dsy1103.check_in.dto.CheckInUpdateRequest;
+import cl.duoc.dsy1103.check_in.exception.BadRequestException;
 import cl.duoc.dsy1103.check_in.mapper.CheckInMapper;
 import cl.duoc.dsy1103.check_in.model.CheckIn;
 import cl.duoc.dsy1103.check_in.repository.CheckInRepository;
@@ -31,121 +29,166 @@ import jakarta.persistence.EntityNotFoundException;
 @ExtendWith(MockitoExtension.class)
 public class CheckInServiceTest {
     @Mock
-    private CheckInRepository repository;
+    private CheckInRepository checkInRepository;
+    @Mock
+    private CheckInMapper checkInMapper;
     @Mock
     private ReservaClient reservaClient;
     @Mock 
     private EmpleadoClient empleadoClient;
-    @Mock
-    private CheckInMapper mapper;
 
     @InjectMocks
-    private CheckInService service;
+    private CheckInService checkInService;
 
-    private CheckIn checkInMock;
-    private CheckInResponse responseMock;
-    private CheckInRequest requestMock;
-    private ReservaResponse reservaMock;
-    private EmpleadoResponse empleadoMock;
+    private CheckIn checkInEntity;
+    private CheckInResponse checkInResponse;
+    private CheckInRequest checkInRequest;
 
     @BeforeEach
     public void setUp(){
-        LocalDateTime fechaMock = LocalDateTime.now();
-
-        checkInMock = CheckIn.builder()
-                .id(1L)
-                .idReserva(10L)
-                .idEmpleado(20L)
-                .fechaIngreso(fechaMock)
-                .build();
-
-        responseMock = CheckInResponse.builder()
-                .id(1L)
-                .idReserva(10L)
-                .idEmpleado(20L)
-                .fechaIngreso(fechaMock)
-                .build();
-
-        requestMock = CheckInRequest.builder()
-                .idReserva(10L)
-                .idEmpleado(20L)
-                .build();
-
-        empleadoMock = EmpleadoResponse.builder()
-                .idEmpleado(20L)
-                .run("12345678-9")
-                .nombreCompleto("Juan Pérez")
-                .cargo("Recepcionista")
-                .idHotel(1L)
-                .nombreHotel("Hotel Central")
-                .build();
-
-        reservaMock = ReservaResponse.builder()
-                .id(10L)
-                .idHabitacion(100L)
-                .idHuesped(200L)
-                .idEmpleado(20L)
-                .cantDias(3)
-                .idCheckIn(1L)
-                .idCheckOut(null)
-                .build();
-        reservaMock = ReservaResponse.builder()
-            .id(20L)
-            .idHabitacion(100L)
-            .idHuesped(100L)
-            .idEmpleado(20L)
-            .cantDias(3)
-            .idCheckIn(2L)
-            .idCheckOut(null)
-            .build();
-    }
-
-    @Test
-    @DisplayName("buscarCheckInPorId() debe retornar excepcion cuando no existe")
-    void buscarCheckInPorIdDebeRetornarExcepcion() {
-        when(repository.findById(99L)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> service.buscarCheckInPorId(99L))
-                .isInstanceOf(EntityNotFoundException.class)
-                .hasMessageContaining("99");
         
-        verify(repository).findById(99L);
-        verify(mapper, never()).toResponse(any());
+        checkInEntity = CheckIn.builder()
+                .id(1L)
+                .idReserva(1L)
+                .idEmpleado(1L)
+                .observaciones("Sin observaciones")
+                .build();
+
+        checkInResponse = CheckInResponse.builder()
+                .id(1L)
+                .idReserva(1L)
+                .idEmpleado(1L)
+                .fechaIngreso(checkInEntity.getFechaIngreso())
+                .observaciones("Sin observaciones")
+                .build();
+        
+        checkInRequest = CheckInRequest.builder()
+                .idReserva(1L)
+                .idEmpleado(1L)
+                .observaciones("Sin observaciones")
+                .build();
     }
 
     @Test
-    @DisplayName("agregarCheckIn() debe retornar excepcion cuando no exista la reserva")
-    void agregarCheckInDebeRetornarExcepcionSiNoExisteReserva() {
+    @DisplayName("obtenerCheckIns() debe retornar una lista de CheckInResponse")
+    void obtenerCheckInsDebeRetornarListaDeResponse() {
+        when(checkInRepository.findAll()).thenReturn(List.of(checkInEntity));
+        when(checkInMapper.toResponse(checkInEntity)).thenReturn(checkInResponse);
 
+        List<CheckInResponse> resultado = checkInService.obtenerCheckIns();
+ 
+        assertNotNull(resultado);
+        assertEquals(1, resultado.size());
+        verify(checkInRepository).findAll();
     }
 
     @Test
-    @DisplayName("agregarCheckIn() debe retornar excepcion cuando no exista la reserva")
-    void agregarCheckInDebeRetornarExcepcionSiNoExisteEmpleado() {
+    @DisplayName("buscarCheckInPorId() debe retornar CheckInResponse si existe")
+    void buscarCheckInPorIdDebeRetornarResponseSiExiste() {
+        when(checkInRepository.findById(1L)).thenReturn(Optional.of(checkInEntity));
+        when(checkInMapper.toResponse(checkInEntity)).thenReturn(checkInResponse);
 
+        CheckInResponse resultado = checkInService.buscarCheckInPorId(1L);
+
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getIdReserva());
+        verify(checkInRepository).findById(1L);
     }
 
     @Test
-    @DisplayName("actualizarCheckIn() debe retornar excepcion cuando no exista")
-    void actualizarCheckInDebeRetornarExcepcion() {
+    @DisplayName("buscarCheckInPorId() debe lanzar una excepcion EntityNotFound si no existe")
+    void buscarCheckInPorIdDebeLanzarExcepcionSiNoExiste() {
+        when(checkInRepository.findById(99L)).thenReturn(Optional.empty());
 
-    }
-    
-    @Test
-    @DisplayName("actualizarCheckIn() debe retornar excepcion cuando no exista la reserva")
-    void actualizarCheckInDebeRetornarExcepcionSiNoExisteReserva() {
-
+        assertThrows(EntityNotFoundException.class, 
+                () -> checkInService.buscarCheckInPorId(99L));
+        verify(checkInMapper, never()).toResponse(any());
     }
 
     @Test
-    @DisplayName("actualizarCheckIn() debe retornar excepcion cuando no exista la reserva")
-    void actualizarCheckInDebeRetornarExcepcionSiNoExisteEmpleado() {
+    @DisplayName("agregarCheckIn() debe guardar y retornar un CheckInResponse si no existe duplicado")
+    void agregarCheckInDebeGuardarYRetornarSiNoExisteDuplicado() {
 
+        when(checkInMapper.fromRequest(checkInRequest)).thenReturn(checkInEntity);
+        when(checkInRepository.save(checkInEntity)).thenReturn(checkInEntity);
+        when(checkInMapper.toResponse(checkInEntity)).thenReturn(checkInResponse);
+
+        CheckInResponse resultado = checkInService.agregarCheckIn(checkInRequest);
+
+        assertNotNull(resultado);
+        assertEquals(1L, resultado.getIdReserva());
+        verify(reservaClient).buscarReservaPorId(1L);
+        verify(empleadoClient).buscarEmpleadoPorId(1L);
+        verify(checkInRepository).save(checkInEntity);
     }
 
     @Test
-    @DisplayName("eliminarCheckIn() debe retornar excepcion cuando no exista")
-    void eliminarCheckInDebeRetornarExcepcion() {
+    @DisplayName("agregarCheckIn() debe lanzar una excepcion BadRequest si existe otro Check In con la misma Id Reserva")
+    void agregarCheckInDebeLanzarExcepcionSiExisteCheckInParaReserva() {
+        when(checkInRepository.existsByIdReserva(1L)).thenThrow(new BadRequestException("Ya existe check in para reserva con ID -> 1"));
 
+        assertThrows(BadRequestException.class, () -> checkInService.agregarCheckIn(checkInRequest));
+        verify(checkInRepository, never()).save(any());
     }
+
+    @Test
+    @DisplayName("agregarCheckIn() debe lanzar una excepcion EntityNotFound si no existe la reserva")
+    void agregarCheckInDebeLanzarExcepcionSiNoExisteReserva() {
+        when(checkInRepository.existsByIdReserva(1L)).thenThrow(new EntityNotFoundException("No se encontro reserva reserva con ID -> 99"));
+
+        assertThrows(EntityNotFoundException.class, () -> checkInService.agregarCheckIn(checkInRequest));
+        verify(checkInRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("actualizarCheckIn() debe actualizar y retornar CheckInResponse si existe")
+    void actualizarCheckInDebeActualizarYRetornarResponseSiExiste() {
+        
+        CheckInUpdateRequest updateRequest = CheckInUpdateRequest.builder()
+                .idReserva(1L)
+                .idEmpleado(1L)
+                .observaciones("Actualizado")
+                .build();
+        
+        when(checkInRepository.findById(1L)).thenReturn(Optional.of(checkInEntity));
+        when(checkInRepository.save(checkInEntity)).thenReturn(checkInEntity);
+        when(checkInMapper.toResponse(checkInEntity)).thenReturn(checkInResponse);
+
+        checkInService.actualizarCheckIn(1L, updateRequest);
+
+        assertEquals("Actualizado", checkInEntity.getObservaciones());
+        verify(checkInRepository).save(checkInEntity);
+    }
+
+    @Test
+    @DisplayName("actualizarCheckIn() debe lanzar una excepcion EntityNotFound si no existe")
+    void actualizarCheckInDebeLanzarExcepcionSiNoExiste() {
+        when(checkInRepository.findById(99L)).thenReturn(Optional.empty());
+
+        assertThrows(EntityNotFoundException.class, 
+                () -> checkInService.actualizarCheckIn(99L, new CheckInUpdateRequest()));
+        verify(checkInRepository, never()).save(any());
+    }
+
+    @Test
+    @DisplayName("eliminarCheckIn() debe eliminar si existe")
+    void eliminarCheckInDebeEliminarSiExiste() {
+        when(checkInRepository.existsById(1L)).thenReturn(true);
+
+        checkInService.eliminarCheckIn(1L);
+
+        verify(checkInRepository).deleteById(1L);
+    }
+
+    @Test
+    void eliminarCheckInDebeLanzarExcepcionSiNoExiste() {
+        when(checkInRepository.existsById(99L)).thenReturn(false);
+
+        assertThrows(EntityNotFoundException.class, 
+                () -> checkInService.eliminarCheckIn(99L));
+
+        verify(checkInRepository, never()).deleteById(any());
+    }
+
+
 }

@@ -3,6 +3,8 @@ package cl.duoc.dsy1103.check_in.client;
 import cl.duoc.dsy1103.check_in.dto.ReservaResponse;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
@@ -10,11 +12,8 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Component
 @Slf4j
 public class ReservaClient {
-    private final WebClient reservasWebClient;
-
-    public ReservaClient(WebClient reservasWebClient) {
-        this.reservasWebClient = reservasWebClient;
-    }
+    @Autowired
+    private WebClient reservasWebClient;
 
     public ReservaResponse buscarReservaPorId(Long id){
         try{

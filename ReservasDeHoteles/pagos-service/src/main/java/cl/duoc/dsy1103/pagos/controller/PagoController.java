@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import cl.duoc.dsy1103.pagos.dto.ApiErrorResponse;
 import cl.duoc.dsy1103.pagos.dto.PagoRequest;
 import cl.duoc.dsy1103.pagos.dto.PagoResponse;
 import cl.duoc.dsy1103.pagos.dto.PagoUpdateRequest;

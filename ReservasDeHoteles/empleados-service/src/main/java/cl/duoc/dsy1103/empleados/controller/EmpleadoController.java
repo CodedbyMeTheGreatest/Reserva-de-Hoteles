@@ -14,6 +14,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,11 +29,8 @@ import java.util.List;
 @Tag(name = "Empleados", description = "Gestión de Empleados")
 @Slf4j
 public class EmpleadoController {
-    private final EmpleadoService empleadoService;
-
-    EmpleadoController(EmpleadoService empleadoService) {
-        this.empleadoService = empleadoService;
-    }
+    @Autowired
+    private EmpleadoService empleadoService;
 
     @GetMapping
     @Operation(summary = "Obtener todos los empleados", description = "Retorna una lista de empleados existentes en la base de datos")

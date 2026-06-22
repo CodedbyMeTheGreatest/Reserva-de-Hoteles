@@ -5,6 +5,9 @@ import java.util.NoSuchElementException;
 
 import cl.duoc.dsy1103.huespedes.dto.HuespedRequest;
 import cl.duoc.dsy1103.huespedes.dto.HuespedUpdateRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import cl.duoc.dsy1103.huespedes.dto.HuespedResponse;
@@ -17,15 +20,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Slf4j
 public class HuespedService {
+    @Autowired
+    private HuespedRepository huespedRepository;
 
-    private final HuespedRepository huespedRepository;
-
-    private final HuespedMapper huespedMapper;
-
-    HuespedService(HuespedMapper huespedMapper, HuespedRepository huespedRepository) {
-        this.huespedMapper = huespedMapper;
-        this.huespedRepository = huespedRepository;
-    }
+    @Autowired
+    private HuespedMapper huespedMapper;
 
     public List<HuespedResponse> obtenerHuespedes(){
         log.info("Obteniendo huéspedes...");
@@ -50,6 +49,9 @@ public class HuespedService {
 
     public HuespedResponse agregarHuesped(HuespedRequest request){
         log.info("Agregando huésped con RUN -> {}", request.getRun());
+        if(huespedRepository.findByRun(request.getRun())!= null){
+            new DataIntegrityViolationException("Ya existe un huesped con el RUN -> " + request.getRun());
+        }
         return huespedMapper.toResponse(huespedRepository.save(huespedMapper.fromRequest(request)));
     }
 

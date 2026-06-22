@@ -8,6 +8,8 @@ import cl.duoc.dsy1103.facturas.model.Factura;
 import cl.duoc.dsy1103.facturas.repository.FacturaRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,29 +17,26 @@ import java.util.List;
 @Service
 @Slf4j
 public class FacturaService {
-    private final FacturaRepository facturaRepository;
+    @Autowired
+    private FacturaRepository facturaRepository;
 
-    private final FacturaMapper facturaMapper;
+    @Autowired
+    private FacturaMapper facturaMapper;
 
-    private final HuespedClient huespedClient;
+    @Autowired
+    private HuespedClient huespedClient;
 
-    private final PagoClient pagoClient;
+    @Autowired
+    private PagoClient pagoClient;
 
-    private final ReservaClient reservaClient;
+    @Autowired
+    private ReservaClient reservaClient;
 
-    private final CheckInClient checkInClient;
+    @Autowired
+    private CheckInClient checkInClient;
 
-    private final CheckOutClient checkOutClient;
-
-    FacturaService(CheckOutClient checkOutClient, CheckInClient checkInClient, PagoClient pagoClient, FacturaMapper facturaMapper) {
-        this.facturaRepository = null;
-        this.huespedClient = null;
-        this.reservaClient = null;
-        this.checkOutClient = checkOutClient;
-        this.checkInClient = checkInClient;
-        this.pagoClient = pagoClient;
-        this.facturaMapper = facturaMapper;
-    }
+    @Autowired
+    private CheckOutClient checkOutClient;
 
     public List<FacturaResponse> obtenerFacturas(){
         log.info("Obteniendo facturas...");

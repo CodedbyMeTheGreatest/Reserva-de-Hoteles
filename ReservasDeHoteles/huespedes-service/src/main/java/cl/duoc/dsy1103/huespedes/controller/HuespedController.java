@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,12 +28,9 @@ import java.util.List;
 @Tag(name = "Huéspedes", description = "Gestión de Huéspedes")
 @Slf4j
 public class HuespedController {
-    private final HuespedService huespedService;
-
-    HuespedController(HuespedService huespedService) {
-        this.huespedService = huespedService;
-    }
-
+    @Autowired
+    private HuespedService huespedService;
+    
     @GetMapping
     @Operation(summary = "Obtener todos los huespedes", description = "Retorna una lista de huespedes existentes en la base de datos")
     @ApiResponses(value = {

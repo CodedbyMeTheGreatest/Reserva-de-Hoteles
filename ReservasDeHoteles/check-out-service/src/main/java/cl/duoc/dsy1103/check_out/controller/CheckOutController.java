@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,11 +26,8 @@ import java.util.List;
 @RequestMapping("/api/check_out")
 @Slf4j
 public class CheckOutController {
-    private final CheckOutService checkOutService;
-
-    CheckOutController(CheckOutService checkOutService) {
-        this.checkOutService = checkOutService;
-    }
+    @Autowired
+    private CheckOutService checkOutService;
 
     @GetMapping
     @Operation(summary = "Obtener todos los check out", description = "Retorna todos los check out existentes con su información")

@@ -9,6 +9,8 @@ import cl.duoc.dsy1103.empleados.model.Empleado;
 import cl.duoc.dsy1103.empleados.repository.EmpleadoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
@@ -17,20 +19,17 @@ import java.util.List;
 @Service
 @Slf4j
 public class EmpleadoService {
-    private final EmpleadoRepository empleadoRepository;
+    @Autowired
+    private EmpleadoRepository empleadoRepository;
 
-    private final EmpleadoMapper empleadoMapper;
+    @Autowired
+    private EmpleadoMapper empleadoMapper;
 
-    private final ReservaClient reservaClient;
+    @Autowired
+    private ReservaClient reservaClient;
 
-    private final HotelClient hotelClient;
-
-    EmpleadoService(EmpleadoRepository empleadoRepository, ReservaClient reservaClient, HotelClient hotelClient) {
-        this.empleadoRepository = empleadoRepository;
-        this.empleadoMapper = new EmpleadoMapper();
-        this.reservaClient = reservaClient;
-        this.hotelClient = hotelClient;
-    }
+    @Autowired
+    private  HotelClient hotelClient;
 
     public List<EmpleadoResponse> obtenerEmpleados(){
         log.info("Obteniendo todos los empleados...");

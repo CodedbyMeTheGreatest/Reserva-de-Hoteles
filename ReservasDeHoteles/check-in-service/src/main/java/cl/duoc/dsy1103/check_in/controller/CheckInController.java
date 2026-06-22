@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,11 +28,8 @@ import java.util.List;
 @Tag(name = "Check In", description = "Gestión de Check In")
 @Slf4j
 public class CheckInController {
-    private final CheckInService checkInService;
-
-    CheckInController(CheckInService checkInService) {
-        this.checkInService = checkInService;
-    }
+        @Autowired
+    private CheckInService checkInService;
 
     @GetMapping
     @Operation(summary = "Obtener todos los check in", description = "Retorna todos los check in existentes en la base de datos")

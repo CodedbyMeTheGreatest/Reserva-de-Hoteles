@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import cl.duoc.dsy1103.hotel.dto.HotelRequest;
 import cl.duoc.dsy1103.hotel.dto.HotelResponse;
 import cl.duoc.dsy1103.hotel.dto.HotelUpdateRequest;
-import cl.duoc.dsy1103.hotel.model.Hotel;
 import cl.duoc.dsy1103.hotel.service.HotelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

@@ -9,6 +9,8 @@ import cl.duoc.dsy1103.check_out.model.CheckOut;
 import cl.duoc.dsy1103.check_out.repository.CheckOutRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,20 +18,17 @@ import java.util.List;
 @Service
 @Slf4j
 public class CheckOutService {
-    private final CheckOutRepository checkOutRepository;
+    @Autowired
+    private CheckOutRepository checkOutRepository;
 
-    private final CheckOutMapper checkOutMapper;
+    @Autowired
+    private CheckOutMapper checkOutMapper;
 
-    private final EmpleadoClient empleadoClient;
+    @Autowired
+    private EmpleadoClient empleadoClient;
 
-    private final ReservaClient reservaClient;
-
-    CheckOutService(ReservaClient reservaClient, EmpleadoClient empleadoClient, CheckOutRepository checkOutRepository) {
-        this.checkOutMapper = new CheckOutMapper();
-        this.reservaClient = reservaClient;
-        this.empleadoClient = empleadoClient;
-        this.checkOutRepository = checkOutRepository;
-    }
+    @Autowired
+    private ReservaClient reservaClient;
 
     public List<CheckOutResponse> obtenerCheckOut(){
         log.info("Obteniendo check-out...");

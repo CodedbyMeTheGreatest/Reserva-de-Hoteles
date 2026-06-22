@@ -9,6 +9,8 @@ import cl.duoc.dsy1103.check_in.model.CheckIn;
 import cl.duoc.dsy1103.check_in.repository.CheckInRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,20 +18,17 @@ import java.util.List;
 @Service
 @Slf4j
 public class CheckInService {
-    private final CheckInRepository checkInRepository;
+    @Autowired
+    private CheckInRepository checkInRepository;
 
-    private final CheckInMapper checkInMapper;
+    @Autowired
+    private CheckInMapper checkInMapper;
 
-    private final ReservaClient reservaClient;
+    @Autowired
+    private ReservaClient reservaClient;
 
-    private final EmpleadoClient empleadoClient;
-
-    CheckInService(CheckInMapper checkInMapper, EmpleadoClient empleadoClient, CheckInRepository checkInRepository) {
-        this.checkInMapper = checkInMapper;
-        this.reservaClient = new ReservaClient(null);
-        this.empleadoClient = empleadoClient;
-        this.checkInRepository = checkInRepository;
-    }
+    @Autowired
+    private EmpleadoClient empleadoClient;
 
     public List<CheckInResponse> obtenerCheckIns(){
         log.info("Obteniendo check-ins ...");

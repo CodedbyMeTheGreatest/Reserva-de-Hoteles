@@ -2,12 +2,14 @@ package cl.duoc.dsy1103.check_out.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class CheckOutUpdateRequest {
     private Long idReserva;
     private Long idEmpleado;
