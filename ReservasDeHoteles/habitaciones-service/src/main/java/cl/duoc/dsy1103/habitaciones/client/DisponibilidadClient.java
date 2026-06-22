@@ -21,7 +21,7 @@ public class DisponibilidadClient {
         log.info("Obteniendo disponibilidad con ID -> {}", idDisponibilidad);
         try {
             return disponibilidadWebClient.get()
-                    .uri("/api/disponibilidades/" + idDisponibilidad)
+                    .uri("lb://disponibilidades-service/api/disponibilidades" + idDisponibilidad)
                     .retrieve()
                     .bodyToMono(DisponibilidadResponse.class)
                     .block();

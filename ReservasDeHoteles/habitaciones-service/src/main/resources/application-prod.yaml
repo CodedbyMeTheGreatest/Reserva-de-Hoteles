@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3302}/${DISPONIBILIDADES_DB_NAME:db_hoteleria_disponibilidades}
+    url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3303}/${HABITACIONES_DB_NAME:db_hoteleria_habitaciones}
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: ${DB_USER}
     password: ${DB_PASS}
@@ -18,4 +18,4 @@ spring:
 
 logging:
   level:
-    "[cl.duoc.dsy1103.disponibilidad]": INFO
+    "[cl.duoc.dsy1103.habitaciones]": INFO
