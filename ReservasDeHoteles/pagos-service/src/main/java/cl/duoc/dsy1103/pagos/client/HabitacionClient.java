@@ -21,7 +21,7 @@ public class HabitacionClient {
         log.info("Buscando habitacion con ID -> {}",idHabitacion);
         try{
             return webClient.get()
-                .uri("http://localhost:8081/api/habitaciones/{id}",idHabitacion)
+                .uri("lb://habitaciones-service/api/habitaciones/" + idHabitacion)
                 .retrieve()
                 .bodyToMono(HabitacionResponse.class)
                 .block();

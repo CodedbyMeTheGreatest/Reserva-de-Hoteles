@@ -20,7 +20,7 @@ public class HuespedClient {
         log.info("Buscando huesped con ID -> {}", id);
         try {
             return webClient.get()
-                    .uri("http://localhost:8083/api/huespedes/{id}", id)
+                    .uri("lb://huespedes-service/api/huespedes/{id}", id)
                     .retrieve()
                     .bodyToMono(HuespedResponse.class)
                     .block();
