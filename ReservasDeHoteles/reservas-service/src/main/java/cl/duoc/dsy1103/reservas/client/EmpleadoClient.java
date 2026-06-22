@@ -20,7 +20,7 @@ public class EmpleadoClient {
     public EmpleadoResponse buscarEmpleadoPorId(Long id){
         try{
             return webClient.get()
-                    .uri("http://localhost:8085/api/empleados/{id}", id)
+                    .uri("lb://empleados-service/api/empleados/{id}"+id)
                     .retrieve()
                     .bodyToMono(EmpleadoResponse.class)
                     .block();
