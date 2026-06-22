@@ -19,13 +19,13 @@ services:
           "-h",
           "localhost",
           "-u",
-          "root",
-          "-p${MYSQL_ROOT_PASSWORD}"
+          "root"
         ]
       interval: 10s
       timeout: 5s
       retries: 5
-
+    networks:
+      - spring-cloud-net
 
   eureka-server:
     build:
@@ -41,7 +41,8 @@ services:
       interval: 15s
       timeout: 5s
       retries: 5
-
+    networks:
+      - spring-cloud-net
   hoteles-service:
     build:
       context: ./hoteles-service
@@ -62,7 +63,8 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-
+    networks:
+      - spring-cloud-net
 
   disponibilidad-service:
     build:
@@ -84,7 +86,8 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-
+    networks:
+      - spring-cloud-net
 
   habitaciones-service:
     build:
@@ -112,7 +115,8 @@ services:
         condition: service_started
       hoteles-service:
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   empleados-service:
     build:
@@ -137,7 +141,8 @@ services:
         condition: service_healthy
       hoteles-service:
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   huespedes-service:
     build:
@@ -159,7 +164,8 @@ services:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
-
+    networks:
+      - spring-cloud-net
       
   reservas-service:
     build:
@@ -190,7 +196,8 @@ services:
         condition: service_started
       huespedes-service: 
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   check-in-service:
     build:
@@ -218,7 +225,8 @@ services:
         condition: service_started
       reservas-service:
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   check-out-service:
     build:
@@ -246,7 +254,8 @@ services:
         condition: service_started
       reservas-service:
         condition: service_started
-      
+    networks:
+      - spring-cloud-net      
 
   pagos-service:
     build:
@@ -274,7 +283,8 @@ services:
         condition: service_started
       huespedes-service:
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   facturas-service:
     build:
@@ -311,7 +321,8 @@ services:
         condition: service_started
       check-out-service:
         condition: service_started
-
+    networks:
+      - spring-cloud-net
 
   api-gateway:
     build:
@@ -346,10 +357,11 @@ services:
         condition: service_started
       facturas-service:
         condition: service_started
-  
+    networks:
+      - spring-cloud-net
 
 volumes:
-  mysql_data:
+  mysql_data: 
 
 networks:
   spring-cloud-net:
