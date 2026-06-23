@@ -75,6 +75,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("obtenerEmpleados() debe retornar lista de EmpleadoResponse")
     void obtenerEmpleadosDebeRetornarListaResponse() {
         when(empleadoRepository.findAll()).thenReturn(List.of(empleadoEntity));
         when(empleadoMapper.toResponse(empleadoEntity)).thenReturn(empleadoResponse);
@@ -87,6 +88,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("buscarEmpleadoPorId() debe retornar EmpleadoResponse si existe")
     void buscarEmpleadoPorIdDebeRetornarSiExista() {
         when(empleadoRepository.findById(1L)).thenReturn(Optional.of(empleadoEntity));
         when(empleadoMapper.toResponse(empleadoEntity)).thenReturn(empleadoResponse);
@@ -109,6 +111,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("buscarEmpleadoPorRun() debe retornar EmpleadoResponse si existe")
     void buscarEmpleadoPorRunDebeRetornarSiExiste() {
         when(empleadoRepository.findByRun("12345678-9")).thenReturn(Optional.of(empleadoEntity));
         when(empleadoMapper.toResponse(empleadoEntity)).thenReturn(empleadoResponse);
@@ -131,6 +134,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("obtenerReservasPorRunEmpleado() debe retornar lista de reservas si existe el empleado")
     void obtenerReservasPorRunEmpleadoDebeRetornarListaReservasSiExiste() {
         ReservaResponse reservaResponse = ReservaResponse.builder()
                 .id(1L)
@@ -153,6 +157,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("obtenerReservasPorRunEmpleado() debe retornar excepcion cuando no exista el empleado")
     void agregarEmpleadoDebeAgregarYRetornarSiNoExiste() {
         HotelResponse hotelResponse = new HotelResponse();
         hotelResponse.setId(1L);
@@ -173,6 +178,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("agregarEmpleado() debe lanzar excepcion cuando el cargo es invalido")
     void agregarEmpleadoDebeLanzarExcepcionCuandoCargoEsInvalido() {
         HotelResponse hotel = new HotelResponse();
         hotel.setNombre("Hotel Test");
@@ -250,6 +256,7 @@ public class EmpleadoServiceTest {
     }
 
     @Test
+    @DisplayName("eliminarEmpleado() debe eliminar si existe")
     void eliminarEmpleadoDebeEliminarSiExiste() {
         when(empleadoRepository.existsById(1L)).thenReturn(true);
 

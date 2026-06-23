@@ -181,6 +181,7 @@ public class CheckInServiceTest {
     }
 
     @Test
+    @DisplayName("eliminarCheckIn() debe lanzar una excepcion EntityNotFound si no existe")
     void eliminarCheckInDebeLanzarExcepcionSiNoExiste() {
         when(checkInRepository.existsById(99L)).thenReturn(false);
 

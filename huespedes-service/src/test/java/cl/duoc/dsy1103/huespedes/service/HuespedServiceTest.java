@@ -81,6 +81,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("buscarHuespedPorId() debe retornar HuespedResponse si existe")
     void buscarHuespedPorIdDebeRetornarSiExiste() {
         when(huespedRepository.findById(1L)).thenReturn(Optional.of(huespedEntity));
         when(huespedMapper.toResponse(huespedEntity)).thenReturn(huespedResponse);
@@ -93,6 +94,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("buscarHuespedPorId() debe lanzar una excepcion EntityNotFound si no existe")
     void buscarHuespedPorIdDebeLanzarExcepcionSiNoExiste() {
         when(huespedRepository.findById(99L)).thenReturn(Optional.empty());
 
@@ -101,6 +103,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("buscarHuespedPorRun() debe retornar HuespedResponse si existe")
     void buscarHuespedPorRunDebeRetornarSiExiste() {
         when(huespedRepository.findByRun("12345678-9")).thenReturn(Optional.of(huespedEntity));
         when(huespedMapper.toResponse(huespedEntity)).thenReturn(huespedResponse);
@@ -113,14 +116,16 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("buscarHuespedPorRun() debe lanzar una excepcion EntityNotFound si no existe")
     void buscarHuespedPorRunDebeLanzarExcepcionSiNoExiste() {
         when(huespedRepository.findByRun("12345678-9")).thenReturn(Optional.empty());
 
         assertThrows(EntityNotFoundException.class, () -> huespedService.buscarHuespedPorRun("12345678-9"));
         verify(huespedMapper, never()).toResponse(any());
-    }    
+    }
 
     @Test
+    @DisplayName("agregarHuesped() debe agregar y retornar HuespedResponse")
     void agregarHuespedDebeAgregarYRetornarResponse() {
         when(huespedMapper.fromRequest(huespedRequest)).thenReturn(huespedEntity);
         when(huespedRepository.save(huespedEntity)).thenReturn(huespedEntity);
@@ -134,6 +139,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("agregarHuesped() debe lanzar excepcion cuando el RUN ya existe")
     void agregarHuespedDebeLanzarExcepcionSiExisteRun() {
         when(huespedRepository.findByRun("12345678-9")).thenThrow(new DataIntegrityViolationException("Ya existe un huesped con el RUN -> 12345678-9"));
 
@@ -142,6 +148,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("actualizarHuesped() debe actualizar los campos enviados")
     void actualizarHuespedDebeActualizarCamposEnviados() {
         HuespedUpdateRequest updateRequest = HuespedUpdateRequest.builder()
                 .nombreCompleto("Jane Doe")
@@ -159,6 +166,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("actualizarHuesped() debe lanzar excepcion si no existe")    
     void actualizarHuespedDebeLanzarExcepcionSiNoExiste() {
         HuespedUpdateRequest updateRequest = HuespedUpdateRequest.builder()
                 .nombreCompleto("Jane Doe")
@@ -174,6 +182,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("eliminarHuesped() debe eliminar si existe")    
     void eliminarHuespedDebeEliminarSiExiste() {
         when(huespedRepository.existsById(1L)).thenReturn(true);
 
@@ -183,6 +192,7 @@ public class HuespedServiceTest {
     }
 
     @Test
+    @DisplayName("eliminarHuesped() debe lanzar excepcion si no existe")
     void eliminarHuespedDebeLanzarExcepcionSiNoExiste() {
         when(huespedRepository.existsById(99L)).thenReturn(false);
 

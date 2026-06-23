@@ -2,12 +2,14 @@ package cl.duoc.dsy1103.facturas.dto;
 
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class FacturaUpdateRequest {
     @Size(max=5, message = "El folio debe tener entre 3 y 5 caracteres")
     private String folio;
