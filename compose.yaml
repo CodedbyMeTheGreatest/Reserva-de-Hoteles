@@ -37,7 +37,7 @@ services:
       - "8761:8761"
 
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:8761/actuator/health"]
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://eureka-server:8761/actuator/health"]
       interval: 15s
       timeout: 5s
       retries: 5
@@ -79,7 +79,7 @@ services:
       DB_PORT: ${MYSQL_PORT}
       DB_NAME: ${DISPONIBILIDADES_DB_NAME}
       DB_USER: ${MYSQL_USER}
-      DB_PASS: ${MYSQL_PASSWORD}
+      DB_PASS: ""
       EUREKA_URL: http://eureka-server:8761/eureka/
     depends_on:
       mysql:
