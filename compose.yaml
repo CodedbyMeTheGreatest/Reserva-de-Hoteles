@@ -4,9 +4,12 @@ services:
     container_name: mysql
     restart: unless-stopped
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: db_hoteleria  # BD por defecto
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
-      - "3309:3306"
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init-db.sql:/docker-entrypoint-initdb.d/init-db.sql
@@ -19,13 +22,14 @@ services:
           "-h",
           "localhost",
           "-u",
-          "root"
+          "root",
+          "-p${MYSQL_ROOT_PASSWORD}"
         ]
       interval: 10s
       timeout: 5s
       retries: 5
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   eureka-server:
     build:
@@ -35,14 +39,23 @@ services:
     restart: unless-stopped
     ports:
       - "8761:8761"
-
     healthcheck:
-      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://eureka-server:8761/actuator/health"]
+      test: 
+        [
+        "CMD", 
+        "wget", 
+        "--quiet", 
+        "--tries=1", 
+        "--spider", 
+        "http://localhost:8761/actuator/health"
+        ]
       interval: 15s
       timeout: 5s
       retries: 5
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
+
+  #===========MICROSERVICIOS=========
   hoteles-service:
     build:
       context: ./hoteles-service
@@ -52,8 +65,10 @@ services:
     ports:
       - "8081:8081"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8081
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${HOTELES_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
@@ -64,7 +79,7 @@ services:
       eureka-server:
         condition: service_healthy
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   disponibilidad-service:
     build:
@@ -75,11 +90,13 @@ services:
     ports:
       - "8082:8082"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8082
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${DISPONIBILIDADES_DB_NAME}
       DB_USER: ${MYSQL_USER}
-      DB_PASS: ""
+      DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
     depends_on:
       mysql:
@@ -87,7 +104,7 @@ services:
       eureka-server:
         condition: service_healthy
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   habitaciones-service:
     build:
@@ -98,14 +115,16 @@ services:
     ports:
       - "8083:8083"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8083
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${HABITACIONES_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      DISPONIBILIDAD_SERVICE_URL: lb://disponibilidad-service
-      HOTELES_SERVICE_URL: lb://hoteles-service
+      DISPONIBILIDAD_SERVICE_URL: http://disponibilidad-service:8082
+      HOTELES_SERVICE_URL: http://hoteles-service:8081
     depends_on:
       mysql:
         condition: service_healthy
@@ -116,7 +135,7 @@ services:
       hoteles-service:
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   empleados-service:
     build:
@@ -127,13 +146,15 @@ services:
     ports:
       - "8084:8084"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8084
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${EMPLEADOS_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      HOTELES_SERVICE_URL: lb://hoteles-service
+      HOTELES_SERVICE_URL: http://hoteles-service:8081
     depends_on:
       mysql:
         condition: service_healthy
@@ -142,7 +163,7 @@ services:
       hoteles-service:
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   huespedes-service:
     build:
@@ -153,8 +174,10 @@ services:
     ports:
       - "8085:8085"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8085
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${HUESPEDES_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
@@ -165,7 +188,7 @@ services:
       eureka-server:
         condition: service_healthy
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
       
   reservas-service:
     build:
@@ -176,15 +199,17 @@ services:
     ports:
       - "8086:8086"    
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8086
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${RESERVAS_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      EMPLEADOS_SERVICE_URL: lb://empleados-service
-      HABITACIONES_SERVICE_URL: lb://habitaciones-service
-      HUESPEDES_SERVICE_URL: lb://huespedes-service
+      EMPLEADOS_SERVICE_URL: http://empleados-service:8084
+      HABITACIONES_SERVICE_URL: http://habitaciones-service:8083
+      HUESPEDES_SERVICE_URL: http://huespedes-service:8085
     depends_on:
       mysql:
         condition: service_healthy
@@ -197,7 +222,7 @@ services:
       huespedes-service: 
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   check-in-service:
     build:
@@ -208,14 +233,16 @@ services:
     ports:
       - "8087:8087"    
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8087
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${CHECK_IN_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      EMPLEADOS_SERVICE_URL: lb://empleados-service
-      RESERVAS_SERVICE_URL:  lb://reservas-service
+      EMPLEADOS_SERVICE_URL: http://empleados-service:8084
+      RESERVAS_SERVICE_URL:  http://reservas-service:8086
     depends_on:
       mysql:
         condition: service_healthy
@@ -226,7 +253,7 @@ services:
       reservas-service:
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   check-out-service:
     build:
@@ -237,14 +264,16 @@ services:
     ports:
       - "8088:8088"    
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8088
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${CHECK_OUT_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      EMPLEADOS_SERVICE_URL: lb://empleados-service
-      RESERVAS_SERVICE_URL: lb://reservas-service
+      EMPLEADOS_SERVICE_URL: http://empleados-service:8084
+      RESERVAS_SERVICE_URL: http://reservas-service:8086
     depends_on:
       mysql:
         condition: service_healthy
@@ -255,7 +284,7 @@ services:
       reservas-service:
         condition: service_started
     networks:
-      - spring-cloud-net      
+      - spring-hotel-net      
 
   pagos-service:
     build:
@@ -266,14 +295,16 @@ services:
     ports:
       - "8089:8089"    
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8089
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${PAGOS_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      HABITACIONES_SERVICE_URL: lb://habitaciones-service
-      HUESPEDES_SERVICE_URL: lb://huespedes-service
+      HABITACIONES_SERVICE_URL: http://habitaciones-service:8083
+      HUESPEDES_SERVICE_URL: http://huespedes-service:8085
     depends_on:
       mysql:
         condition: service_healthy
@@ -284,7 +315,7 @@ services:
       huespedes-service:
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   facturas-service:
     build:
@@ -295,17 +326,19 @@ services:
     ports:
       - "8090:8090"
     environment:
-      DB_HOST: ${MYSQL_HOST}
-      DB_PORT: ${MYSQL_PORT}
+      SPRING_PROFILES_ACTIVE: docker
+      SERVER_PORT: 8090
+      DB_HOST: mysql
+      DB_PORT: 3306
       DB_NAME: ${FACTURAS_DB_NAME}
       DB_USER: ${MYSQL_USER}
       DB_PASS: ${MYSQL_PASSWORD}
       EUREKA_URL: http://eureka-server:8761/eureka/
-      HUESPEDES_SERVICE_URL: lb://huespedes-service
-      PAGOS_SERVICE_URL: lb://pagos-service
-      RESERVAS_SERVICE_URL: lb://reservas-service
-      CHECK_IN_SERVICE_URL: lb://check-in-service
-      CHECK_OUT_SERVICE_URL: lb://check-out-service
+      HUESPEDES_SERVICE_URL: http://huespedes-service:8085
+      PAGOS_SERVICE_URL: http://pagos-service:8089
+      RESERVAS_SERVICE_URL: http://reservas-service:8086
+      CHECK_IN_SERVICE_URL: http://check-in-service:8087
+      CHECK_OUT_SERVICE_URL: http://check-out-service:8088
     depends_on:
       mysql:
         condition: service_healthy
@@ -322,7 +355,7 @@ services:
       check-out-service:
         condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
   api-gateway:
     build:
@@ -333,36 +366,17 @@ services:
     ports:
       - "8080:8080"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       EUREKA_URL: http://eureka-server:8761/eureka/
     depends_on:
       eureka-server:
         condition: service_healthy
-      hoteles-service:
-        condition: service_started
-      disponibilidad-service:
-        condition: service_started
-      habitaciones-service:
-        condition: service_started
-      empleados-service:
-        condition: service_started
-      huespedes-service:
-        condition: service_started
-      reservas-service:
-        condition: service_started
-      check-in-service:
-        condition: service_started
-      check-out-service:
-        condition: service_started
-      pagos-service:
-        condition: service_started
-      facturas-service:
-        condition: service_started
     networks:
-      - spring-cloud-net
+      - spring-hotel-net
 
 volumes:
-  mysql_data: 
+  mysql_data:
 
 networks:
-  spring-cloud-net:
+  spring-hotel-net:
     driver: bridge

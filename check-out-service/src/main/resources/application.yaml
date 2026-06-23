@@ -10,9 +10,15 @@ server:
 eureka: 
   client:
     service-url:
-      defaultZone: ${EUREKA_URL:http://eureka-server:8761/eureka/}
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
   instance:
     prefer-ip-address: true  
+
+clients:
+  empleados:
+    url: ${EMPLEADOS_SERVICE_URL:lb://empleados-service}
+  reservas:
+    url: ${RESERVAS_SERVICE_URL:lb://reservas-service}
 
 springdoc:
   api-docs:
@@ -20,9 +26,3 @@ springdoc:
   swagger-ui:
     enabled: true
     path: /swagger-ui.html
-
-clients:
-  empleados:
-    url: ${EMPLEADOS_SERVICE_URL:lb://empleados-service}
-  reservas:
-    url: ${RESERVAS_SERVICE_URL:lb://reservas-service}

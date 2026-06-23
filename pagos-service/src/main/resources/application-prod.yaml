@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: prod
+    active: docker
   datasource:
     url: jdbc:mysql://${DB_HOST:localhost}:${DB_PORT:3309}/${PAGOS_DB_NAME:db_hoteleria_pagos}
     driver-class-name: com.mysql.cj.jdbc.Driver

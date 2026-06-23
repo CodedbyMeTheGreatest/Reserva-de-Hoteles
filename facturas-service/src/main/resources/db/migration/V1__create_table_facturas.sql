@@ -7,8 +7,8 @@ CREATE TABLE facturas(
     nombre_huesped          VARCHAR(150)   NOT NULL,
     id_check_in             BIGINT      NOT NULL UNIQUE,
     id_check_out            BIGINT      NULL UNIQUE,
-    fecha_check_in          DATETIME    NOT NULL,
-    fecha_check_out         DATETIME    NULL,
+    fecha_check_in          TIMESTAMP    NOT NULL,
+    fecha_check_out         TIMESTAMP    NULL,
     descripcion_habitacion  VARCHAR(50)   NOT NULL,
     cantidad_dias           INT     NOT NULL,
     subtotal                INT     NOT NULL,
@@ -16,5 +16,5 @@ CREATE TABLE facturas(
     total                   INT     NOT NULL,
     metodo_pago VARCHAR(20) NOT NULL CHECK (metodo_pago IN ('TARJETA', 'EFECTIVO', 'TRANSFERENCIA')),
     estado_pago VARCHAR(20) NOT NULL CHECK (estado_pago IN ('PENDIENTE', 'PAGADO', 'RECHAZADO')),
-    fecha_factura           DATETIME    NOT NULL
+    fecha_factura           TIMESTAMP    NOT NULL
 );
