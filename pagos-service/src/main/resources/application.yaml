@@ -1,6 +1,6 @@
 spring:
   application:
-    name: PAGOS-SERVICE
+    name: pagos-service
   profiles:
     active: dev
   jpa:

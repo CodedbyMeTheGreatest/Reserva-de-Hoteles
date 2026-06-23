@@ -55,8 +55,10 @@ management:
   endpoints:
     web:
       exposure:
-        include: health, info, gateway
+        include: "*"
   endpoint:
+    gateway:
+      enabled: true
     health:
       show-details: always
 

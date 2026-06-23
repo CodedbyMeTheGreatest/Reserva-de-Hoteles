@@ -1,6 +1,8 @@
 spring:
   application:
     name: reservas-service
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: validate
