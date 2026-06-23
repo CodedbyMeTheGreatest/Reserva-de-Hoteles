@@ -1,9 +1,10 @@
 spring:
+  profiles:
+    active: dev
   application:
     name: api-gateway
   cloud:
     gateway:
-      mvc:
         discovery:
           locator:
             enabled: true
@@ -13,73 +14,51 @@ spring:
             uri: lb://hoteles-service
             predicates:
               - Path=/api/hoteles/**
-
           - id: disponibilidad
             uri: lb://disponibilidad-service
             predicates:
               - Path=/api/disponibilidades/**
-
           - id: habitaciones
             uri: lb://habitaciones-service
             predicates:
               - Path=/api/habitaciones/**
-
           - id: empleados
             uri: lb://empleados-service
             predicates:
               - Path=/api/empleados/**
-
           - id: huespedes
             uri: lb://huespedes-service
             predicates:
               - Path=/api/huespedes/**
-
           - id: reservas
             uri: lb://reservas-service
             predicates:
               - Path=/api/reservas/**
-
           - id: checkin
             uri: lb://check-in-service
             predicates:
               - Path=/api/check_in/**
-
           - id: checkout
             uri: lb://check-out-service
             predicates:
               - Path=/api/check_out/**
-
           - id: pagos
             uri: lb://pagos-service
             predicates:
               - Path=/api/pagos/**
-
           - id: facturas
             uri: lb://facturas-service
             predicates:
               - Path=/api/facturas/**
 
-eureka:
-  client:
-    service-url:
-      defaultZone: ${EUREKA_URL:http://eureka-server:8761/eureka/}
-  instance:
-    prefer-ip-address: true
-  
 management:
   endpoints:
     web:
       exposure:
-        include: health, info
+        include: health, info, gateway
   endpoint:
     health:
       show-details: always
-      
-logging:
-  level:
-    "[org.springframework.cloud.gateway]": DEBUG
-    "[cl.duoc.dsy1103.api_gateway]": DEBUG
+
 server:
   port: 8080
-
-

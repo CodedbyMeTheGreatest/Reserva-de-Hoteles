@@ -1,6 +1,8 @@
 spring:
   application:
-    name: pagos-service
+    name: PAGOS-SERVICE
+  profiles:
+    active: dev
   jpa:
     hibernate:
       ddl-auto: validate
