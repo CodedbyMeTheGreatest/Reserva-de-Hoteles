@@ -111,35 +111,12 @@ curl -X GET http://localhost:8080/api/facturas
 curl -X GET http://localhost:8080/api/huespedes/run/12345678-9
 ```
 ```bash
-# Crear una nueva reserva
-curl -X POST http://localhost:8080/api/reservas \
-  -H "Content-Type: application/json" \
-  -d '{
-    "idHabitacion": 1,
-    "runHuesped": "12345678-9",
-    "fechaIngreso": "2026-07-01",
-    "fechaSalida": "2026-07-05",
-    "idEmpleado": 1
-  }'
-```
-```bash
 # Crear un check-in
 curl -X POST http://localhost:8080/api/check_in \
   -H "Content-Type: application/json" \
   -d '{
     "idReserva": 1,
     "runEmpleado": "12345678-9"
-  }'
-```
-```bash
-# Procesar un pago
-curl -X POST http://localhost:8080/api/pagos \
-  -H "Content-Type: application/json" \
-  -d '{
-    "idReserva": 1,
-    "runHuesped": "12345678-9",
-    "metodoPago": "TARJETA",
-    "monto": 150000
   }'
 ```
 
