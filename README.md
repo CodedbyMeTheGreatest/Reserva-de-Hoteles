@@ -3,18 +3,18 @@
 ## Índice
 
 - [Descripción del Proyecto](#descripción-del-proyecto)
-- [Estudiantes](#estudiantes)
+- [Integrantes](#integrantes)
 - [Listado de Microservicios](#listado-de-microservicios-implementados)
 - [Bases de Datos](#bases-de-datos-mysql)
 - [Rutas del Gateway](#rutas-principales-del-gateway)
 - [Documentación Swagger](#documentación-swagger)
 - [Instrucciones de Ejecución](#instrucciones-de-ejecución)
-  - [Requisitos Previos](#requisitos-previos)
-  - [Ejecución con Docker](#ejecución-con-docker-recomendada)
-  - [Ejecución Sin Docker](#ejecución-sin-docker)
-  - [Comandos de Verificación](#comandos-de-verificación)
+- [Requisitos Previos](#requisitos-previos)
+- [Ejecución Docker](#ejecución-docker-recomendada)
+- [Ejecución Sin Docker](#ejecución-sin-docker)
+- [Comandos de Verificación](#comandos-de-verificación)
 - [Limpiar el Entorno](#limpiar-el-entorno)
-- [Tests Unitarios](#tests-unitarios)
+- [Test Unitarios](#test-unitarios)
 - [Tecnologías Utilizadas](#tecnologías-utilizadas)
 - [Programas Utilizados](#programas-utilizados)
 - [Estructura del Repositorio](#estructura-del-repositorio)
@@ -36,7 +36,7 @@ Cada microservicio es **independiente**, tiene su propia base de datos **MySQL**
 
 El sistema está diseñado para ser **escalable**, **mantenible** y **fácil de desplegar** en entornos de desarrollo, pruebas y producción mediante **Docker**.
 
-## Estudiantes
+## Integrantes
 
 - **Jean Lefiman** - je.lefiman@duocuc.cl
 - **Corina Urrutia** - cor.urrutia@duocuc.cl
@@ -58,11 +58,11 @@ El sistema está diseñado para ser **escalable**, **mantenible** y **fácil de 
 | 5 | **Habitaciones Service** | `8083` | Gestión de habitaciones por hotel |
 | 6 | **Empleados Service** | `8084` | Gestión de empleados del hotel |
 | 7 | **Huéspedes Service** | `8085` | Gestión de clientes/huéspedes |
-| 8 | **Reservas Service** | `8086` | Creación y gestión de reservas |
+| 8 | **Reservas Service** | `8086` | Gestión de reservas |
 | 9 | **Check-In Service** | `8087` | Registro de entrada de huéspedes |
 | 10 | **Check-Out Service** | `8088` | Registro de salida de huéspedes |
 | 11 | **Pagos Service** | `8089` | Procesamiento de pagos |
-| 12 | **Facturas Service** | `8090` | Generación y gestión de facturas |
+| 12 | **Facturas Service** | `8090` | Gestión de facturas |
 
 ### Bases de Datos (MySQL)
 
@@ -108,16 +108,7 @@ curl -X GET http://localhost:8080/api/facturas
 ```
 ```bash
 # Obtener un huésped por RUN
-curl -X GET http://localhost:8080/api/huespedes/run/12345678-9
-```
-```bash
-# Crear un check-in
-curl -X POST http://localhost:8080/api/check_in \
-  -H "Content-Type: application/json" \
-  -d '{
-    "idReserva": 1,
-    "runEmpleado": "12345678-9"
-  }'
+curl -X GET http://localhost:8080/api/huespedes/run/20111222
 ```
 
 ## Documentación Swagger Directo a cada Microservicio
@@ -139,14 +130,13 @@ curl -X POST http://localhost:8080/api/check_in \
 
 ### Requisitos Previos
 
-- Docker Desktop (versión 20.10+)
+- Docker Desktop
 
 - Java 17 (opcional, solo para desarrollo local)
 
-- Maven 3.9+ (opcional, solo para desarrollo local)
-
 ### Ejecución Docker (RECOMENDADA)
 
+- Recordatorio de realizar esta ejecución en un terminal **'Powershell'**
 ```bash
 # 1. Clonar el repositorio
 git clone https://github.com/CodedbyMeTheGreatest/Reserva-de-Hoteles.git
@@ -157,8 +147,8 @@ cd Reserva-de-Hoteles
 # 2. Copiar el archivo de variables de entorno
 cp .env.example .env
 
-# 4. Construir y levantar todos los servicios
-docker-compose up --build
+# 4. Construir y levantar todos los servicios, en segundo plano
+docker compose up --build -d
 ```
 
 ### Comandos de Verificación
@@ -212,10 +202,10 @@ mvn spring-boot:run -Dspring-boot.run.profiles=dev
 ### Limpiar el Entorno
 ```bash
 # Detener y eliminar todos los contenedores
-docker-compose down
+docker compose down
 
 # Eliminar también volúmenes (datos de BD)
-docker-compose down -v
+docker compose down -v
 
 # Eliminar contenedores, redes, imágenes y volúmenes no utilizados
 docker system prune -a
@@ -228,14 +218,14 @@ docker system prune -a --volumes
 
 ```bash
 # 1. Limpiar todo
-docker-compose down -v
+docker compose down -v
 docker system prune -a --volumes
 
 # 2. Compilar
 mvn clean package -DskipTests
 
 # 3. Reconstruir y levantar
-docker-compose up --build
+docker compose up --build -d
 ```
 
 ### Test Unitarios
@@ -243,9 +233,6 @@ docker-compose up --build
 # Ejecutar tests de un servicio específico
 cd facturas-service
 mvn test
-
-# Ejecutar todos los tests del proyecto
-mvn clean test
 ```
 
 ## Tecnologías Utilizadas
@@ -253,20 +240,20 @@ mvn clean test
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
 | **Java** | 17 | Lenguaje de programación |
-| **Spring Boot** | 3.4.0 | Framework principal |
-| **Spring Cloud** | 2025.1.2 | Microservicios y descubrimiento |
+| **Spring Boot** | 4.0.6 | Framework principal |
+| **Spring Cloud** | 2025.1.2| Microservicios y descubrimiento |
 | **Spring Cloud Gateway** | 2025.1.2 | API Gateway |
 | **Eureka Server/Client** | 2025.1.2 | Descubrimiento de servicios |
-| **Spring Data JPA** | 3.4.0 | ORM y acceso a datos |
+| **Spring Data JPA** |  | ORM y acceso a datos |
 | **MySQL** | 8.0 | Base de datos relacional |
-| **Docker** | 20.10+ | Contenerización |
-| **Docker Compose** | 2.0+ | Orquestación de contenedores |
-| **Maven** | 3.9+ | Gestión de dependencias |
-| **SpringDoc OpenAPI** | 2.3.0 | Documentación Swagger |
-| **Flyway** | 10.0+ | Migraciones de base de datos |
-| **Lombok** | 1.18.30 | Reducción de código boilerplate |
-| **Mockito** | 5.0+ | Tests unitarios |
-| **JUnit** | 5.10+ | Framework de pruebas |
+| **Docker** |  | Contenerización |
+| **Docker Compose** |  | Orquestación de contenedores |
+| **Maven** | 4.0.0 | Gestión de dependencias |
+| **SpringDoc OpenAPI** | 3.0.2 | Documentación Swagger |
+| **Flyway** |  | Migraciones de base de datos |
+| **Lombok** |  | Reducción de código boilerplate |
+| **Mockito** |  | Tests unitarios |
+| **JUnit** |  | Framework de pruebas |
 
 
 ### Ejecucion
